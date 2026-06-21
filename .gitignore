@@ -1,0 +1,17 @@
+# Next.js build output
+.next/
+out/
+build/
+
+# Dependencies
+node_modules/
+
+# Claude / agent internals
+.claude/
+.agents/
+
+# Misc
+.DS_Store
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+eslint.fixed.config.mjs
