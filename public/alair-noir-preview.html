@@ -453,18 +453,18 @@
   .top-glow { position: relative; overflow: hidden; }
   .top-glow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); transform: translateX(-110%); animation: alair-glint 5s var(--motion-ease) infinite; }
   .hero-shell { background: #070707 !important; transform: translateZ(0); }
-  #hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; }
+  #hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; opacity: .10; }
   .hero-video-overlay { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(7,7,7,.52) 0%, rgba(23,23,23,.22) 100%); z-index: 1; pointer-events: none; }
   .hero-content, .benefits { position: relative; z-index: 2; }
   .card--img-bg { background-size: cover !important; background-position: center !important; position: relative; overflow: hidden; }
-  .card--img-bg .card-img-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(4,4,4,.78) 0%, rgba(10,10,10,.55) 100%); z-index: 0; border-radius: inherit; }
+  .card--img-bg .card-img-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(4,4,4,.92) 0%, rgba(10,10,10,.90) 100%); z-index: 0; border-radius: inherit; }
   .card--img-bg .icon, .card--img-bg h3, .card--img-bg p { position: relative; z-index: 1; }
-  .about-img { background-image: url('/images/about-chauffeur-alps-jet.jpg') !important; background-size: cover !important; background-position: center top !important; }
+  .about-img { background-image: url('/images/about-chauffeur-alps-jet.jpg') !important; background-size: cover !important; background-position: center top !important; opacity: .10 !important; }
   .blog-card:nth-child(1) .blog-image { background-image: url('/images/service-airport-transfer-zurich.jpg') !important; }
   .blog-card:nth-child(2) .blog-image { background-image: url('/images/blog-transport-switzerland-luxury.jpg') !important; }
   .blog-card:nth-child(3) .blog-image { background-image: url('/images/service-wedding-chauffeur-switzerland.jpg') !important; }
   .blog-card:nth-child(4) .blog-image { background-image: url('/images/service-corporate-chauffeur-zurich.jpg') !important; }
-  .blog-image { image-rendering: -webkit-optimize-contrast; background-size: 108% !important; transition: background-size .7s var(--motion-ease), filter .45s ease; filter: saturate(.88) contrast(1.05); }
+  .blog-image { image-rendering: -webkit-optimize-contrast; background-size: 108% !important; transition: background-size .7s var(--motion-ease), filter .45s ease; filter: saturate(.88) contrast(1.05); opacity: .10 !important; }
   .blog-card:hover .blog-image { background-size: 116% !important; filter: saturate(1.04) contrast(1.1); }
   .reveal { opacity: 0; transform: translate3d(0,28px,0); transition: opacity .72s var(--motion-ease), transform .72s var(--motion-ease); transition-delay: var(--reveal-delay, 0ms); will-change: transform, opacity; }
   .reveal.show { opacity: 1; transform: translate3d(0,0,0); }
@@ -478,6 +478,139 @@
   #alair-scroll-progress { position: fixed; z-index: 999; top: 0; left: 0; height: 3px; width: var(--alair-progress, 0%); pointer-events: none; background: var(--mint); box-shadow: 0 0 18px rgba(33,241,168,.75); transition: width .08s linear; }
   @keyframes alair-glint { 0%, 60% { transform: translateX(-110%); } 76%, 100% { transform: translateX(110%); } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } .reveal { opacity: 1; transform: none; } .card:hover, .btn:hover, .contact-pill:hover { transform: none; } }
+</style>
+<style id="alair-design-v2">
+  /* ── Background transparency: video & images at 10% ─── */
+  /* (applied inline above via rule overrides) */
+
+  /* ── Design upgrade: colour, polish, glow ─────────────── */
+
+  /* Top glow — thinner, brighter laser line */
+  .top-glow {
+    height: 2px !important;
+    background: linear-gradient(90deg, transparent 4%, #21F1A8 38%, #66ffd1 50%, #21F1A8 62%, transparent 96%) !important;
+    box-shadow: 0 0 40px rgba(33,241,168,.85), 0 0 80px rgba(33,241,168,.35) !important;
+    opacity: 1 !important;
+  }
+
+  /* Header — deeper glass, stronger mint border */
+  header {
+    background: rgba(5,5,5,.84) !important;
+    backdrop-filter: blur(28px) saturate(180%) !important;
+    border-bottom-color: rgba(33,241,168,.18) !important;
+    box-shadow: 0 1px 0 rgba(33,241,168,.06), 0 8px 40px rgba(0,0,0,.5) !important;
+  }
+
+  /* Logo wordmark */
+  .logo {
+    letter-spacing: .22em !important;
+    text-shadow: 0 0 22px rgba(33,241,168,.28) !important;
+  }
+
+  /* Nav links */
+  .nav-links a { letter-spacing: .04em; }
+
+  /* Contact pill */
+  .contact-pill {
+    background: rgba(33,241,168,.06) !important;
+    border-color: rgba(33,241,168,.42) !important;
+    box-shadow: 0 0 18px rgba(33,241,168,.10) !important;
+    letter-spacing: .03em;
+  }
+  .contact-pill:hover {
+    background: rgba(33,241,168,.12) !important;
+    border-color: rgba(33,241,168,.70) !important;
+    box-shadow: 0 0 30px rgba(33,241,168,.22) !important;
+  }
+
+  /* Hero shell — refined border + inner shadow */
+  .hero-shell {
+    border-color: rgba(33,241,168,.15) !important;
+    box-shadow: 0 0 0 1px rgba(33,241,168,.06), inset 0 0 160px rgba(0,0,0,.55), 0 40px 120px rgba(0,0,0,.6) !important;
+  }
+
+  /* Hero heading mint word — gradient shimmer */
+  .mint-word {
+    background: linear-gradient(135deg, #21F1A8 0%, #aaf8de 50%, #21F1A8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 18px rgba(33,241,168,.28));
+    text-shadow: none !important;
+  }
+
+  /* Hero eyebrow */
+  .eyebrow {
+    letter-spacing: .24em !important;
+    text-shadow: 0 0 14px rgba(33,241,168,.22);
+  }
+
+  /* Primary button — richer gradient */
+  .btn.primary {
+    background: linear-gradient(135deg, #21F1A8 0%, #0dd98e 100%) !important;
+    border-color: transparent !important;
+    color: #051a10 !important;
+    box-shadow: 0 0 32px rgba(33,241,168,.24), inset 0 1px 0 rgba(255,255,255,.22) !important;
+    letter-spacing: .09em;
+  }
+  .btn.primary:hover {
+    background: linear-gradient(135deg, #66ffd1 0%, #21F1A8 100%) !important;
+    box-shadow: 0 0 52px rgba(33,241,168,.42), 0 10px 32px rgba(0,0,0,.35) !important;
+    transform: translateY(-3px) !important;
+  }
+
+  /* Outline button */
+  .btn:not(.primary) {
+    border-color: rgba(33,241,168,.36) !important;
+    background: rgba(33,241,168,.035) !important;
+    letter-spacing: .09em;
+  }
+  .btn:not(.primary):hover {
+    background: rgba(33,241,168,.09) !important;
+    border-color: rgba(33,241,168,.68) !important;
+    box-shadow: 0 0 28px rgba(33,241,168,.16), 0 8px 24px rgba(0,0,0,.28) !important;
+    transform: translateY(-3px) !important;
+  }
+
+  /* Benefit icons glow */
+  .benefit i { filter: drop-shadow(0 0 7px rgba(33,241,168,.48)); }
+
+  /* Benefits bar */
+  .benefits {
+    background: rgba(7,9,8,.90) !important;
+    border-color: rgba(33,241,168,.14) !important;
+    box-shadow: 0 -1px 0 rgba(33,241,168,.05), 0 28px 70px rgba(0,0,0,.55) !important;
+  }
+
+  /* Panel / glass cards — richer glass */
+  .panel {
+    background: linear-gradient(160deg, rgba(16,20,18,.90), rgba(10,13,11,.94)) !important;
+    border-color: rgba(255,255,255,.085) !important;
+    box-shadow: 0 28px 90px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06) !important;
+  }
+
+  /* Section labels */
+  .label {
+    letter-spacing: .22em !important;
+    text-shadow: 0 0 14px rgba(33,241,168,.18);
+  }
+
+  /* Card hover — stronger mint border */
+  .card:hover {
+    border-color: rgba(33,241,168,.52) !important;
+    box-shadow: 0 32px 80px rgba(0,0,0,.44), 0 0 0 1px rgba(33,241,168,.14), 0 0 44px rgba(33,241,168,.07) !important;
+    transform: translate3d(0,-10px,0) !important;
+  }
+
+  /* Scroll progress line */
+  #alair-scroll-progress {
+    background: linear-gradient(90deg, #21F1A8, #66ffd1) !important;
+    box-shadow: 0 0 18px rgba(33,241,168,.78) !important;
+    height: 2px !important;
+  }
+
+  /* Blog image hover — no opacity change on hover */
+  .blog-card:hover .blog-image { opacity: .10 !important; }
 </style>
 </head>
 <body>
