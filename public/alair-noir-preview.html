@@ -1276,5 +1276,535 @@ header.an-scrolled {
   });
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════
+     ALAIR NOIR — CINEMATIC SCROLL SYSTEM
+     Slow-motion text reveals, blur-in, scroll parallax,
+     character splits, directional entrances
+═══════════════════════════════════════════════════════ -->
+<style id="alair-cin-scroll">
+
+  /* ── Cinematic timing tokens ──────────────────────── */
+  :root {
+    --cin: cubic-bezier(.18, 1, .22, 1);           /* soft decelerate */
+    --cin-hard: cubic-bezier(.10, .92, .12, 1);    /* heavy cinematic */
+    --cin-dur: 1.55s;
+    --cin-stagger: 130ms;
+  }
+
+  /* ── Slow-motion word reveal (override existing) ─── */
+  h1 .an-word-inner {
+    --wd: 1.45s !important;
+    animation-duration: 1.45s !important;
+    animation-timing-function: var(--cin-hard) !important;
+  }
+  h2 .an-word-inner {
+    --wd: 1.15s !important;
+    animation-duration: 1.15s !important;
+    animation-timing-function: var(--cin) !important;
+  }
+  /* Wider stagger for h1 words */
+  h1 .an-word-inner { }
+  .an-word-inner { animation-timing-function: var(--cin) !important; }
+
+  /* ── Blur + lift reveal ──────────────────────────── */
+  .an-cin {
+    opacity: 0;
+    transform: translateY(38px);
+    filter: blur(5px);
+    transition:
+      opacity var(--cin-dur) var(--cin),
+      transform var(--cin-dur) var(--cin),
+      filter calc(var(--cin-dur) * .85) ease;
+    will-change: opacity, transform, filter;
+  }
+  .an-cin.an-in {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+
+  /* ── Slide from left ─────────────────────────────── */
+  .an-left {
+    opacity: 0;
+    transform: translateX(-52px);
+    filter: blur(3px);
+    transition:
+      opacity var(--cin-dur) var(--cin),
+      transform var(--cin-dur) var(--cin),
+      filter calc(var(--cin-dur) * .7) ease;
+  }
+  .an-left.an-in { opacity: 1; transform: translateX(0); filter: blur(0px); }
+
+  /* ── Slide from right ────────────────────────────── */
+  .an-right {
+    opacity: 0;
+    transform: translateX(52px);
+    filter: blur(3px);
+    transition:
+      opacity var(--cin-dur) var(--cin),
+      transform var(--cin-dur) var(--cin),
+      filter calc(var(--cin-dur) * .7) ease;
+  }
+  .an-right.an-in { opacity: 1; transform: translateX(0); filter: blur(0px); }
+
+  /* ── Scale up reveal ─────────────────────────────── */
+  .an-scale-in {
+    opacity: 0;
+    transform: scale(.935) translateY(22px);
+    filter: blur(4px);
+    transition:
+      opacity var(--cin-dur) var(--cin),
+      transform var(--cin-dur) var(--cin),
+      filter calc(var(--cin-dur) * .75) ease;
+  }
+  .an-scale-in.an-in {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+
+  /* ── Character split ─────────────────────────────── */
+  .cin-char {
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1.05em;
+    vertical-align: bottom;
+  }
+  .cin-char-inner {
+    display: inline-block;
+    transform: translateY(105%) skewY(4deg);
+    opacity: 0;
+    transition:
+      transform 1.35s var(--cin-hard),
+      opacity .5s ease;
+  }
+  .cin-char-inner.an-in {
+    transform: translateY(0) skewY(0deg);
+    opacity: 1;
+  }
+
+  /* ── Horizontal mint line draw ───────────────────── */
+  .an-hline {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 22px 0 0;
+    background: linear-gradient(90deg,
+      var(--mint-2, #66ffd1),
+      rgba(33,241,168,.18) 55%,
+      transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.9s cubic-bezier(.19, 1, .22, 1);
+  }
+  .an-hline.an-in { transform: scaleX(1); }
+
+  /* ── Slow down the .reveal base system ───────────── */
+  .reveal {
+    transition:
+      opacity 1.2s var(--cin) !important,
+      transform 1.2s var(--cin) !important;
+  }
+
+  /* ── Hero elements sequential entrance ───────────── */
+  .hero-shell .hero-content .eyebrow {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1.1s .35s var(--cin), transform 1.1s .35s var(--cin);
+  }
+  .hero-shell.show .hero-content .eyebrow {
+    opacity: 1; transform: translateY(0);
+  }
+  .hero-ctas {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1.1s var(--cin), transform 1.1s var(--cin);
+  }
+  .hero-ctas.an-in { opacity: 1; transform: translateY(0); }
+
+  /* ── Benefit bar items ───────────────────────────── */
+  .benefit {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(3px);
+    transition:
+      opacity .95s var(--cin),
+      transform .95s var(--cin),
+      filter .7s ease;
+    transition-delay: var(--ben-delay, 0ms);
+  }
+  .benefit.an-in { opacity: 1; transform: translateY(0); filter: blur(0px); }
+
+  /* ── Stats / metrics ─────────────────────────────── */
+  .stat-num, [data-count] {
+    opacity: 0;
+    transition: opacity 1.2s var(--cin);
+  }
+  [data-count].an-count { opacity: 1; }
+
+  /* ── Parallax host wrapper ───────────────────────── */
+  .cin-parallax { overflow: hidden; }
+  .cin-parallax > * { will-change: transform; }
+
+  /* ── Scroll velocity skew (subtle cinematic drift) ─ */
+  .cin-vel {
+    transition: transform .6s var(--cin);
+    will-change: transform;
+  }
+
+  /* ── Reduced motion kill ─────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .an-cin, .an-left, .an-right, .an-scale-in,
+    .cin-char-inner, .an-hline,
+    .hero-shell .hero-content .eyebrow,
+    .hero-ctas, .benefit {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
+      animation: none !important;
+    }
+    .reveal {
+      transition-duration: .01ms !important;
+    }
+  }
+</style>
+
+<script id="alair-cin-scroll-js">
+(function () {
+  'use strict';
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var RAF = requestAnimationFrame;
+  var $ = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return Array.from(document.querySelectorAll(s)); };
+
+  /* ─────────────────────────────────────────────────────
+     Helper: create IntersectionObserver, fire once
+  ───────────────────────────────────────────────────── */
+  function onceIO(selector, cb, opts) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        cb(e.target);
+        io.unobserve(e.target);
+      });
+    }, opts || { threshold: 0.07, rootMargin: '0px 0px -36px 0px' });
+    $$(selector).forEach(function(el){ io.observe(el); });
+    return io;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     1. APPLY CINEMATIC CLASSES
+  ───────────────────────────────────────────────────── */
+  function applyClasses() {
+
+    // Section lead / body copy — blur+lift
+    $$('.section-lead, .about-copy p, .hero-copy').forEach(function(el, i) {
+      el.classList.add('an-cin');
+      el.style.transitionDelay = (i % 3 * 160) + 'ms';
+    });
+
+    // Cards — scale-in staggered
+    $$('.card').forEach(function(el, i) {
+      if (!el.classList.contains('an-cin')) {
+        el.classList.add('an-scale-in');
+        el.style.transitionDelay = (i % 4 * 140) + 'ms';
+      }
+    });
+
+    // Blog cards
+    $$('.blog-card').forEach(function(el, i) {
+      el.classList.add('an-scale-in');
+      el.style.transitionDelay = (i % 4 * 120) + 'ms';
+    });
+
+    // Process steps
+    $$('.step').forEach(function(el, i) {
+      el.classList.add('an-cin');
+      el.style.transitionDelay = (i * 175) + 'ms';
+    });
+
+    // About copy — slide from left
+    var aboutCopy = $('.about-copy');
+    if (aboutCopy) aboutCopy.classList.add('an-left');
+
+    // Quotes / blockquotes
+    $$('blockquote, .quote-card').forEach(function(el, i) {
+      el.classList.add('an-cin');
+      el.style.transitionDelay = (i * 200) + 'ms';
+    });
+
+    // Contact items
+    $$('.contact-method, .contact-block, .contact-info').forEach(function(el, i) {
+      el.classList.add('an-cin');
+      el.style.transitionDelay = (i * 130) + 'ms';
+    });
+
+    // Footer items
+    $$('.footer-grid > *, .copyright').forEach(function(el, i) {
+      el.classList.add('an-cin');
+      el.style.transitionDelay = (i * 110) + 'ms';
+    });
+
+    // Fleet / spec rows — left entrance
+    $$('.fleet-row, .fleet-spec, .spec-row, .fleet-item').forEach(function(el, i) {
+      el.classList.add('an-left');
+      el.style.transitionDelay = (i * 90) + 'ms';
+    });
+
+    // Benefit bar
+    $$('.benefit').forEach(function(el, i) {
+      el.style.setProperty('--ben-delay', (i * 140) + 'ms');
+    });
+
+    // Process title
+    var pt = $('.process-title');
+    if (pt) { pt.classList.add('an-cin'); }
+
+    // Price / plan cards
+    $$('.plan, .price-card, .pricing-card').forEach(function(el, i) {
+      el.classList.add('an-scale-in');
+      el.style.transitionDelay = (i * 150) + 'ms';
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     2. TRIGGER OBSERVERS
+  ───────────────────────────────────────────────────── */
+  function setupObservers() {
+    var opts = { threshold: 0.06, rootMargin: '0px 0px -30px 0px' };
+    var mainIO = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        RAF(function(){ e.target.classList.add('an-in'); });
+        mainIO.unobserve(e.target);
+      });
+    }, opts);
+
+    $$('.an-cin, .an-left, .an-right, .an-scale-in, .an-hline').forEach(function(el) {
+      mainIO.observe(el);
+    });
+
+    // Benefit bar — trigger as group
+    var benIO = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        $$('.benefit').forEach(function(b){ RAF(function(){ b.classList.add('an-in'); }); });
+        benIO.disconnect();
+      });
+    }, { threshold: 0.2 });
+    var benHost = $('.benefits');
+    if (benHost) benIO.observe(benHost);
+
+    // Hero CTAs — fire after curtain lifted (~1.9s)
+    setTimeout(function() {
+      var ctas = $('.hero-ctas');
+      if (ctas) RAF(function(){ ctas.classList.add('an-in'); });
+    }, 2100);
+  }
+
+  /* ─────────────────────────────────────────────────────
+     3. CHARACTER SPLIT — hero h1 only
+     Runs after existing word-split (setTimeout > 100ms)
+  ───────────────────────────────────────────────────── */
+  function charSplitH1() {
+    $$('h1').forEach(function(h1) {
+      if (h1.dataset.cinChar) return;
+      h1.dataset.cinChar = '1';
+
+      // Collect text nodes (skip already-wrapped .an-word spans)
+      // Strategy: work on .an-word-inner spans (words from existing system)
+      // and re-split their text content into characters
+      var wordInners = Array.from(h1.querySelectorAll('.an-word-inner'));
+      if (!wordInners.length) return; // fallback: not yet split
+
+      var globalIdx = 0;
+      wordInners.forEach(function(wi) {
+        var text = wi.textContent;
+        wi.textContent = '';
+        Array.from(text).forEach(function(char) {
+          var c = document.createElement('span');
+          c.className = 'cin-char';
+          var ci = document.createElement('span');
+          ci.className = 'cin-char-inner';
+          ci.textContent = char;
+          // stagger: 48ms per char, but start after word's own delay
+          var wordDelay = parseInt(wi.style.getPropertyValue('--wdl') || '0', 10);
+          ci.style.transitionDelay = (wordDelay + globalIdx * 48) + 'ms';
+          c.appendChild(ci);
+          wi.appendChild(c);
+          globalIdx++;
+        });
+      });
+
+      // Trigger char reveals when h1 enters view
+      var charIO = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (!e.isIntersecting) return;
+          e.target.querySelectorAll('.cin-char-inner').forEach(function(ci) {
+            RAF(function(){ ci.classList.add('an-in'); });
+          });
+          charIO.unobserve(e.target);
+        });
+      }, { threshold: 0.1 });
+      charIO.observe(h1);
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     4. SCROLL PARALLAX — rAF loop
+     Video and background images move at different speeds
+  ───────────────────────────────────────────────────── */
+  function setupParallax() {
+    var layers = [];
+
+    // Hero video
+    var vid = $('#hero-bg-video');
+    if (vid) layers.push({ el: vid, speed: 0.12, type: 'transform' });
+
+    // About image
+    var aboutImg = $('.about-img');
+    if (aboutImg) layers.push({ el: aboutImg, speed: 0.16, type: 'bgPos' });
+
+    // Blog images — gentle parallax via transform
+    $$('.blog-image').forEach(function(el) {
+      layers.push({ el: el, speed: 0.10, type: 'transform' });
+    });
+
+    // Service card backgrounds — very subtle
+    $$('.card.card--img-bg').forEach(function(el) {
+      layers.push({ el: el, speed: 0.06, type: 'bgPos' });
+    });
+
+    if (!layers.length) return;
+
+    var halfH = window.innerHeight / 2;
+    var lastY = -1;
+
+    function tick() {
+      var sy = window.scrollY;
+      if (sy !== lastY) {
+        lastY = sy;
+        halfH = window.innerHeight / 2;
+        layers.forEach(function(layer) {
+          var rect = layer.el.getBoundingClientRect();
+          var center = rect.top + rect.height * 0.5;
+          var offset = (center - halfH) * layer.speed;
+          if (layer.type === 'transform') {
+            layer.el.style.transform = 'translateY(' + offset + 'px)';
+          } else {
+            // bgPos: shift background position
+            var pct = 50 + offset * 0.05;
+            layer.el.style.backgroundPositionY = pct + '%';
+          }
+        });
+      }
+      RAF(tick);
+    }
+    tick();
+  }
+
+  /* ─────────────────────────────────────────────────────
+     5. HORIZONTAL MINT LINES — append after section heads
+  ───────────────────────────────────────────────────── */
+  function addHlines() {
+    $$('.section-head, .process-title').forEach(function(container) {
+      if (container.querySelector('.an-hline')) return;
+      var line = document.createElement('span');
+      line.className = 'an-hline';
+      container.appendChild(line);
+      var lineIO = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (!e.isIntersecting) return;
+          RAF(function(){ line.classList.add('an-in'); });
+          lineIO.unobserve(e.target);
+        });
+      }, { threshold: 0.55 });
+      lineIO.observe(line);
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     6. SCROLL VELOCITY — cinematic skew on fast scroll
+  ───────────────────────────────────────────────────── */
+  function setupVelocity() {
+    var lastY = 0, vel = 0, raf = null;
+    var targets = $$('.hero-shell, .panel, .about-panel');
+
+    window.addEventListener('scroll', function() {
+      var y = window.scrollY;
+      vel = (y - lastY) * 0.022;
+      lastY = y;
+      if (!raf) {
+        raf = RAF(function applyVel() {
+          var skew = Math.max(-1.8, Math.min(1.8, vel));
+          targets.forEach(function(el) {
+            // Only skew if not being tilt-rotated by 3D card system
+            if (!el.style.transform || !el.style.transform.includes('perspective')) {
+              el.style.transform = 'skewY(' + skew + 'deg)';
+            }
+          });
+          vel *= 0.78; // dampen
+          if (Math.abs(vel) > 0.02) {
+            raf = RAF(applyVel);
+          } else {
+            targets.forEach(function(el){
+              if (!el.style.transform.includes('perspective'))
+                el.style.transform = '';
+            });
+            raf = null;
+          }
+        });
+      }
+    }, { passive: true });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     7. SECTION STAGGER — children of each section
+        get incremental delays when section enters view
+  ───────────────────────────────────────────────────── */
+  function sectionStagger() {
+    var sectionIO = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        // Re-sequence delays of immediate .reveal children
+        var children = Array.from(e.target.querySelectorAll(':scope > .reveal, :scope > * > .reveal'));
+        children.forEach(function(child, i) {
+          child.style.setProperty('--reveal-delay', (i * 95) + 'ms');
+        });
+        sectionIO.unobserve(e.target);
+      });
+    }, { threshold: 0.04 });
+
+    $$('.section, section, .container').forEach(function(sec) {
+      sectionIO.observe(sec);
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     8. INIT
+  ───────────────────────────────────────────────────── */
+  function init() {
+    applyClasses();
+    setupObservers();
+    addHlines();
+    setupParallax();
+    setupVelocity();
+    sectionStagger();
+
+    // Char split runs after existing word-split (which is setTimeout 100)
+    setTimeout(charSplitH1, 200);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
