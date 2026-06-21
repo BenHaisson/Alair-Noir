@@ -453,18 +453,18 @@
   .top-glow { position: relative; overflow: hidden; }
   .top-glow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); transform: translateX(-110%); animation: alair-glint 5s var(--motion-ease) infinite; }
   .hero-shell { background: #070707 !important; transform: translateZ(0); }
-  #hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; opacity: .10; }
+  #hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; opacity: .90; }
   .hero-video-overlay { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(7,7,7,.52) 0%, rgba(23,23,23,.22) 100%); z-index: 1; pointer-events: none; }
   .hero-content, .benefits { position: relative; z-index: 2; }
   .card--img-bg { background-size: cover !important; background-position: center !important; position: relative; overflow: hidden; }
-  .card--img-bg .card-img-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(4,4,4,.92) 0%, rgba(10,10,10,.90) 100%); z-index: 0; border-radius: inherit; }
+  .card--img-bg .card-img-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(4,4,4,.22) 0%, rgba(10,10,10,.14) 100%); z-index: 0; border-radius: inherit; }
   .card--img-bg .icon, .card--img-bg h3, .card--img-bg p { position: relative; z-index: 1; }
-  .about-img { background-image: url('/images/about-chauffeur-alps-jet.jpg') !important; background-size: cover !important; background-position: center top !important; opacity: .10 !important; }
+  .about-img { background-image: url('/images/about-chauffeur-alps-jet.jpg') !important; background-size: cover !important; background-position: center top !important; opacity: .90 !important; }
   .blog-card:nth-child(1) .blog-image { background-image: url('/images/service-airport-transfer-zurich.jpg') !important; }
   .blog-card:nth-child(2) .blog-image { background-image: url('/images/blog-transport-switzerland-luxury.jpg') !important; }
   .blog-card:nth-child(3) .blog-image { background-image: url('/images/service-wedding-chauffeur-switzerland.jpg') !important; }
   .blog-card:nth-child(4) .blog-image { background-image: url('/images/service-corporate-chauffeur-zurich.jpg') !important; }
-  .blog-image { image-rendering: -webkit-optimize-contrast; background-size: 108% !important; transition: background-size .7s var(--motion-ease), filter .45s ease; filter: saturate(.88) contrast(1.05); opacity: .10 !important; }
+  .blog-image { image-rendering: -webkit-optimize-contrast; background-size: 108% !important; transition: background-size .7s var(--motion-ease), filter .45s ease; filter: saturate(.88) contrast(1.05); opacity: .90 !important; }
   .blog-card:hover .blog-image { background-size: 116% !important; filter: saturate(1.04) contrast(1.1); }
   .reveal { opacity: 0; transform: translate3d(0,28px,0); transition: opacity .72s var(--motion-ease), transform .72s var(--motion-ease); transition-delay: var(--reveal-delay, 0ms); will-change: transform, opacity; }
   .reveal.show { opacity: 1; transform: translate3d(0,0,0); }
@@ -610,7 +610,7 @@
   }
 
   /* Blog image hover — no opacity change on hover */
-  .blog-card:hover .blog-image { opacity: .10 !important; }
+  .blog-card:hover .blog-image { opacity: .90 !important; }
 </style>
 </head>
 <body>
