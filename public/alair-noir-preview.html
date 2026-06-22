@@ -64,6 +64,7 @@
     button { font-family: inherit; }
 
     .page { position: relative; z-index: 1; }
+    section, .section { contain: layout style; }
     .container { width: min(var(--max), calc(100% - 36px)); margin: 0 auto; }
 
     .top-glow {
@@ -452,7 +453,7 @@
   :root { --motion-ease: cubic-bezier(.16,1,.3,1); }
   .top-glow { position: relative; overflow: hidden; }
   .top-glow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); transform: translateX(-110%); animation: alair-glint 5s var(--motion-ease) infinite; }
-  .hero-shell { background: rgba(7,7,7,.04) !important; transform: translateZ(0); backdrop-filter: none; }
+  .hero-shell { background: rgba(7,7,7,.04) !important; transform: translateZ(0); }
   #hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; opacity: .95; }
   .hero-video-overlay { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(7,7,7,.52) 0%, rgba(23,23,23,.22) 100%); z-index: 1; pointer-events: none; }
   .hero-content, .benefits { position: relative; z-index: 2; }
@@ -1319,57 +1320,47 @@ header.an-scrolled {
   .an-cin {
     opacity: 0;
     transform: translateY(38px);
-    filter: blur(5px);
     transition:
       opacity var(--cin-dur) var(--cin),
-      transform var(--cin-dur) var(--cin),
-      filter calc(var(--cin-dur) * .85) ease;
-    will-change: opacity, transform, filter;
+      transform var(--cin-dur) var(--cin);
+    will-change: opacity, transform;
   }
   .an-cin.an-in {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0px);
   }
 
   /* ── Slide from left ─────────────────────────────── */
   .an-left {
     opacity: 0;
     transform: translateX(-52px);
-    filter: blur(3px);
     transition:
       opacity var(--cin-dur) var(--cin),
-      transform var(--cin-dur) var(--cin),
-      filter calc(var(--cin-dur) * .7) ease;
+      transform var(--cin-dur) var(--cin);
   }
-  .an-left.an-in { opacity: 1; transform: translateX(0); filter: blur(0px); }
+  .an-left.an-in { opacity: 1; transform: translateX(0); }
 
   /* ── Slide from right ────────────────────────────── */
   .an-right {
     opacity: 0;
     transform: translateX(52px);
-    filter: blur(3px);
     transition:
       opacity var(--cin-dur) var(--cin),
-      transform var(--cin-dur) var(--cin),
-      filter calc(var(--cin-dur) * .7) ease;
+      transform var(--cin-dur) var(--cin);
   }
-  .an-right.an-in { opacity: 1; transform: translateX(0); filter: blur(0px); }
+  .an-right.an-in { opacity: 1; transform: translateX(0); }
 
   /* ── Scale up reveal ─────────────────────────────── */
   .an-scale-in {
     opacity: 0;
     transform: scale(.935) translateY(22px);
-    filter: blur(4px);
     transition:
       opacity var(--cin-dur) var(--cin),
-      transform var(--cin-dur) var(--cin),
-      filter calc(var(--cin-dur) * .75) ease;
+      transform var(--cin-dur) var(--cin);
   }
   .an-scale-in.an-in {
     opacity: 1;
     transform: scale(1) translateY(0);
-    filter: blur(0px);
   }
 
   /* ── Character split ─────────────────────────────── */
@@ -1435,14 +1426,12 @@ header.an-scrolled {
   .benefit {
     opacity: 0;
     transform: translateY(20px);
-    filter: blur(3px);
     transition:
       opacity .95s var(--cin),
-      transform .95s var(--cin),
-      filter .7s ease;
+      transform .95s var(--cin);
     transition-delay: var(--ben-delay, 0ms);
   }
-  .benefit.an-in { opacity: 1; transform: translateY(0); filter: blur(0px); }
+  .benefit.an-in { opacity: 1; transform: translateY(0); }
 
   /* ── Stats / metrics ─────────────────────────────── */
   .stat-num, [data-count] {
@@ -1453,7 +1442,6 @@ header.an-scrolled {
 
   /* ── Parallax host wrapper ───────────────────────── */
   .cin-parallax { overflow: hidden; }
-  .cin-parallax > * { will-change: transform; }
 
   /* ── Scroll velocity skew (subtle cinematic drift) ─ */
   .cin-vel {
@@ -1681,29 +1669,27 @@ header.an-scrolled {
     if (!layers.length) return;
 
     var halfH = window.innerHeight / 2;
-    var lastY = -1;
+    var ticking = false;
 
-    function tick() {
-      var sy = window.scrollY;
-      if (sy !== lastY) {
-        lastY = sy;
-        halfH = window.innerHeight / 2;
-        layers.forEach(function(layer) {
-          var rect = layer.el.getBoundingClientRect();
-          var center = rect.top + rect.height * 0.5;
-          var offset = (center - halfH) * layer.speed;
-          if (layer.type === 'transform') {
-            layer.el.style.transform = 'translateY(' + offset + 'px)';
-          } else {
-            // bgPos: shift background position
-            var pct = 50 + offset * 0.05;
-            layer.el.style.backgroundPositionY = pct + '%';
-          }
-        });
-      }
-      RAF(tick);
+    function applyParallax() {
+      halfH = window.innerHeight / 2;
+      layers.forEach(function(layer) {
+        var rect = layer.el.getBoundingClientRect();
+        var center = rect.top + rect.height * 0.5;
+        var offset = (center - halfH) * layer.speed;
+        if (layer.type === 'transform') {
+          layer.el.style.transform = 'translateY(' + offset + 'px)';
+        } else {
+          var pct = 50 + offset * 0.05;
+          layer.el.style.backgroundPositionY = pct + '%';
+        }
+      });
+      ticking = false;
     }
-    tick();
+    window.addEventListener('scroll', function() {
+      if (!ticking) { RAF(applyParallax); ticking = true; }
+    }, { passive: true });
+    applyParallax();
   }
 
   /* ─────────────────────────────────────────────────────
@@ -1726,40 +1712,7 @@ header.an-scrolled {
     });
   }
 
-  /* ─────────────────────────────────────────────────────
-     6. SCROLL VELOCITY — cinematic skew on fast scroll
-  ───────────────────────────────────────────────────── */
-  function setupVelocity() {
-    var lastY = 0, vel = 0, raf = null;
-    var targets = $$('.hero-shell, .panel, .about-panel');
-
-    window.addEventListener('scroll', function() {
-      var y = window.scrollY;
-      vel = (y - lastY) * 0.022;
-      lastY = y;
-      if (!raf) {
-        raf = RAF(function applyVel() {
-          var skew = Math.max(-1.8, Math.min(1.8, vel));
-          targets.forEach(function(el) {
-            // Only skew if not being tilt-rotated by 3D card system
-            if (!el.style.transform || !el.style.transform.includes('perspective')) {
-              el.style.transform = 'skewY(' + skew + 'deg)';
-            }
-          });
-          vel *= 0.78; // dampen
-          if (Math.abs(vel) > 0.02) {
-            raf = RAF(applyVel);
-          } else {
-            targets.forEach(function(el){
-              if (!el.style.transform.includes('perspective'))
-                el.style.transform = '';
-            });
-            raf = null;
-          }
-        });
-      }
-    }, { passive: true });
-  }
+  /* velocity skew removed for performance */
 
   /* ─────────────────────────────────────────────────────
      7. SECTION STAGGER — children of each section
@@ -1791,7 +1744,6 @@ header.an-scrolled {
     setupObservers();
     addHlines();
     setupParallax();
-    setupVelocity();
     sectionStagger();
 
     // Char split runs after existing word-split (which is setTimeout 100)
