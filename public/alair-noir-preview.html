@@ -343,8 +343,9 @@
       display: grid;
       grid-template-columns: 58% 42%;
       pointer-events: none;
+      z-index: 0;
     }
-    .service-slide.is-visible { pointer-events: auto; }
+    .service-slide.is-visible { pointer-events: auto; z-index: 2; }
 
     /* ── Image side ── */
     .slide-img-side {
@@ -2195,17 +2196,9 @@ header.an-scrolled {
       var prev = current;
       current  = idx;
 
-      // Reset exiting slide (instant — no transition)
-      slides[prev].style.transition = 'none';
       slides[prev].classList.remove('is-visible');
-      // Force reflow so next frame sees the removed class
-      void slides[prev].offsetHeight;
-      slides[prev].style.transition = '';
-
-      // Activate new slide (transitions fire)
       slides[idx].classList.add('is-visible');
 
-      // Update dots + counter
       dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
       if (counter) counter.textContent = String(idx + 1).padStart(2, '0');
     }
