@@ -640,10 +640,15 @@
     animation: hero-float 7s cubic-bezier(.45, 0, .55, 1) infinite !important;
     will-change: transform;
   }
+  /* About panel — floating, offset phase */
+  .about-panel {
+    animation: hero-float 8s 2s cubic-bezier(.45, 0, .55, 1) infinite !important;
+    will-change: transform;
+  }
 
   /* Pause float when reduced-motion is set */
   @media (prefers-reduced-motion: reduce) {
-    .hero-shell { animation: none !important; }
+    .hero-shell, .about-panel { animation: none !important; }
   }
 </style>
 </head>
@@ -1024,12 +1029,7 @@ header.an-scrolled {
 /* ── STAT COUNTER ── */
 [data-count] { font-variant-numeric: tabular-nums; }
 
-/* ── ABOUT IMAGE SUBTLE KEN BURNS ── */
-.about-img { animation: ken-burns 16s ease-in-out infinite alternate; }
-@keyframes ken-burns {
-  from { background-size: 108% !important; }
-  to   { background-size: 116% !important; }
-}
+/* about-img ken-burns removed */
 
 /* ── QUOTE MARK FLOAT ── */
 .quote-mark {
@@ -1055,7 +1055,6 @@ header.an-scrolled {
   .an-word-inner { transform: none !important; animation: none !important; }
   .label { transform: none !important; opacity: 1 !important; transition: none !important; }
   .divider::before { transform: none !important; transition: none !important; }
-  .about-img { animation: none !important; }
   .num, .quote-mark, .stars { animation: none !important; }
 }
 </style>
@@ -1508,8 +1507,8 @@ header.an-scrolled {
   ───────────────────────────────────────────────────── */
   function applyClasses() {
 
-    // Section lead / body copy — blur+lift
-    $$('.section-lead, .about-copy p, .hero-copy').forEach(function(el, i) {
+    // Section lead / body copy — blur+lift (about-copy excluded)
+    $$('.section-lead, .hero-copy').forEach(function(el, i) {
       el.classList.add('an-cin');
       el.style.transitionDelay = (i % 3 * 160) + 'ms';
     });
@@ -1533,10 +1532,6 @@ header.an-scrolled {
       el.classList.add('an-cin');
       el.style.transitionDelay = (i * 175) + 'ms';
     });
-
-    // About copy — slide from left
-    var aboutCopy = $('.about-copy');
-    if (aboutCopy) aboutCopy.classList.add('an-left');
 
     // Quotes / blockquotes
     $$('blockquote, .quote-card').forEach(function(el, i) {
@@ -1671,10 +1666,6 @@ header.an-scrolled {
     // Hero video
     var vid = $('#hero-bg-video');
     if (vid) layers.push({ el: vid, speed: 0.12, type: 'transform' });
-
-    // About image
-    var aboutImg = $('.about-img');
-    if (aboutImg) layers.push({ el: aboutImg, speed: 0.16, type: 'bgPos' });
 
     // Blog images — gentle parallax via transform
     $$('.blog-image').forEach(function(el) {
