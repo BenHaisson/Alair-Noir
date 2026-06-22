@@ -452,7 +452,7 @@
   :root { --motion-ease: cubic-bezier(.16,1,.3,1); }
   .top-glow { position: relative; overflow: hidden; }
   .top-glow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); transform: translateX(-110%); animation: alair-glint 5s var(--motion-ease) infinite; }
-  .hero-shell { background: rgba(7,7,7,.10) !important; transform: translateZ(0); backdrop-filter: blur(2px); }
+  .hero-shell { background: rgba(7,7,7,.90) !important; transform: translateZ(0); backdrop-filter: blur(2px); }
   #hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; opacity: .05; }
   .hero-video-overlay { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(7,7,7,.52) 0%, rgba(23,23,23,.22) 100%); z-index: 1; pointer-events: none; }
   .hero-content, .benefits { position: relative; z-index: 2; }
@@ -640,9 +640,14 @@
     animation: hero-float 7s cubic-bezier(.45, 0, .55, 1) infinite !important;
     will-change: transform;
   }
+  /* Second section (about panel) — floating, slightly offset phase */
+  .about-panel {
+    animation: hero-float 8s 1.5s cubic-bezier(.45, 0, .55, 1) infinite !important;
+    will-change: transform;
+  }
   /* Pause float when reduced-motion is set */
   @media (prefers-reduced-motion: reduce) {
-    .hero-shell { animation: none !important; }
+    .hero-shell, .about-panel { animation: none !important; }
   }
 </style>
 </head>
@@ -717,7 +722,7 @@
             <div class="divider"></div>
           </div>
           <div class="service-grid">
-            <article class="card card--img-bg card--no-hover card--bg-dim reveal" style="background-image:url('/images/service-airport-pickup-drop.jpg');"><div class="card-img-overlay"></div><div class="icon">✈</div><h3>Airport Pick & Drop</h3><p>Reliable airport transfers with real-time flight tracking, meet and greet, and private airport transportation.</p></article>
+            <article class="card card--img-bg card--no-hover reveal" style="background-image:url('/images/service-airport-pickup-drop.jpg');"><div class="card-img-overlay"></div><div class="icon">✈</div><h3>Airport Pick & Drop</h3><p>Reliable airport transfers with real-time flight tracking, meet and greet, and private airport transportation.</p></article>
             <article class="card card--img-bg card--no-hover reveal" style="background-image:url('/images/service-wedding-transfers.jpg');"><div class="card-img-overlay"></div><div class="icon">⚭</div><h3>Wedding Transfers</h3><p>Elegant arrivals for your special day with luxury chauffeur service for ceremonies, guests, and VIP moments.</p></article>
             <article class="card card--img-bg reveal" style="background-image:url('/images/service-corporate-private-pickup.png');"><div class="card-img-overlay"></div><div class="icon">▣</div><h3>Private / Corporate Pick & Drop</h3><p>Executive travel for professionals, board members, investors, conferences, and corporate teams.</p></article>
             <article class="card card--img-bg reveal" style="background-image:url('/images/service-picnic-parties-transfers.png');"><div class="card-img-overlay"></div><div class="icon">✦</div><h3>Picnic & Parties Transfers</h3><p>Private transportation for celebrations, family outings, leisure trips, exclusive gatherings, and events.</p></article>
