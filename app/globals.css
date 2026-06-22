@@ -148,5 +148,5 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .service-card:hover, .service-card--active { background: rgba(33,241,168,.07); box-shadow: inset 0 0 0 1px rgba(33,241,168,.32), 0 18px 45px rgba(0,0,0,.16); }
 .route-node--active, .route-node:hover { background: rgba(33,241,168,.11); }.choice:has(input:checked) { background: rgba(33,241,168,.11); }
 .journey-grid article, .insights-grid article { background-color: #171717; }.alpine-feature, .proof-section, .footer { background-color: #050505; }
-.reference-preview-shell { width: 100%; height: 100dvh; overflow: hidden; background: #050505; }
-.reference-preview-frame { display: block; width: 100%; height: 100%; border: 0; background: #050505; }
+/* Removed iframe preview classes — full React architecture active */
+select option { background: #0c0c0b; color: var(--text); }
