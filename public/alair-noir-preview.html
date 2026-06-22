@@ -612,6 +612,22 @@
   /* Blog image hover — no opacity change on hover */
   .blog-card:hover .blog-image { opacity: .90 !important; }
 </style>
+<style id="alair-card-overrides">
+  /* Card 1 & 2 — no hover/touch interaction */
+  .card--no-hover { cursor: default !important; pointer-events: none; }
+  .card--no-hover:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: var(--line) !important;
+  }
+  .card--no-hover.an-cin:hover,
+  .card--no-hover.an-scale-in:hover { filter: none !important; }
+
+  /* Card 1 — background image at 10% visibility (90% dark overlay) */
+  .card--bg-dim .card-img-overlay {
+    background: linear-gradient(160deg, rgba(4,4,4,.90) 0%, rgba(8,8,7,.90) 100%) !important;
+  }
+</style>
 </head>
 <body>
   <div class="top-glow"></div>
@@ -684,8 +700,8 @@
             <div class="divider"></div>
           </div>
           <div class="service-grid">
-            <article class="card card--img-bg reveal" style="background-image:url('/images/service-airport-pickup-drop.jpg');"><div class="card-img-overlay"></div><div class="icon">✈</div><h3>Airport Pick & Drop</h3><p>Reliable airport transfers with real-time flight tracking, meet and greet, and private airport transportation.</p></article>
-            <article class="card card--img-bg reveal" style="background-image:url('/images/service-wedding-transfers.jpg');"><div class="card-img-overlay"></div><div class="icon">⚭</div><h3>Wedding Transfers</h3><p>Elegant arrivals for your special day with luxury chauffeur service for ceremonies, guests, and VIP moments.</p></article>
+            <article class="card card--img-bg card--no-hover card--bg-dim reveal" style="background-image:url('/images/service-airport-pickup-drop.jpg');"><div class="card-img-overlay"></div><div class="icon">✈</div><h3>Airport Pick & Drop</h3><p>Reliable airport transfers with real-time flight tracking, meet and greet, and private airport transportation.</p></article>
+            <article class="card card--img-bg card--no-hover reveal" style="background-image:url('/images/service-wedding-transfers.jpg');"><div class="card-img-overlay"></div><div class="icon">⚭</div><h3>Wedding Transfers</h3><p>Elegant arrivals for your special day with luxury chauffeur service for ceremonies, guests, and VIP moments.</p></article>
             <article class="card card--img-bg reveal" style="background-image:url('/images/service-corporate-private-pickup.png');"><div class="card-img-overlay"></div><div class="icon">▣</div><h3>Private / Corporate Pick & Drop</h3><p>Executive travel for professionals, board members, investors, conferences, and corporate teams.</p></article>
             <article class="card card--img-bg reveal" style="background-image:url('/images/service-picnic-parties-transfers.png');"><div class="card-img-overlay"></div><div class="icon">✦</div><h3>Picnic & Parties Transfers</h3><p>Private transportation for celebrations, family outings, leisure trips, exclusive gatherings, and events.</p></article>
             <article class="card card--img-bg reveal" style="background-image:url('/images/service-documents-transfer.png');"><div class="card-img-overlay"></div><div class="icon">□</div><h3>Documents Transfer</h3><p>Secure and confidential document pickup and delivery for contracts, packages, and priority business materials.</p></article>
