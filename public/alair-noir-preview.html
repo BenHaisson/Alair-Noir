@@ -362,17 +362,18 @@
     }
     .service-slide.is-visible .slide-img-side img { transform: scale(1); }
 
-    /* Mint wipe reveals the image */
+    /* Mint wipe — constant right-center origin so the curtain always collapses
+       toward the right, revealing the image from left to right */
     .slide-img-wipe {
       position: absolute; inset: 0; z-index: 2;
       background: #21F1A8;
-      transform-origin: left center;
+      transform-origin: right center;
       transform: scaleX(1);
-      transition: transform 0.92s cubic-bezier(.18, 1, .22, 1);
+      will-change: transform;
+      transition: transform 0.78s cubic-bezier(.18, 1, .22, 1);
     }
     .service-slide.is-visible .slide-img-wipe {
       transform: scaleX(0);
-      transform-origin: right center;
     }
 
     /* ── Content side ── */
@@ -2191,17 +2192,46 @@ header.an-scrolled {
     var current   = 0;
     var pending   = null;
 
+    function resetWipe(slide) {
+      var wipe = slide.querySelector('.slide-img-wipe');
+      if (!wipe) return;
+      wipe.style.transition = 'none';
+      wipe.style.transform   = 'scaleX(1)';
+      void wipe.offsetWidth;
+      wipe.style.transition  = '';
+      wipe.style.transform   = '';
+    }
+
     function showSlide(idx) {
       if (idx === current) return;
       var prev = current;
       current  = idx;
 
+      // Drop previous slide behind instantly (z-index falls to 0)
       slides[prev].classList.remove('is-visible');
+
+      // Hard-reset wipe on the incoming slide so the transition always
+      // starts from a full-cover state — even if it was mid-animation
+      resetWipe(slides[idx]);
+
       slides[idx].classList.add('is-visible');
 
       dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
       if (counter) counter.textContent = String(idx + 1).padStart(2, '0');
     }
+
+    // Prevent any initial-render transition on slide 0
+    (function () {
+      var s = slides[0];
+      s.classList.remove('is-visible');
+      void s.offsetWidth;
+      resetWipe(s);
+      var els = s.querySelectorAll('.slide-num-label,.slide-icon-big,.slide-content-side h3,.slide-content-side p,.slide-tags-row,.slide-cta');
+      els.forEach(function (el) { el.style.transition = 'none'; });
+      s.classList.add('is-visible');
+      void s.offsetWidth;
+      els.forEach(function (el) { el.style.transition = ''; });
+    }());
 
     function onScroll() {
       var rect   = showcase.getBoundingClientRect();
