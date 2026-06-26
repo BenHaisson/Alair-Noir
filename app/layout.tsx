@@ -12,25 +12,26 @@ const cormorant = Cormorant_Garamond({
 
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['300', '400'],
+  weight: ['300', '400', '500'],
   variable: '--font-inter',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Alair Noir GmbH — Private Mobility. Perfectly Delivered.',
+  title: 'ALAIR NOIR | Private Chauffeur Service — Zürich & Switzerland',
   description:
-    'Private chauffeur service in Zürich. BMW i7 xDrive60. Airport transfers, executive transport, long distance across Switzerland and Europe.',
+    'Executive chauffeur service in Switzerland. BMW i7 and Mercedes-Benz V-Class for airport transfers, VIP transport, corporate travel, delegations, and private events.',
   keywords: [
     'private chauffeur Zürich',
     'airport transfer Zurich',
     'BMW i7 chauffeur',
+    'Mercedes V-Class VIP',
     'executive transport Switzerland',
     'private driver Europe',
   ],
   openGraph: {
-    title: 'Alair Noir GmbH — Private Mobility. Perfectly Delivered.',
-    description: 'One vehicle. One standard. BMW i7 xDrive60 — Zürich & Europe.',
+    title: 'ALAIR NOIR — Private Mobility. Perfectly Delivered.',
+    description: 'Two vehicles. One standard. Executive chauffeur across Switzerland and Europe.',
     type: 'website',
     locale: 'en_CH',
   },
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
-      <body className="font-inter">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

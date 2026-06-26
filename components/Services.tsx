@@ -1,121 +1,105 @@
 'use client';
-
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const services = [
-  {
-    num: '01',
-    title: 'Airport Transfer',
-    body: 'Zurich Airport (ZRH) curbside pickup and drop-off. Flight tracking included. No waiting, no uncertainty.',
-  },
-  {
-    num: '02',
-    title: 'Corporate & Executive',
-    body: 'Discreet transport for executives, board members, and VIP clients. Absolute confidentiality.',
-  },
-  {
-    num: '03',
-    title: 'Long Distance',
-    body: 'Davos, St. Moritz, Geneva, Milan, Munich. Door to door across Switzerland and Europe.',
-  },
-  {
-    num: '04',
-    title: 'Hourly Disposition',
-    body: 'Vehicle retained by the hour for multi-stop business days. Your schedule, your pace.',
-  },
-  {
-    num: '05',
-    title: 'WEF / Davos / Events',
-    body: 'World Economic Forum, Zürich Film Festival, Art Basel, and all major international events.',
-  },
-  {
-    num: '06',
-    title: 'Private Client',
-    body: 'Dedicated service for returning clients. Preferences remembered, direct contact with your driver.',
-  },
+  { n: '01', title: 'Airport Transfers',          desc: 'Punctual collection from Zurich, Geneva, Basel-Mulhouse, and all major Swiss airports. Flight tracking included.', tag: 'ZRH · GVA · BSL · MXP' },
+  { n: '02', title: 'Corporate Chauffeur',         desc: 'Dedicated executive mobility for board members, management teams, and business guests — across the city or across borders.', tag: 'Daily · Monthly · Retainer' },
+  { n: '03', title: 'VIP & Delegation Transport',  desc: 'Coordinated multi-vehicle logistics for government officials, diplomatic missions, and high-profile private delegations.', tag: 'Secure · Discreet · Coordinated' },
+  { n: '04', title: 'Private Events',              desc: 'Weddings, galas, private dinners, and exclusive events — your guests arrive in silence and style.', tag: 'Weddings · Galas · Premieres' },
+  { n: '05', title: 'Secure Document Transfer',    desc: 'Time-critical documents, valuables, and confidential materials delivered with chain-of-custody care.', tag: 'Legal · Financial · Medical' },
+  { n: '06', title: 'Long Distance Travel',        desc: 'Zurich to Geneva, Munich, Milan, or beyond — intercity and cross-border routes handled with full discretion.', tag: 'Switzerland · Europe' },
 ];
 
 export default function Services() {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
     <section
       id="services"
       ref={ref}
-      aria-labelledby="services-heading"
-      className="py-24 md:py-32"
-      style={{ backgroundColor: '#0A0A0A' }}
+      className="py-24 md:py-36"
+      style={{ background: 'var(--platinum)', borderTop: '1px solid var(--border-light)' }}
     >
-      {/* Header */}
-      <div className="px-8 md:px-14 lg:px-20 mb-16">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6 }}
-          className="font-inter font-light text-[9px] tracking-[0.22em] uppercase text-stone mb-4"
-        >
-          Services
-        </motion.p>
-        <motion.h2
-          id="services-heading"
-          initial={{ opacity: 0, y: 16 }}
+      <div className="an-container">
+
+        {/* Header */}
+        <motion.div
+          className="mb-16 md:mb-20 max-w-[540px]"
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-cormorant font-light text-ivory leading-none"
-          style={{ fontSize: 'clamp(44px, 5vw, 72px)' }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          Every journey,
-          <br />
-          <em className="italic text-cream pl-[5%]">attended to.</em>
-        </motion.h2>
-      </div>
-
-      {/* Grid */}
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l"
-        style={{ borderColor: '#2F4A33' }}
-      >
-        {services.map((s, i) => (
-          <motion.article
-            key={s.num}
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.15 + i * 0.07 }}
-            className="group relative flex flex-col gap-4 p-8 md:p-10 border-r border-b transition-colors duration-300"
-            style={{
-              borderColor: '#2F4A33',
-              backgroundColor: '#0E1F16',
-            }}
+          <p className="font-inter text-gold text-[9px] tracking-[0.28em] uppercase mb-5 flex items-center gap-3">
+            <span className="inline-block w-6 h-px bg-gold opacity-60" />
+            Services
+          </p>
+          <h2
+            className="font-cormorant font-light tracking-[-0.04em] leading-[0.94]"
+            style={{ fontSize: 'clamp(40px, 4.8vw, 72px)', color: 'var(--graphite)' }}
           >
-            {/* hover overlay */}
-            <span
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-              style={{ backgroundColor: 'rgba(47,74,51,0.2)' }}
-              aria-hidden="true"
-            />
+            Every form of
+            <br />
+            <em className="italic" style={{ color: 'var(--slate)' }}>private mobility.</em>
+          </h2>
+        </motion.div>
 
-            <span className="font-inter font-light text-[9px] tracking-[0.2em] text-stone">
-              {s.num}
-            </span>
+        {/* Grid */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          style={{ borderTop: '1px solid var(--border-light)', borderLeft: '1px solid var(--border-light)' }}
+        >
+          {services.map((s, i) => (
+            <motion.div
+              key={s.n}
+              className="group relative p-8 md:p-9 overflow-hidden"
+              style={{
+                borderRight: '1px solid var(--border-light)',
+                borderBottom: '1px solid var(--border-light)',
+                background: 'var(--parchment)',
+                transition: 'background 0.3s',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = '#FFFFFF'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = 'var(--parchment)'; }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {/* Gold bottom line on hover */}
+              <div
+                className="absolute bottom-0 left-0 h-[2px] bg-gold"
+                style={{ width: 0, transition: 'width 0.5s ease' }}
+                ref={(el) => {
+                  if (!el) return;
+                  const parent = el.parentElement!;
+                  parent.addEventListener('mouseenter', () => { el.style.width = '100%'; });
+                  parent.addEventListener('mouseleave', () => { el.style.width = '0'; });
+                }}
+              />
 
-            <h3 className="font-cormorant font-light text-ivory text-2xl md:text-3xl leading-tight">
-              {s.title}
-            </h3>
-
-            <p className="font-inter font-light text-stone text-[13px] leading-relaxed">
-              {s.body}
-            </p>
-
-            {/* Gold accent line on hover */}
-            <span
-              className="absolute bottom-0 left-0 h-px w-0 group-hover:w-full transition-all duration-500"
-              style={{ backgroundColor: '#D4AF37' }}
-              aria-hidden="true"
-            />
-          </motion.article>
-        ))}
+              <p className="font-inter text-gold text-[9px] tracking-[0.22em] mb-5">{s.n}</p>
+              <h3
+                className="font-cormorant font-light tracking-[-0.02em] leading-[1.05] mb-4"
+                style={{ fontSize: '26px', color: 'var(--graphite)' }}
+              >
+                {s.title}
+              </h3>
+              <p
+                className="font-inter text-[12px] font-light leading-[1.72] mb-5"
+                style={{ color: 'var(--slate)' }}
+              >
+                {s.desc}
+              </p>
+              <p
+                className="font-inter text-[9px] tracking-[0.14em] uppercase"
+                style={{ color: 'var(--stone)' }}
+              >
+                {s.tag}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

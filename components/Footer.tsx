@@ -1,60 +1,35 @@
 export default function Footer() {
   const year = new Date().getFullYear();
-
   return (
     <footer
-      className="border-t"
-      style={{ borderColor: '#2F4A33', backgroundColor: '#0A0A0A' }}
+      className="py-12"
+      style={{ background: 'var(--noir)', borderTop: '1px solid rgba(246,242,233,0.06)' }}
     >
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 px-8 md:px-14 lg:px-20 py-10">
-        {/* Logo + tagline */}
-        <div className="flex flex-col gap-2">
-          <span className="font-cormorant font-light tracking-[0.3em] text-ivory text-base uppercase">
-            ALAIR NOIR
-          </span>
-          <span className="font-inter font-light text-[10px] tracking-[0.16em] uppercase text-stone">
-            Private Mobility. Perfectly Delivered.
-          </span>
+      <div className="an-container">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+          <div>
+            <p className="font-cormorant text-[11px] tracking-[0.38em] uppercase text-ivory font-light mb-3">
+              Alair <span className="text-gold">Noir</span>
+            </p>
+            <p className="font-inter font-light text-[11px] tracking-[0.04em]" style={{ color: 'var(--muted)' }}>
+              Two vehicles. One standard.
+            </p>
+          </div>
+          <nav className="flex flex-wrap gap-6 font-inter text-[8px] tracking-[0.18em] uppercase" style={{ color: 'var(--stone)' }}>
+            {['Fleet', 'Services', 'Journey', 'Book', 'Contact'].map((l) => (
+              <a
+                key={l}
+                href={`#${l.toLowerCase()}`}
+                className="hover:text-ivory transition-colors duration-300"
+              >
+                {l}
+              </a>
+            ))}
+          </nav>
+          <p className="font-inter text-[8px] tracking-[0.10em] uppercase" style={{ color: 'var(--stone)' }}>
+            © {year} ALAIR NOIR GMBH · Switzerland
+          </p>
         </div>
-
-        {/* Links */}
-        <nav aria-label="Footer navigation">
-          <ul className="flex flex-wrap gap-8 list-none">
-            <li>
-              <a
-                href="https://instagram.com/alairnoir"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-inter font-light text-[9px] tracking-[0.18em] uppercase text-stone hover:text-ivory transition-colors duration-200"
-              >
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a
-                href="mailto:booking@alairnoir.ch"
-                className="font-inter font-light text-[9px] tracking-[0.18em] uppercase text-stone hover:text-ivory transition-colors duration-200"
-              >
-                Email
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://wa.me/41772870956"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-inter font-light text-[9px] tracking-[0.18em] uppercase text-stone hover:text-ivory transition-colors duration-200"
-              >
-                WhatsApp
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        {/* Legal */}
-        <p className="font-inter font-light text-[9px] tracking-[0.12em] text-stone">
-          © {year} Alair Noir GmbH · CHE-411.952.415 · Zürich
-        </p>
       </div>
     </footer>
   );

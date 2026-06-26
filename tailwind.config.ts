@@ -5,13 +5,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        black:  '#0A0A0A',
-        forest: '#0E1F16',
-        moss:   '#2F4A33',
-        stone:  '#A89E8B',
-        cream:  '#D6C7B0',
-        ivory:  '#F6F2E9',
-        gold:   '#D4AF37',
+        // Dark (hero, footer, booking)
+        noir:      '#0A0A0A',
+        charcoal:  '#111110',
+        // Light sections
+        parchment: '#FAF9F7',
+        platinum:  '#F0EDE8',
+        silver:    '#E8E4DC',
+        // Text — light backgrounds
+        graphite:  '#1C1A18',
+        slate:     '#4A4540',
+        stone:     '#8C8580',
+        // Text — dark backgrounds
+        ivory:     '#F6F2E9',
+        cream:     '#D6C7B0',
+        muted:     '#A89E8B',
+        // Accent
+        gold:      '#D4AF37',
+        // Legacy aliases kept for existing classes
+        black:     '#0A0A0A',
+        forest:    '#0E1F16',
+        moss:      '#2F4A33',
       },
       fontFamily: {
         cormorant: ['var(--font-cormorant)', 'Georgia', 'serif'],
