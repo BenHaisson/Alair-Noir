@@ -1,17 +1,21 @@
-﻿import type { Config } from 'tailwindcss';
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        noir: '#050505',
-        graphite: '#151515',
-        mint: '#21F1A8',
-        ivory: '#f1eee8',
+        black:  '#0A0A0A',
+        forest: '#0E1F16',
+        moss:   '#2F4A33',
+        stone:  '#A89E8B',
+        cream:  '#D6C7B0',
+        ivory:  '#F6F2E9',
+        gold:   '#D4AF37',
       },
       fontFamily: {
-        display: ['Georgia', 'Times New Roman', 'serif'],
+        cormorant: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        inter:     ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
     },
   },
@@ -19,5 +23,3 @@ const config: Config = {
 };
 
 export default config;
-
-
