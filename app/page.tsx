@@ -1,25 +1,26 @@
-import Nav from '@/components/Nav';
-import Hero from '@/components/Hero';
-import InfoStrip from '@/components/InfoStrip';
-import Vehicle from '@/components/Vehicle';
-import Services from '@/components/Services';
-import Testimonial from '@/components/Testimonial';
-import Booking from '@/components/Booking';
+import SmoothScroll from '@/components/SmoothScroll';
+import Navbar from '@/components/Navbar';
+import HeroSection from '@/components/HeroSection';
+import CinematicScrollStory from '@/components/CinematicScrollStory';
+import FleetShowcase from '@/components/FleetShowcase';
+import ServicesSection from '@/components/ServicesSection';
+import TrustSection from '@/components/TrustSection';
+import BookingExperience from '@/components/BookingExperience';
 import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <>
-      <Nav />
+    <SmoothScroll>
+      <Navbar />
       <main id="main-content">
-        <Hero />
-        <InfoStrip />
-        <Vehicle />
-        <Services />
-        <Testimonial />
-        <Booking />
+        <HeroSection />
+        <CinematicScrollStory />
+        <FleetShowcase />
+        <ServicesSection />
+        <TrustSection />
+        <BookingExperience />
       </main>
       <Footer />
-    </>
+    </SmoothScroll>
   );
 }

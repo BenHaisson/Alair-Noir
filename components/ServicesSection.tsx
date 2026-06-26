@@ -1,0 +1,140 @@
+'use client';
+
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+
+const SERVICES = [
+  { n: '01', title: 'Airport Transfer',        body: 'ZRH curbside pickup and drop-off. Flight tracking included. Your driver monitors arrivals in real time.' },
+  { n: '02', title: 'Corporate & Executive',   body: 'Discreet transport for executives, board members, and VIP clients. Absolute confidentiality.' },
+  { n: '03', title: 'Long Distance',            body: 'Davos, St. Moritz, Geneva, Milan, Munich. Door to door across Switzerland and Europe.' },
+  { n: '04', title: 'Hourly Disposition',       body: 'Vehicle retained by the hour for multi-stop business days. Your schedule, your pace.' },
+  { n: '05', title: 'WEF / Davos / Events',    body: 'World Economic Forum, Zürich Film Festival, Art Basel, and all major international events.' },
+  { n: '06', title: 'Private Client',           body: 'Dedicated service for returning clients. Preferences remembered, direct contact with your driver.' },
+];
+
+export default function ServicesSection() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-60px' });
+
+  return (
+    <section
+      id="services"
+      ref={ref}
+      aria-labelledby="services-heading"
+      style={{ backgroundColor: '#0D0D0D', padding: 'clamp(80px,10vw,160px) 0' }}
+    >
+      {/* Header */}
+      <div style={{ padding: '0 clamp(28px,8vw,140px)', marginBottom: '60px' }}>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
+          style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase',
+            color: 'var(--gold)', marginBottom: '16px',
+          }}
+        >
+          Services
+        </motion.p>
+        <motion.h2
+          id="services-heading"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          style={{
+            fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+            fontSize: 'clamp(42px,5.5vw,80px)',
+            lineHeight: 0.92, color: '#EDE8E0',
+          }}
+        >
+          Every journey,
+          <br />
+          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '5%' }}>
+            attended to.
+          </em>
+        </motion.h2>
+      </div>
+
+      {/* Grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          borderTop: '1px solid var(--border)',
+          borderLeft: '1px solid var(--border)',
+        }}
+      >
+        {SERVICES.map((s, i) => (
+          <motion.article
+            key={s.n}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
+            style={{
+              position: 'relative',
+              backgroundColor: '#0D0D0D',
+              borderRight: '1px solid var(--border)',
+              borderBottom: '1px solid var(--border)',
+              padding: 'clamp(28px,3.5vw,48px)',
+              display: 'flex', flexDirection: 'column', gap: '20px',
+              cursor: 'default',
+              overflow: 'hidden',
+              transition: 'background 0.35s',
+            }}
+            whileHover={{ backgroundColor: '#141414' } as Parameters<typeof motion.article>[0]['whileHover']}
+          >
+            {/* Gold top accent line on hover */}
+            <motion.span
+              initial={{ scaleX: 0 }}
+              whileHover={{ scaleX: 1 }}
+              style={{
+                position: 'absolute', top: 0, left: 0, right: 0,
+                height: '1px', backgroundColor: 'var(--gold)',
+                transformOrigin: 'left',
+              }}
+            />
+
+            <span style={{
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: 'var(--gold)',
+            }}>
+              {s.n}
+            </span>
+
+            <h3 style={{
+              fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+              fontSize: 'clamp(22px,2.2vw,32px)', lineHeight: 1.05,
+              color: '#EDE8E0',
+            }}>
+              {s.title}
+            </h3>
+
+            <p style={{
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: '13px', lineHeight: 1.75,
+              color: 'var(--text-muted)',
+            }}>
+              {s.body}
+            </p>
+          </motion.article>
+        ))}
+      </div>
+
+      {/* Mobile: override to 1 col */}
+      <style>{`
+        @media (max-width: 768px) {
+          #services > div:last-of-type {
+            grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 1024px) and (min-width: 769px) {
+          #services > div:last-of-type {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+      `}</style>
+    </section>
+  );
+}
