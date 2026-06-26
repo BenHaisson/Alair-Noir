@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import type { BezierDefinition } from 'framer-motion';
 
@@ -22,13 +23,11 @@ const fade = (delay = 0) => ({
 
 export default function Hero() {
   return (
-    <section
-      aria-label="Hero"
-      className="min-h-screen flex flex-col md:flex-row"
-    >
-      {/* Left — Forest green */}
+    <section aria-label="Hero" className="min-h-screen flex flex-col md:flex-row">
+
+      {/* ── Left — Forest green panel ── */}
       <div
-        className="flex-1 flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-32 md:pt-0 pb-16 md:pb-0"
+        className="flex-1 flex flex-col justify-center px-8 md:px-14 lg:px-20 pt-32 md:pt-0 pb-16 md:pb-0 relative z-10"
         style={{ backgroundColor: '#0E1F16' }}
       >
         <motion.p
@@ -73,40 +72,66 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Right — Black */}
+      {/* ── Right — Image panel ── */}
       <div
-        className="flex-1 flex flex-col justify-center px-8 md:px-14 lg:px-20 pb-16 md:pb-0 border-t md:border-t-0 md:border-l"
-        style={{ backgroundColor: '#0A0A0A', borderColor: '#2F4A33' }}
+        className="flex-1 relative min-h-[55vw] md:min-h-0 border-t md:border-t-0 md:border-l overflow-hidden"
+        style={{ borderColor: '#2F4A33' }}
       >
-        <motion.p
-          {...fade(0.3)}
-          className="font-inter font-light text-[10px] tracking-[0.22em] uppercase text-stone mb-8"
-        >
-          Services
-        </motion.p>
+        {/* Background image */}
+        <Image
+          src="/images/hero-bmw-i7.jpg"
+          alt="BMW i7 xDrive60 — ZH 992 590 — at a Swiss luxury hotel"
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-center"
+        />
 
-        <ul className="list-none flex flex-col">
-          {services.map((s, i) => (
-            <motion.li
-              key={s}
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 + i * 0.08, ease: 'easeOut' }}
-              className="flex items-center gap-4 py-4 border-b"
-              style={{ borderColor: '#2F4A33' }}
-            >
-              <span
-                className="w-1 h-1 rounded-full flex-shrink-0"
-                style={{ backgroundColor: '#D4AF37' }}
-                aria-hidden="true"
-              />
-              <span className="font-cormorant font-light text-cream text-lg md:text-xl tracking-wide">
-                {s}
-              </span>
-            </motion.li>
-          ))}
-        </ul>
+        {/* Dark overlay so service list is legible */}
+        <div
+          className="absolute inset-0 z-10"
+          style={{
+            background:
+              'linear-gradient(to right, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.55) 60%, rgba(10,10,10,0.30) 100%)',
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Service list on top of image */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-14 lg:px-12 py-20 md:py-0">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="font-inter font-light text-[10px] tracking-[0.22em] uppercase text-stone mb-8"
+          >
+            Services
+          </motion.p>
+
+          <ul className="list-none flex flex-col">
+            {services.map((s, i) => (
+              <motion.li
+                key={s}
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.35 + i * 0.08, ease: 'easeOut' }}
+                className="flex items-center gap-4 py-4 border-b"
+                style={{ borderColor: 'rgba(47,74,51,0.6)' }}
+              >
+                <span
+                  className="w-1 h-1 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: '#D4AF37' }}
+                  aria-hidden="true"
+                />
+                <span className="font-cormorant font-light text-ivory text-lg md:text-xl tracking-wide drop-shadow-sm">
+                  {s}
+                </span>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
       </div>
+
     </section>
   );
 }
