@@ -4,6 +4,7 @@ import ScrollProgress from '@/components/ScrollProgress';
 import HeroSection from '@/components/HeroSection';
 import CinematicScrollStory from '@/components/CinematicScrollStory';
 import FleetShowcase from '@/components/FleetShowcase';
+import InteriorExperience from '@/components/InteriorExperience';
 import ServicesSection from '@/components/ServicesSection';
 import TrustSection from '@/components/TrustSection';
 import BookingExperience from '@/components/BookingExperience';
@@ -18,6 +19,7 @@ export default function Home() {
         <HeroSection />
         <CinematicScrollStory />
         <FleetShowcase />
+        <InteriorExperience />
         <ServicesSection />
         <TrustSection />
         <BookingExperience />
