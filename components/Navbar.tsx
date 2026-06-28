@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Logo from './Logo';
 
 const NAV_LINKS = [
   { label: 'Fleet',    href: '#fleet' },
@@ -29,13 +30,8 @@ export default function Navbar() {
     >
       <nav className="flex items-center justify-between h-16 md:h-20 px-6 md:px-12 lg:px-20">
         {/* Wordmark */}
-        <a
-          href="/"
-          aria-label="Alair Noir — home"
-          className="font-cormorant font-light tracking-[0.32em] uppercase"
-          style={{ fontSize: '15px', color: '#EDE8E0' }}
-        >
-          ALAIR NOIR
+        <a href="/" aria-label="Alair Noir — home">
+          <Logo variant="nav" animate color="#EDE8E0" accentColor="#C9A84C" />
         </a>
 
         {/* Desktop nav */}

@@ -1,3 +1,5 @@
+import Logo from './Logo';
+
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
@@ -8,9 +10,7 @@ export default function Footer() {
       <div className="an-container">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
           <div>
-            <p className="font-cormorant text-[11px] tracking-[0.38em] uppercase text-ivory font-light mb-3">
-              Alair <span className="text-gold">Noir</span>
-            </p>
+            <Logo variant="nav" color="#F6F2E9" accentColor="#D6C7B0" className="mb-3" />
             <p className="font-inter font-light text-[11px] tracking-[0.04em]" style={{ color: 'var(--muted)' }}>
               Two vehicles. One standard.
             </p>

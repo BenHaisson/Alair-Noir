@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+  <title>ALAIR NOIR Icon Logo</title>
+  <desc>Transparent AN monogram icon for Alair Noir GmbH.</desc>
+  <defs>
+    <style>
+      .mark{fill:#F6F2E9;font-family:'Cormorant Garamond','Didot','Bodoni 72','Times New Roman',serif;font-weight:400;}
+      .line{stroke:#D6C7B0;stroke-width:4;stroke-linecap:round;fill:none;}
+      .thin{stroke:#F6F2E9;stroke-width:5;stroke-linecap:round;fill:none;}
+      .star{fill:#F6F2E9;}
+    </style>
+  </defs>
+  <text x="390" y="470" class="mark" font-size="260" text-anchor="end">A</text>
+  <line x1="500" y1="210" x2="500" y2="545" class="thin"/>
+  <text x="610" y="470" class="mark" font-size="260" text-anchor="start">N</text>
+  <line x1="260" y1="650" x2="455" y2="650" class="line"/>
+  <line x1="545" y1="650" x2="740" y2="650" class="line"/>
+  <path class="star" d="M500 622 C506 642 512 648 532 654 C512 660 506 666 500 686 C494 666 488 660 468 654 C488 648 494 642 500 622 Z"/>
+</svg>

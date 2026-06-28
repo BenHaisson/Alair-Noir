@@ -104,7 +104,7 @@ export default function FleetShowcase() {
               {v.hasImage ? (
                 <>
                   <Image
-                    src="/images/hero-bmw-i7.jpg"
+                    src="/images/bmw-i7-studio.png"
                     alt="BMW i7 xDrive60 — ZH 992 590"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"

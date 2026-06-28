@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Logo from './Logo';
 
 const Hero3DScene = dynamic(() => import('./Hero3DScene'), {
   ssr: false,
@@ -42,8 +43,8 @@ export default function HeroSection() {
         }}
       >
         <Image
-          src="/images/hero-bmw-i7.jpg"
-          alt="BMW i7 xDrive60 — ZH 992 590 — at a Swiss luxury hotel, mountains in background"
+          src="/images/bmw-i7-zurich.png"
+          alt="BMW i7 xDrive60 driving alongside Lake Zurich on a bright day"
           fill
           priority
           sizes="58vw"
@@ -73,6 +74,16 @@ export default function HeroSection() {
           padding: '120px clamp(28px, 8vw, 140px) 80px',
         }}
       >
+        {/* Logo mark */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+          style={{ marginBottom: '36px' }}
+        >
+          <Logo variant="full" animate color="#EDE8E0" accentColor="#C9A84C" height={160} />
+        </motion.div>
+
         {/* Eyebrow */}
         <motion.p
           initial={{ opacity: 0, y: 14 }}
