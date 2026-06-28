@@ -8,7 +8,9 @@ node_modules/
 
 # Claude / agent internals
 .claude/
-.agents/
+.agents/*
+!.agents/skills/
+!.agents/skills/**
 
 # Misc
 .DS_Store

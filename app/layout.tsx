@@ -1,19 +1,46 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { Cormorant_Garamond, Inter } from 'next/font/google';
 import './globals.css';
 
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: 'ALAIR NOIR | Luxury Chauffeur Service & Zurich Airport Transfers',
-  description: 'ALAIR NOIR provides premium chauffeur services, Zurich airport transfers, executive travel, VIP transportation, corporate mobility, wedding transfers, and private driver services across Switzerland and Europe.',
-  keywords: ['Zurich airport transfer', 'private chauffeur Switzerland', 'luxury chauffeur Europe', 'VIP transportation'],
+  title: 'ALAIR NOIR | Private Chauffeur Service — Zürich & Switzerland',
+  description:
+    'Executive chauffeur service in Switzerland. BMW i7 and Mercedes-Benz V-Class for airport transfers, VIP transport, corporate travel, delegations, and private events.',
+  keywords: [
+    'private chauffeur Zürich',
+    'airport transfer Zurich',
+    'BMW i7 chauffeur',
+    'Mercedes V-Class VIP',
+    'executive transport Switzerland',
+    'private driver Europe',
+  ],
   openGraph: {
-    title: 'ALAIR NOIR | Luxury Chauffeur Service & Zurich Airport Transfers',
-    description: 'Private mobility, orchestrated with discretion.',
+    title: 'ALAIR NOIR — Private Mobility. Perfectly Delivered.',
+    description: 'Two vehicles. One standard. Executive chauffeur across Switzerland and Europe.',
     type: 'website',
+    locale: 'en_CH',
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+      <body>{children}</body>
+    </html>
+  );
 }
-
-
