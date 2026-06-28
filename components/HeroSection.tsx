@@ -1,14 +1,9 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import Logo from './Logo';
 
-const Hero3DScene = dynamic(() => import('./Hero3DScene'), {
-  ssr: false,
-  loading: () => null,
-});
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function HeroSection() {
   return (
@@ -21,191 +16,207 @@ export default function HeroSection() {
         backgroundColor: '#080808',
         overflow: 'hidden',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
       }}
     >
-      {/* ── 3D particle canvas ── */}
-      <div
-        aria-hidden="true"
-        style={{ position: 'absolute', inset: 0, zIndex: 0 }}
-      >
-        <Hero3DScene />
-      </div>
-
-      {/* ── BMW i7 image — right side ── */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0, right: 0, bottom: 0,
-          width: '58%',
-          zIndex: 1,
-        }}
-      >
+      {/* ── Full-bleed background image ── */}
+      <div style={{ position: 'absolute', inset: 0 }} aria-hidden="true">
         <Image
           src="/images/bmw-i7-zurich.png"
-          alt="BMW i7 xDrive60 driving alongside Lake Zurich on a bright day"
+          alt="BMW i7 xDrive60 on Zurich lakeside boulevard"
           fill
           priority
-          sizes="58vw"
+          sizes="100vw"
           className="object-cover object-center"
+          style={{ filter: 'brightness(0.72) saturate(0.9)' }}
         />
-        {/* Left gradient fade */}
-        <div
-          style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(to right, #080808 0%, rgba(8,8,8,0.75) 28%, rgba(8,8,8,0.25) 65%, transparent 100%)',
-          }}
-        />
-        {/* Bottom darkener */}
-        <div
-          style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(to top, rgba(8,8,8,0.5) 0%, transparent 40%)',
-          }}
-        />
+        {/* Bottom vignette — keeps text legible */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.45) 38%, rgba(8,8,8,0.08) 65%, transparent 100%)',
+        }} />
+        {/* Top bar for nav legibility */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, transparent 20%)',
+        }} />
       </div>
 
-      {/* ── Hero content ── */}
+      {/* ── Hero copy — stacks at bottom ── */}
       <div
         style={{
-          position: 'relative', zIndex: 2,
-          width: '100%',
-          padding: '120px clamp(28px, 8vw, 140px) 80px',
+          position: 'relative',
+          zIndex: 2,
+          padding: 'clamp(80px,12vw,160px) clamp(24px,6vw,100px) clamp(48px,6vw,80px)',
         }}
       >
-        {/* Logo mark */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          style={{ marginBottom: '36px' }}
-        >
-          <Logo variant="full" animate color="#EDE8E0" accentColor="#C9A84C" height={160} />
-        </motion.div>
-
         {/* Eyebrow */}
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.15, ease }}
           style={{
-            fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '9px', letterSpacing: '0.28em', textTransform: 'uppercase',
-            color: 'var(--gold)', marginBottom: '28px',
+            display: 'flex', alignItems: 'center', gap: '14px',
+            marginBottom: 'clamp(20px,3vw,32px)',
           }}
         >
-          Zürich · Switzerland · Est. 2024
-        </motion.p>
+          <span style={{ display: 'block', width: '28px', height: '1px', backgroundColor: 'var(--gold)', opacity: 0.7 }} />
+          <span style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: 'clamp(9px,0.65vw,11px)', letterSpacing: '0.28em', textTransform: 'uppercase',
+            color: 'var(--gold)',
+          }}>
+            Zürich · Switzerland · Est. 2024
+          </span>
+        </motion.div>
 
         {/* Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.0, delay: 0.38 }}
+          transition={{ duration: 1.0, delay: 0.28, ease }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(62px, 9.5vw, 138px)',
-            lineHeight: 0.88,
+            fontSize: 'clamp(52px,8.5vw,128px)',
+            lineHeight: 0.9,
             color: '#EDE8E0',
-            maxWidth: '700px',
+            maxWidth: '820px',
+            marginBottom: 'clamp(20px,2.5vw,32px)',
           }}
         >
           The art
           <br />
-          <em style={{ fontStyle: 'italic', paddingLeft: '9%', color: 'rgba(237,232,224,0.72)' }}>
+          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.68)', paddingLeft: '0.12em' }}>
             of arrival.
           </em>
         </motion.h1>
 
-        {/* Subline */}
-        <motion.p
+        {/* Subline + CTAs row */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.9, delay: 0.75 }}
+          transition={{ duration: 0.85, delay: 0.55, ease }}
           style={{
-            fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '12px', letterSpacing: '0.09em',
-            color: 'var(--text-muted)',
-            margin: '36px 0 44px', maxWidth: '400px', lineHeight: 1.7,
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            gap: '32px',
           }}
         >
-          BMW i7 xDrive60 · Mercedes-Benz V-Class
-          <br />
-          Private &amp; Corporate · Switzerland &amp; Europe
-        </motion.p>
+          {/* Sub text */}
+          <p style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: 'clamp(12px,1vw,14px)', letterSpacing: '0.05em',
+            color: 'rgba(237,232,224,0.52)',
+            lineHeight: 1.7, maxWidth: '380px',
+          }}>
+            BMW i7 xDrive60 · Mercedes-Benz V-Class
+            <br />
+            Private &amp; Corporate · Switzerland &amp; Europe
+          </p>
 
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.95 }}
-          style={{ display: 'flex', flexWrap: 'wrap', gap: '14px' }}
-        >
-          <a
-            href="#contact"
-            style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              height: '48px', padding: '0 32px',
-              backgroundColor: 'var(--gold)', color: '#080808',
-              fontFamily: 'var(--font-inter)', fontWeight: 400,
-              fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
-              transition: 'background 0.3s',
-            }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.backgroundColor = 'var(--gold-bright)')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.backgroundColor = 'var(--gold)')}
-          >
-            Reserve a Journey
-          </a>
-          <a
-            href="https://wa.me/41772870956"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              height: '48px', padding: '0 32px',
-              border: '1px solid rgba(201,168,76,0.3)', color: 'var(--text)',
-              fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
-              transition: 'border-color 0.3s',
-            }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--gold)')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.3)')}
-          >
-            WhatsApp
-          </a>
+          {/* CTA buttons */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+            <a
+              href="#contact"
+              style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                height: '44px', padding: '0 28px',
+                backgroundColor: 'var(--gold)', color: '#080808',
+                fontFamily: 'var(--font-inter)', fontWeight: 400,
+                fontSize: 'clamp(9px,0.65vw,10px)', letterSpacing: '0.22em', textTransform: 'uppercase',
+                transition: 'opacity 0.25s',
+              }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
+            >
+              Reserve a Journey
+            </a>
+            <a
+              href="https://wa.me/41772870956"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                height: '44px', padding: '0 28px',
+                border: '1px solid rgba(237,232,224,0.22)', color: '#EDE8E0',
+                fontFamily: 'var(--font-inter)', fontWeight: 300,
+                fontSize: 'clamp(9px,0.65vw,10px)', letterSpacing: '0.22em', textTransform: 'uppercase',
+                transition: 'border-color 0.25s',
+              }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.6)')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.22)')}
+            >
+              WhatsApp
+            </a>
+          </div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Bottom stats strip */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.4 }}
+          transition={{ duration: 0.8, delay: 0.85 }}
           style={{
-            position: 'absolute',
-            bottom: '36px',
-            left: 'clamp(28px, 8vw, 140px)',
-            display: 'flex', alignItems: 'center', gap: '14px',
+            marginTop: 'clamp(36px,4vw,56px)',
+            paddingTop: 'clamp(20px,2.5vw,28px)',
+            borderTop: '1px solid rgba(237,232,224,0.10)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 'clamp(24px,4vw,60px)',
           }}
         >
-          <motion.span
-            animate={{ scaleY: [1, 1.6, 1], opacity: [0.4, 0.9, 0.4] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              display: 'block', width: '1px', height: '36px',
-              backgroundColor: 'var(--gold)',
-              transformOrigin: 'top',
-            }}
-          />
-          <span style={{
-            fontFamily: 'var(--font-inter)', fontSize: '8px',
-            letterSpacing: '0.24em', textTransform: 'uppercase',
-            color: 'var(--text-subtle)',
-          }}>
-            Scroll
-          </span>
+          {[
+            { n: '24 / 7', label: 'Availability' },
+            { n: '100%', label: 'Electric Fleet' },
+            { n: 'ZRH', label: 'Based in Zürich' },
+          ].map(({ n, label }) => (
+            <div key={label}>
+              <p style={{
+                fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+                fontSize: 'clamp(22px,2.2vw,32px)', lineHeight: 1,
+                color: '#EDE8E0', marginBottom: '4px',
+              }}>{n}</p>
+              <p style={{
+                fontFamily: 'var(--font-inter)', fontWeight: 300,
+                fontSize: 'clamp(8px,0.6vw,9px)', letterSpacing: '0.22em', textTransform: 'uppercase',
+                color: 'rgba(237,232,224,0.40)',
+              }}>{label}</p>
+            </div>
+          ))}
         </motion.div>
       </div>
+
+      {/* Scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.1 }}
+        style={{
+          position: 'absolute', bottom: 'clamp(20px,3vw,36px)', right: 'clamp(24px,6vw,100px)',
+          display: 'flex', alignItems: 'center', gap: '12px',
+          zIndex: 2,
+        }}
+        aria-hidden="true"
+      >
+        <motion.span
+          animate={{ scaleY: [1, 1.6, 1], opacity: [0.4, 0.85, 0.4] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            display: 'block', width: '1px', height: '32px',
+            backgroundColor: 'var(--gold)', transformOrigin: 'top',
+          }}
+        />
+        <span style={{
+          fontFamily: 'var(--font-inter)', fontSize: '8px',
+          letterSpacing: '0.24em', textTransform: 'uppercase',
+          color: 'rgba(237,232,224,0.35)',
+        }}>
+          Scroll
+        </span>
+      </motion.div>
     </section>
   );
 }

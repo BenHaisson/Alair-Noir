@@ -3,34 +3,40 @@
 @tailwind utilities;
 
 :root {
-  /* Dark palette — hero, booking, footer */
-  --noir:    #0A0A0A;
-  --charcoal:#111110;
+  /* ── Base surfaces ── */
+  --bg:        #080808;
+  --bg-raised: #111111;
+  --bg-card:   #161616;
 
-  /* Light palette — body sections */
-  --parchment: #FAF9F7;
-  --platinum:  #F0EDE8;
-  --silver:    #E8E4DC;
+  /* ── Borders ── */
+  --border:      rgba(255, 255, 255, 0.07);
+  --border-mid:  rgba(255, 255, 255, 0.12);
+  --border-gold: rgba(201, 168, 76, 0.30);
 
-  /* Borders */
+  /* ── Text on dark ── */
+  --text:        #EDE8E0;
+  --text-muted:  rgba(237, 232, 224, 0.52);
+  --text-subtle: rgba(237, 232, 224, 0.30);
+
+  /* ── Accent ── */
+  --gold:        #C9A84C;
+  --gold-bright: #D4AF37;
+  --gold-soft:   rgba(201, 168, 76, 0.10);
+
+  /* ── Legacy aliases (used in older components) ── */
+  --noir:         #080808;
+  --charcoal:     #111111;
+  --parchment:    #F8F6F2;
+  --platinum:     #F0EDE8;
+  --silver:       #E8E4DC;
   --border-light: rgba(28, 26, 24, 0.10);
-  --border-mid:   rgba(28, 26, 24, 0.18);
-  --border-dark:  rgba(246, 242, 233, 0.09);
-
-  /* Text on light */
-  --graphite: #1C1A18;
-  --slate:    #4A4540;
-  --stone:    #8C8580;
-
-  /* Text on dark */
-  --ivory:    #F6F2E9;
-  --cream:    #D6C7B0;
-  --muted:    #A89E8B;
-
-  /* Accent */
-  --gold:      #D4AF37;
-  --gold-soft: rgba(212, 175, 55, 0.12);
-  --gold-glow: rgba(212, 175, 55, 0.30);
+  --graphite:     #1C1A18;
+  --slate:        #4A4540;
+  --stone:        #8C8580;
+  --ivory:        #EDE8E0;
+  --cream:        #D6C7B0;
+  --muted:        #A89E8B;
+  --gold-glow:    rgba(201, 168, 76, 0.25);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,8 +46,8 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   font-weight: 300;
-  color: var(--graphite);
-  background: var(--parchment);
+  color: var(--text);
+  background: var(--bg);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -66,7 +72,12 @@ img { display: block; }
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 5vw, 80px);
+  padding: 0 clamp(20px, 5vw, 80px);
+}
+
+/* Section padding utility */
+.an-section {
+  padding: clamp(72px, 10vw, 140px) 0;
 }
 
 /* Reduced motion */

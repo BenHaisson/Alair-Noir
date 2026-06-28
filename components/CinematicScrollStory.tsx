@@ -7,9 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const CHAPTERS = [
   {
     eyebrow: '01 — The Standard',
-    heading: 'One vehicle.',
+    heading: 'Two vehicles.',
     italic: 'One standard.',
-    body: 'Not a fleet. Not a platform. A single vehicle, maintained to the highest specification and operated by one driver who knows your preferences.',
+    body: 'Not a fleet. Not a platform. Two vehicles, maintained to the highest specification and operated by one driver who knows your preferences.',
   },
   {
     eyebrow: '02 — The Silence',
