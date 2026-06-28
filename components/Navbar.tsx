@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 
@@ -44,9 +45,9 @@ export default function Navbar() {
           padding: '0 clamp(20px,5vw,80px)',
         }}>
           {/* Logo */}
-          <a href="/" aria-label="Alair Noir — home" style={{ lineHeight: 0 }}>
+          <Link href="/" aria-label="Alair Noir — home" style={{ lineHeight: 0 }}>
             <Logo variant="nav" animate color="#EDE8E0" accentColor="#C9A84C" />
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8" aria-label="Primary">

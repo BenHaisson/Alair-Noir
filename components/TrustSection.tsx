@@ -62,7 +62,7 @@ export default function TrustSection() {
             fontSize: 'clamp(26px,3.2vw,48px)', lineHeight: 1.2,
             color: '#EDE8E0',
           }}>
-            "Punctual, immaculate, and utterly discreet. Exactly what I need every time I land in Zürich."
+            &ldquo;Punctual, immaculate, and utterly discreet. Exactly what I need every time I land in Zürich.&rdquo;
           </p>
           <footer style={{ marginTop: '20px' }}>
             <cite style={{

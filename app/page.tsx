@@ -1,5 +1,6 @@
 import SmoothScroll from '@/components/SmoothScroll';
 import Navbar from '@/components/Navbar';
+import ScrollProgress from '@/components/ScrollProgress';
 import HeroSection from '@/components/HeroSection';
 import CinematicScrollStory from '@/components/CinematicScrollStory';
 import FleetShowcase from '@/components/FleetShowcase';
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <SmoothScroll>
       <Navbar />
+      <ScrollProgress />
       <main id="main-content">
         <HeroSection />
         <CinematicScrollStory />

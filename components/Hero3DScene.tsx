@@ -67,7 +67,7 @@ export default function Hero3DScene() {
       camera={{ position: [0, 0, 9], fov: 52 }}
       dpr={[1, 1.5]}
       style={{ background: 'transparent', width: '100%', height: '100%' }}
-      gl={{ alpha: true, antialias: false }}
+      gl={{ alpha: true, antialias: false, preserveDrawingBuffer: true }}
     >
       <GoldDust />
       <AmbientRing />

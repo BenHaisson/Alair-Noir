@@ -1,13 +1,27 @@
 'use client';
 
+import { useRef } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import Hero3DScene from './Hero3DScene';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, 92]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [1, 1] : [1.04, 1]);
+  const copyY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -34]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.78], [1, 0.72]);
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
       aria-label="Hero"
       style={{
@@ -21,7 +35,7 @@ export default function HeroSection() {
       }}
     >
       {/* ── Full-bleed background image ── */}
-      <div style={{ position: 'absolute', inset: 0 }} aria-hidden="true">
+      <motion.div style={{ position: 'absolute', inset: '-7% 0 -3%', y: imageY, scale: imageScale }} aria-hidden="true">
         <Image
           src="/images/bmw-i7-zurich.png"
           alt="BMW i7 xDrive60 on Zurich lakeside boulevard"
@@ -41,9 +55,48 @@ export default function HeroSection() {
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, transparent 20%)',
         }} />
-      </div>
+      </motion.div>
+
+      {!shouldReduceMotion && (
+        <motion.div
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.42 }}
+          transition={{ duration: 1.5, delay: 0.35, ease }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: 'none',
+            mixBlendMode: 'screen',
+          }}
+        >
+          <Hero3DScene />
+        </motion.div>
+      )}
+
+      <motion.div
+        aria-hidden="true"
+        initial={shouldReduceMotion ? false : { opacity: 0, scaleX: 0 }}
+        animate={{ opacity: 1, scaleX: 1 }}
+        transition={{ duration: 1.2, delay: 0.75, ease }}
+        style={{
+          position: 'absolute',
+          left: 'clamp(24px,6vw,100px)',
+          right: 'clamp(24px,6vw,100px)',
+          bottom: 'clamp(126px,10vw,174px)',
+          zIndex: 2,
+          height: '1px',
+          transformOrigin: 'left',
+          background:
+            'linear-gradient(90deg, rgba(201,168,76,0.72), rgba(201,168,76,0.12) 46%, rgba(237,232,224,0))',
+        }}
+      />
 
       {/* ── Hero copy — stacks at bottom ── */}
+      <motion.div
+        style={{ y: copyY, opacity: copyOpacity }}
+      >
       <div
         style={{
           position: 'relative',
@@ -188,6 +241,7 @@ export default function HeroSection() {
           ))}
         </motion.div>
       </div>
+      </motion.div>
 
       {/* Scroll cue */}
       <motion.div
