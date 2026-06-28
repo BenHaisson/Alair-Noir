@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <title>ALAIR NOIR Full Logo Black Background</title>
+  <desc>Black background SVG logo for Alair Noir GmbH using brand identity colors.</desc>
+  <rect width="1600" height="1000" fill="#0A0A0A"/>
+  <defs>
+    <style>
+      .mark{fill:#F6F2E9;font-family:'Cormorant Garamond','Didot','Bodoni 72','Times New Roman',serif;font-weight:400;}
+      .brand{fill:#F6F2E9;font-family:'Cormorant Garamond','Didot','Bodoni 72','Times New Roman',serif;font-weight:400;letter-spacing:42px;}
+      .tag{fill:#D6C7B0;font-family:'Montserrat','Avenir Next','Helvetica Neue',Arial,sans-serif;font-weight:400;letter-spacing:20px;}
+      .line{stroke:#D6C7B0;stroke-width:3;stroke-linecap:round;fill:none;}
+      .thin{stroke:#F6F2E9;stroke-width:4;stroke-linecap:round;fill:none;}
+      .star{fill:#F6F2E9;}
+    </style>
+  </defs>
+  <text x="660" y="390" class="mark" font-size="230" text-anchor="end">A</text>
+  <line x1="800" y1="170" x2="800" y2="455" class="thin"/>
+  <text x="940" y="390" class="mark" font-size="230" text-anchor="start">N</text>
+  <line x1="370" y1="520" x2="740" y2="520" class="line"/>
+  <line x1="860" y1="520" x2="1230" y2="520" class="line"/>
+  <path class="star" d="M800 487 C807 512 813 518 838 525 C813 532 807 538 800 563 C793 538 787 532 762 525 C787 518 793 512 800 487 Z"/>
+  <text x="800" y="655" class="brand" font-size="86" text-anchor="middle">ALAIR NOIR</text>
+  <text x="800" y="755" class="tag" font-size="34" text-anchor="middle">WHERE LUXURY MOVES QUIETLY</text>
+</svg>
