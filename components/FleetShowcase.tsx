@@ -6,7 +6,7 @@ import { motion, useInView } from 'framer-motion';
 
 const VEHICLES = [
   {
-    badge: 'Primary Fleet',
+    badge: 'Primary Collection',
     name: 'BMW i7',
     sub: 'xDrive60 · G70',
     type: 'Full Electric',
@@ -48,10 +48,10 @@ export default function FleetShowcase() {
 
   return (
     <section
-      id="fleet"
+      id="collection"
       ref={ref}
-      aria-labelledby="fleet-heading"
-      style={{ backgroundColor: '#080808', padding: 'clamp(80px,10vw,160px) 0' }}
+      aria-labelledby="collection-heading"
+      style={{ backgroundColor: 'var(--bg)', padding: 'clamp(80px,10vw,160px) 0' }}
     >
       <div style={{ padding: '0 clamp(28px,8vw,140px)', marginBottom: '64px' }}>
         <motion.p
@@ -68,10 +68,10 @@ export default function FleetShowcase() {
             marginBottom: '16px',
           }}
         >
-          The Fleet
+          The Collection
         </motion.p>
         <motion.h2
-          id="fleet-heading"
+          id="collection-heading"
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.1 }}

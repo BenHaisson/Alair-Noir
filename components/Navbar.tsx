@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 
 const NAV_LINKS = [
-  { label: 'Fleet',    href: '#fleet' },
+  { label: 'Collection', href: '#collection' },
   { label: 'Cabin',    href: '#cabin' },
   { label: 'Services', href: '#services' },
   { label: 'Contact',  href: '#contact' },

@@ -1,7 +1,11 @@
 'use client';
 import Logo from './Logo';
 
-const LINKS = ['Fleet', 'Services', 'Contact'];
+const LINKS = [
+  { label: 'Collection', href: '#collection' },
+  { label: 'Services', href: '#services' },
+  { label: 'Contact', href: '#contact' },
+];
 const LEGAL = ['Privacy', 'Terms'];
 
 export default function Footer() {
@@ -35,8 +39,8 @@ export default function Footer() {
         >
           {LINKS.map((l) => (
             <a
-              key={l}
-              href={`#${l.toLowerCase()}`}
+              key={l.href}
+              href={l.href}
               style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
                 fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase',
@@ -46,7 +50,7 @@ export default function Footer() {
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
               onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text-subtle)')}
             >
-              {l}
+              {l.label}
             </a>
           ))}
         </nav>

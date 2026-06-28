@@ -223,7 +223,7 @@ export default function HeroSection() {
         >
           {[
             { n: '24 / 7', label: 'Availability' },
-            { n: '100%', label: 'Electric Fleet' },
+            { n: '2', label: 'Vehicle Collection' },
             { n: 'ZRH', label: 'Based in Zürich' },
           ].map(({ n, label }) => (
             <div key={label}>

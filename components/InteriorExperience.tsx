@@ -6,29 +6,36 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 
 const INTERIOR_IMAGES = [
   {
-    src: '/images/bmw-i7-executive-lounge.png',
-    alt: 'Rear cabin of the BMW i7 with executive lounge seating and ambient lighting',
-    label: 'Executive Lounge',
-    detail: 'Quiet rear cabin for prepared arrivals',
+    src: '/images/mercedes-v-class-cabin-side.png',
+    alt: 'Mercedes-Benz V-Class rear passenger cabin with black leather seating and warm ceiling light',
+    label: 'V-Class Lounge',
+    detail: 'Executive space for arrivals, groups, and luggage',
     featured: true,
   },
   {
-    src: '/images/bmw-i7-cockpit-night.png',
-    alt: 'BMW i7 cockpit at night with illuminated controls',
-    label: 'Cockpit',
-    detail: 'Digital navigation, climate, and vehicle control',
+    src: '/images/mercedes-v-class-cabin-rear.png',
+    alt: 'Mercedes-Benz V-Class cabin viewed from the rear with facing passenger rows',
+    label: 'Passenger Bay',
+    detail: 'Room for delegations and private family travel',
     featured: false,
   },
   {
-    src: '/images/bmw-i7-rear-theatre.png',
-    alt: 'BMW i7 rear theatre display and passenger cabin',
-    label: 'Rear Theatre',
-    detail: 'Entertainment available for long-distance journeys',
+    src: '/images/mercedes-v-class-cabin-seats.png',
+    alt: 'Mercedes-Benz V-Class black leather executive seats at night',
+    label: 'Executive Seats',
+    detail: 'Upright comfort for airport and event schedules',
+    featured: false,
+  },
+  {
+    src: '/images/mercedes-v-class-cockpit.png',
+    alt: 'Mercedes-Benz V-Class cockpit and front cabin with warm ambient lighting',
+    label: 'Driver Cabin',
+    detail: 'Controlled route, timing, and handover',
     featured: false,
   },
 ];
 
-const SIGNALS = ['Ambient privacy', 'Executive seating', 'Rear theatre display'];
+const SIGNALS = ['Group comfort', 'Luggage-ready space', 'Warm ambient lighting'];
 
 export default function InteriorExperience() {
   const ref = useRef<HTMLElement>(null);
@@ -73,7 +80,7 @@ export default function InteriorExperience() {
               marginBottom: '18px',
             }}
           >
-            The Cabin
+            V-Class Cabin
           </motion.p>
 
           <motion.h2
@@ -90,10 +97,10 @@ export default function InteriorExperience() {
               marginBottom: '28px',
             }}
           >
-            Built around
+            Space held
             <br />
             <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '7%' }}>
-              the pause.
+              quietly.
             </em>
           </motion.h2>
 
@@ -111,7 +118,7 @@ export default function InteriorExperience() {
               marginBottom: '34px',
             }}
           >
-            A quiet interior for the minutes between airport, hotel, meeting, and dinner. Lighting, seating, and media stay calm, precise, and ready for the route.
+            The Mercedes-Benz V-Class brings private space to airport arrivals, family travel, delegations, and luggage-heavy routes. Warm lighting and upright seating keep the cabin composed without spectacle.
           </motion.p>
 
           <motion.div
@@ -179,8 +186,8 @@ export default function InteriorExperience() {
                 position: 'relative',
                 width: '100%',
                 minWidth: 0,
-                height: image.featured ? 'clamp(420px,45vw,650px)' : 'calc((clamp(420px,45vw,650px) - 12px) / 2)',
-                gridRow: image.featured ? 'span 2' : 'span 1',
+                height: image.featured ? 'clamp(480px,48vw,720px)' : 'calc((clamp(480px,48vw,720px) - 24px) / 3)',
+                gridRow: image.featured ? 'span 3' : 'span 1',
                 overflow: 'hidden',
                 backgroundColor: '#090909',
                 border: '1px solid rgba(201,168,76,0.12)',

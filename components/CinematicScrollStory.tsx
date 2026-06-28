@@ -4,32 +4,14 @@ import { useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-const CHAPTERS = [
-  {
-    eyebrow: '01 — The Standard',
-    heading: 'Two vehicles.',
-    italic: 'One standard.',
-    body: 'Not a fleet. Not a platform. Two vehicles, maintained to the highest specification and operated by one driver who knows your preferences.',
-  },
-  {
-    eyebrow: '02 — The Silence',
-    heading: 'Silence',
-    italic: 'as a luxury.',
-    body: 'The BMW i7 xDrive60 is fully electric. No engine noise. No vibration. Only the road, the mountains, and the meeting you are preparing for.',
-  },
-  {
-    eyebrow: '03 — The Journey',
-    heading: 'Zürich to',
-    italic: 'wherever.',
-    body: 'Airport transfers, WEF in Davos, Art Basel in Basel, a board dinner in Milan. Door to door across Switzerland and Europe.',
-  },
-];
+import { cinematicChapters } from '@/lib/chapters';
+import { scrollChapterEnd } from '@/lib/motion';
 
 export default function CinematicScrollStory() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  const routePathRef = useRef<SVGPathElement>(null);
   const chapterRefs = useRef<(HTMLDivElement | null)[]>([]);
   const shouldReduceMotion = useReducedMotion();
 
@@ -38,37 +20,60 @@ export default function CinematicScrollStory() {
     if (shouldReduceMotion) return undefined;
 
     const ctx = gsap.context(() => {
-      const chapters = chapterRefs.current.filter(Boolean);
+      const chapters = chapterRefs.current.filter((chapter): chapter is HTMLDivElement => Boolean(chapter));
+      const routePath = routePathRef.current;
+      const pathLength = routePath?.getTotalLength() ?? 0;
 
-      gsap.set(chapters, { opacity: 0, y: 44, filter: 'blur(10px)' });
+      gsap.set(chapters, { opacity: 0, y: 46, filter: 'blur(12px)' });
       gsap.set(chapters[0], { opacity: 1, y: 0, filter: 'blur(0px)' });
       gsap.set(progressRef.current, { scaleX: 0, transformOrigin: 'left center' });
+
+      if (routePath) {
+        gsap.set(routePath, {
+          strokeDasharray: pathLength,
+          strokeDashoffset: pathLength,
+          opacity: 0,
+        });
+      }
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: wrapRef.current,
           start: 'top top',
-          end: '+=280%',
+          end: scrollChapterEnd(cinematicChapters.length),
           pin: stickyRef.current,
           pinSpacing: true,
-          scrub: 1.4,
+          scrub: 1.35,
           anticipatePin: 1,
         },
       });
 
-      tl.to(progressRef.current, { scaleX: 1, ease: 'none', duration: 6 }, 0)
-        .to(chapters[0], { opacity: 0, y: -42, filter: 'blur(10px)', duration: 0.9 }, 1.1)
-        .to(chapters[1], { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1 }, 1.65)
-        .to(chapters[1], { opacity: 0, y: -42, filter: 'blur(10px)', duration: 0.9 }, 3.05)
-        .to(chapters[2], { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1 }, 3.6)
-        .to(chapters[2], { opacity: 0.22, y: -18, filter: 'blur(3px)', duration: 0.75 }, 5.25);
+      const step = 1.45;
+      const total = cinematicChapters.length * step;
+
+      tl.to(progressRef.current, { scaleX: 1, ease: 'none', duration: total }, 0);
+
+      chapters.forEach((chapter, index) => {
+        if (index === 0) return;
+        const at = index * step;
+        tl.to(chapters[index - 1], { opacity: 0, y: -42, filter: 'blur(12px)', duration: 0.72 }, at - 0.5)
+          .to(chapter, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.94 }, at);
+      });
+
+      if (routePath) {
+        tl.to(routePath, { opacity: 0.78, duration: 0.4 }, step * 4 - 0.4)
+          .to(routePath, { strokeDashoffset: 0, duration: 1.5, ease: 'none' }, step * 4 - 0.2)
+          .to(routePath, { opacity: 0.18, duration: 0.8 }, step * 5.6);
+      }
+
+      tl.to(chapters[chapters.length - 1], { opacity: 0.28, y: -16, filter: 'blur(3px)', duration: 0.75 }, total - 0.25);
     }, wrapRef);
 
     return () => ctx.revert();
   }, [shouldReduceMotion]);
 
   return (
-    <div ref={wrapRef} style={{ backgroundColor: '#080808' }}>
+    <section ref={wrapRef} aria-label="Cinematic journey chapters" style={{ backgroundColor: 'var(--bg)' }}>
       <div
         ref={stickyRef}
         style={{
@@ -79,7 +84,8 @@ export default function CinematicScrollStory() {
           justifyContent: 'center',
           overflow: 'hidden',
           position: 'relative',
-          backgroundColor: '#080808',
+          background:
+            'radial-gradient(circle at 74% 48%, rgba(14,31,22,0.72), transparent 34%), linear-gradient(110deg, var(--bg) 0%, #0A0A0A 48%, var(--forest) 100%)',
           padding: shouldReduceMotion ? 'clamp(84px, 12vw, 150px) 0' : 0,
         }}
       >
@@ -91,24 +97,61 @@ export default function CinematicScrollStory() {
             left: 0,
             right: 0,
             height: '1px',
-            background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.08), transparent)',
+            background: 'linear-gradient(to right, transparent, rgba(212,175,55,0.08), transparent)',
           }}
         />
 
         {!shouldReduceMotion && (
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: '12% clamp(20px, 4vw, 60px)',
-              border: '1px solid rgba(201,168,76,0.06)',
-              pointerEvents: 'none',
-            }}
-          />
+          <>
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: '12% clamp(20px, 4vw, 60px)',
+                border: '1px solid rgba(212,175,55,0.06)',
+                pointerEvents: 'none',
+              }}
+            />
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 720 420"
+              preserveAspectRatio="xMidYMid meet"
+              style={{
+                position: 'absolute',
+                right: 'clamp(20px,7vw,120px)',
+                top: '50%',
+                width: 'min(44vw, 560px)',
+                transform: 'translateY(-50%)',
+                opacity: 0.55,
+              }}
+            >
+              <path
+                ref={routePathRef}
+                d="M86 274 C156 206 196 192 258 218 C318 244 348 182 414 168 C484 152 512 108 616 132"
+                fill="none"
+                stroke="rgba(212,175,55,0.82)"
+                strokeWidth="1"
+                strokeLinecap="round"
+              />
+              {[
+                ['Zurich', 86, 274],
+                ['Davos', 258, 218],
+                ['St. Moritz', 414, 168],
+                ['Milan', 616, 132],
+              ].map(([city, x, y]) => (
+                <g key={city} transform={`translate(${x} ${y})`}>
+                  <circle r="3" fill="rgba(212,175,55,0.78)" />
+                  <text x="10" y="-8" fill="rgba(246,242,233,0.32)" fontSize="12" letterSpacing="2">
+                    {city}
+                  </text>
+                </g>
+              ))}
+            </svg>
+          </>
         )}
 
-        <div style={{ position: 'relative', width: '100%', maxWidth: '900px', padding: '0 clamp(28px, 8vw, 100px)' }}>
-          {CHAPTERS.map((ch, i) => (
+        <div style={{ position: 'relative', width: '100%', maxWidth: '900px', padding: '0 clamp(28px, 8vw, 100px)', zIndex: 1 }}>
+          {cinematicChapters.map((ch, i) => (
             <div
               key={ch.eyebrow}
               ref={(el) => { chapterRefs.current[i] = el; }}
@@ -140,12 +183,12 @@ export default function CinematicScrollStory() {
                   fontWeight: 300,
                   fontSize: 'clamp(54px, 8vw, 114px)',
                   lineHeight: 0.9,
-                  color: '#EDE8E0',
+                  color: 'var(--text)',
                 }}
               >
                 {ch.heading}
                 <br />
-                <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)', paddingLeft: '5%' }}>
+                <em style={{ fontStyle: 'italic', color: 'rgba(246,242,233,0.6)', paddingLeft: '5%' }}>
                   {ch.italic}
                 </em>
               </h2>
@@ -157,7 +200,7 @@ export default function CinematicScrollStory() {
                   fontSize: '14px',
                   lineHeight: 1.8,
                   color: 'var(--text-muted)',
-                  maxWidth: '480px',
+                  maxWidth: '500px',
                 }}
               >
                 {ch.body}
@@ -174,7 +217,7 @@ export default function CinematicScrollStory() {
             right: 'clamp(20px, 4vw, 60px)',
             bottom: '84px',
             height: '1px',
-            backgroundColor: 'rgba(237,232,224,0.08)',
+            backgroundColor: 'rgba(246,242,233,0.08)',
             overflow: 'hidden',
             display: shouldReduceMotion ? 'none' : 'block',
           }}
@@ -187,8 +230,8 @@ export default function CinematicScrollStory() {
               transform: 'scaleX(0)',
               transformOrigin: 'left center',
               background:
-                'linear-gradient(90deg, rgba(201,168,76,0.12), rgba(201,168,76,0.9), rgba(237,232,224,0.56))',
-              boxShadow: '0 0 18px rgba(201,168,76,0.24)',
+                'linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.9), rgba(246,242,233,0.56))',
+              boxShadow: '0 0 18px rgba(212,175,55,0.2)',
             }}
           />
         </div>
@@ -206,9 +249,9 @@ export default function CinematicScrollStory() {
             textTransform: 'uppercase',
           }}
         >
-          Private Mobility. Perfectly Delivered.
+          Scroll Chapters 01-08
         </div>
       </div>
-    </div>
+    </section>
   );
 }
