@@ -107,22 +107,27 @@ const CARDS: FanCard[] = [
   },
 ];
 
-const TOTAL_MS = 4400;
-const STEP_MS = 40;
+const PER_CARD_VH = 75;                 // scroll distance allotted per card transition
+const TOTAL_VH = 100 + (CARDS.length - 1) * PER_CARD_VH;
+const AUTOPLAY_MS = 4200;
 
 export default function CinematicScrollStory() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const [windowWidth, setWindowWidth] = useState(1200);
   const [windowHeight, setWindowHeight] = useState(800);
 
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const touchStartX = useRef<number | null>(null);
-  const touchStartY = useRef<number | null>(null);
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { margin: '-15% 0px -15% 0px' });
+  const outerRef = useRef<HTMLElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(innerRef, { margin: '-20% 0px -20% 0px' });
   const shouldReduceMotion = useReducedMotion();
+
+  const rafRef = useRef<number | null>(null);
+  const userInteractingRef = useRef(false);
+  const autoScrollingRef = useRef(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isMobile = windowWidth < 640;
+  const isTablet = windowWidth >= 640 && windowWidth < 1024;
 
   /* ── window size ────────────────────────────────────────── */
   useEffect(() => {
@@ -132,78 +137,117 @@ export default function CinematicScrollStory() {
     return () => window.removeEventListener('resize', fn);
   }, []);
 
+  /* ── scroll → active card (drives both mobile & desktop) ── */
+  useEffect(() => {
+    const update = () => {
+      rafRef.current = null;
+      const el = outerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      const p = total > 0 ? scrolled / total : 0;
+      const idx = Math.round(p * (CARDS.length - 1));
+      setActiveIndex((prev) => (prev === idx ? prev : idx));
+    };
+    const onScroll = () => {
+      if (rafRef.current == null) rafRef.current = requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  /* ── detect user interaction (pauses autoplay) ──────────── */
+  useEffect(() => {
+    const mark = () => {
+      if (autoScrollingRef.current) return;
+      userInteractingRef.current = true;
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = setTimeout(() => { userInteractingRef.current = false; }, 2600);
+    };
+    window.addEventListener('wheel', mark, { passive: true });
+    window.addEventListener('touchstart', mark, { passive: true });
+    window.addEventListener('keydown', mark);
+    return () => {
+      window.removeEventListener('wheel', mark);
+      window.removeEventListener('touchstart', mark);
+      window.removeEventListener('keydown', mark);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, []);
+
+  /* ── scroll the page so a given card becomes active ─────── */
+  const scrollToCard = (i: number) => {
+    const el = outerRef.current;
+    if (!el) return;
+    const total = el.offsetHeight - window.innerHeight;
+    const sectionTopAbs = window.scrollY + el.getBoundingClientRect().top;
+    const target = sectionTopAbs + (i / (CARDS.length - 1)) * total;
+    autoScrollingRef.current = true;
+    window.scrollTo({ top: target, behavior: shouldReduceMotion ? 'auto' : 'smooth' });
+    setTimeout(() => { autoScrollingRef.current = false; }, 800);
+  };
+
+  /* ── autoplay (auto-scrolls through cards while pinned) ─── */
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      if (userInteractingRef.current) return;
+      const el = outerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top > 1 || rect.bottom < window.innerHeight - 1) return; // only while pinned
+      if (activeIndex >= CARDS.length - 1) return;                       // release after last card
+      scrollToCard(activeIndex + 1);
+    }, AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [activeIndex, shouldReduceMotion]);
+
   /* ── keyboard ───────────────────────────────────────────── */
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (!inView) return;
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') handlePrev();
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') handleNext();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') scrollToCard(Math.max(0, activeIndex - 1));
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') scrollToCard(Math.min(CARDS.length - 1, activeIndex + 1));
     };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
-  }, [inView]);
+  }, [activeIndex, inView]);
 
-  /* ── autoplay (silent — no play button) ─────────────────── */
-  useEffect(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (!isHovered && !shouldReduceMotion && inView) {
-      timerRef.current = setInterval(() => {
-        setActiveIndex((p) => (p + 1) % CARDS.length);
-      }, TOTAL_MS);
-    }
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [isHovered, activeIndex, shouldReduceMotion, inView]);
-
-  /* ── navigation ─────────────────────────────────────────── */
-  const handleCardClick = (i: number) => setActiveIndex(i);
-  const handleNext = () => setActiveIndex((p) => (p + 1) % CARDS.length);
-  const handlePrev = () => setActiveIndex((p) => (p - 1 + CARDS.length) % CARDS.length);
-
-  /* ── touch swipe ────────────────────────────────────────── */
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
-  };
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    if (isMobile && touchStartY.current !== null) {
-      const diffY = touchStartY.current - e.changedTouches[0].clientY;
-      if (Math.abs(diffY) > 40) {
-        diffY > 0 ? handleNext() : handlePrev();
-        touchStartX.current = null; touchStartY.current = null;
-        return;
-      }
-    }
-    const diffX = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diffX) > 40) { diffX > 0 ? handleNext() : handlePrev(); }
-    touchStartX.current = null; touchStartY.current = null;
-  };
+  const handleCardClick = (i: number) => scrollToCard(i);
 
   /* ── responsive sizing ──────────────────────────────────── */
-  const isMobile = windowWidth < 640;
-  const isTablet = windowWidth >= 640 && windowWidth < 1024;
   const maxNeighbors = isMobile ? 2 : isTablet ? 2 : 3;
 
-  const deskH   = Math.round(Math.max(400, Math.min(isTablet ? 460 : 540, windowHeight * 0.6)));
+  const deskH   = Math.round(Math.max(380, Math.min(isTablet ? 460 : 540, windowHeight * 0.58)));
   const activeW = isMobile ? Math.min(380, windowWidth - 32) : isTablet ? 380 : 460;
   const collW   = isMobile ? Math.min(380, windowWidth - 32) : isTablet ? 58 : 68;
-  const activeH = isMobile ? 360 : deskH;
-  const collH   = isMobile ? 56  : deskH;
+  const activeH = isMobile ? Math.round(Math.max(300, Math.min(360, windowHeight * 0.46))) : deskH;
+  const collH   = isMobile ? 50  : deskH;
 
   /* ── render ─────────────────────────────────────────────── */
   return (
     <section
-      ref={sectionRef}
+      ref={outerRef}
       aria-label="Alair Noir experience chapters"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       style={{
         position: 'relative',
+        height: `${TOTAL_VH}vh`,
         backgroundColor: 'var(--bg)',
-        padding: 'clamp(64px,9vw,128px) 0 clamp(72px,10vw,140px)',
-        overflow: 'hidden',
       }}
     >
+      <div
+        ref={innerRef}
+        style={{
+          position: 'sticky', top: 0, height: '100vh', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          gap: 'clamp(18px,3vh,40px)',
+        }}
+      >
       {/* Ambient background */}
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
@@ -218,20 +262,20 @@ export default function CinematicScrollStory() {
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         style={{
-          textAlign: 'center', marginBottom: 'clamp(32px,5vw,60px)',
-          padding: '0 clamp(24px,5vw,60px)', position: 'relative', zIndex: 1,
+          textAlign: 'center',
+          padding: '0 clamp(24px,5vw,60px)', position: 'relative', zIndex: 1, flexShrink: 0,
         }}
       >
         <p style={{
           fontFamily: 'var(--font-inter)', fontWeight: 300,
           fontSize: '9px', letterSpacing: '0.26em',
-          textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '14px',
+          textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '12px',
         }}>
           The Journey
         </p>
         <h2 style={{
           fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-          fontSize: 'clamp(38px,5vw,76px)', lineHeight: 0.9, color: '#EDE8E0',
+          fontSize: 'clamp(34px,4.4vw,68px)', lineHeight: 0.9, color: '#EDE8E0',
         }}>
           Eight moments,
           <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one passage.</em>
@@ -240,13 +284,11 @@ export default function CinematicScrollStory() {
 
       {/* 3D fan / accordion */}
       <div
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
         style={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
           padding: '0 clamp(16px,4vw,48px)',
           perspective: '1400px', perspectiveOrigin: '50% 48%',
-          position: 'relative', zIndex: 1,
+          position: 'relative', zIndex: 1, flexShrink: 0,
         }}
       >
         <div
@@ -409,7 +451,7 @@ export default function CinematicScrollStory() {
       {/* Progress dots */}
       <div style={{
         display: 'flex', justifyContent: 'center', gap: '6px',
-        marginTop: 'clamp(28px,4vw,46px)', position: 'relative', zIndex: 1,
+        position: 'relative', zIndex: 1, flexShrink: 0,
       }}>
         {CARDS.map((card, i) => (
           <button
@@ -427,6 +469,25 @@ export default function CinematicScrollStory() {
             }}
           />
         ))}
+      </div>
+
+      {/* Scroll hint (fades out near the end) */}
+      <motion.p
+        initial={{ opacity: 0.34 }}
+        animate={{ opacity: activeIndex >= CARDS.length - 1 ? 0 : 0.34 }}
+        transition={{ duration: 0.5 }}
+        aria-hidden="true"
+        style={{
+          textAlign: 'center',
+          fontFamily: 'var(--font-inter)', fontSize: '8px',
+          letterSpacing: '0.22em', textTransform: 'uppercase',
+          color: 'rgba(246,242,233,0.26)', pointerEvents: 'none',
+          position: 'relative', zIndex: 1, flexShrink: 0,
+        }}
+      >
+        Scroll to explore
+      </motion.p>
+
       </div>
 
       <style>{`
