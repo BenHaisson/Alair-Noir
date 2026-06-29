@@ -18,7 +18,7 @@ const BLOCKS = [
   },
   {
     title: 'Limited fleet, higher control',
-    body: 'Two vehicles allow the standard to stay consistent, inspected, and personally managed.',
+    body: 'A limited fleet allows the standard to stay consistent, inspected, and tightly controlled.',
   },
   {
     title: 'Switzerland and Europe',

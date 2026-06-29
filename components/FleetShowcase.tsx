@@ -81,10 +81,10 @@ export default function FleetShowcase() {
             marginBottom: '24px',
           }}
         >
-          Two vehicles.
+          Chosen,
           <br />
           <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '6%' }}>
-            Chosen deliberately.
+            not assembled.
           </em>
         </motion.h2>
         <motion.div
