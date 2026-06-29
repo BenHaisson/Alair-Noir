@@ -253,7 +253,8 @@ export default function CinematicScrollStory() {
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         background:
-          'radial-gradient(circle at 50% 54%, rgba(14,31,22,0.5), transparent 52%), ' +
+          'radial-gradient(circle at 50% 50%, rgba(40,38,32,0.55), transparent 60%), ' +
+          'radial-gradient(circle at 50% 54%, rgba(20,40,30,0.4), transparent 52%), ' +
           'radial-gradient(circle at 80% 16%, rgba(212,175,55,0.05), transparent 28%)',
       }} />
 
@@ -359,7 +360,7 @@ export default function CinematicScrollStory() {
                   border: isActive
                     ? '1.5px solid rgba(212,175,55,0.55)'
                     : '1px solid rgba(255,255,255,0.14)',
-                  background: '#0c0c0c',
+                  background: '#1c1a16',
                   cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
                   boxShadow: isActive
                     ? '0 44px 88px -22px rgba(0,0,0,0.95), 0 0 0 1px rgba(212,175,55,0.08), inset 0 1px 0 rgba(255,255,255,0.05)'
@@ -386,8 +387,8 @@ export default function CinematicScrollStory() {
                       {!isMobile && (
                         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                           <Image src={card.image} alt="" fill sizes="80px"
-                            className="object-cover" style={{ filter: 'saturate(0.5) brightness(0.3)' }} />
-                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,12,12,0.4)' }} />
+                            className="object-cover" style={{ filter: 'saturate(0.72) brightness(0.55)' }} />
+                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(28,26,22,0.32)' }} />
                         </div>
                       )}
 
@@ -549,11 +550,11 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         >
           <Image src={card.image} alt={card.imageAlt} fill
             sizes={`${activeW}px`} className="object-cover"
-            style={{ filter: 'saturate(0.85) contrast(1.08)' }} />
+            style={{ filter: 'saturate(0.95) contrast(1.04) brightness(1.12)' }} />
         </motion.div>
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 35%, rgba(12,12,12,0.72) 74%, #0c0c0c 100%)',
+          background: 'linear-gradient(to bottom, transparent 38%, rgba(28,26,22,0.7) 76%, #1c1a16 100%)',
         }} />
         <div style={{ position: 'absolute', top: '14px', left: '16px', zIndex: 2 }}>
           <span style={{
@@ -601,7 +602,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
           </h3>
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: compact ? '11px' : '11.5px', lineHeight: 1.8, color: 'rgba(246,242,233,0.5)',
+            fontSize: compact ? '11px' : '11.5px', lineHeight: 1.8, color: 'rgba(246,242,233,0.66)',
           }}>{card.body}</p>
         </div>
 
