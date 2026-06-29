@@ -1,257 +1,493 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { useReducedMotion } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { cinematicChapters } from '@/lib/chapters';
-import { scrollChapterEnd } from '@/lib/motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
+
+interface FanCard {
+  num: string;
+  label: string;
+  eyebrow: string;
+  heading: string;
+  italic: string;
+  body: string;
+  icon: React.ReactNode;
+}
+
+const CARDS: FanCard[] = [
+  {
+    num: '01',
+    label: 'The Request',
+    eyebrow: '01 — The Request',
+    heading: 'A private',
+    italic: 'request.',
+    body: 'A journey begins quietly: one message, one route, one standard of discretion before anything becomes visible.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <rect x="1.5" y="4.5" width="15" height="10" rx="1.5" stroke="currentColor" strokeWidth="1" />
+        <path d="M1.5 7l7 4.5 7-4.5" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    ),
+  },
+  {
+    num: '02',
+    label: 'The Standard',
+    eyebrow: '02 — The Standard',
+    heading: 'Two vehicles.',
+    italic: 'One standard.',
+    body: 'The collection is intentionally small: a black BMW i7 and a black Mercedes-Benz V-Class, each maintained for private Swiss mobility.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 2L16 7L9 16L2 7Z" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    ),
+  },
+  {
+    num: '03',
+    label: 'The Silence',
+    eyebrow: '03 — The Silence',
+    heading: 'Silence',
+    italic: 'as a luxury.',
+    body: 'The BMW i7 xDrive60 is fully electric. No engine noise. No vibration. Just the road and the minutes before arrival.',
+    icon: (
+      <svg width="22" height="12" viewBox="0 0 22 12" fill="none" aria-hidden="true">
+        <path d="M0 6 Q2.5 0 5 6 Q7.5 12 10 6 Q12.5 0 15 6 Q17.5 12 20 6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    num: '04',
+    label: 'The Space',
+    eyebrow: '04 — The Space',
+    heading: 'Executive',
+    italic: 'space.',
+    body: 'The Mercedes-Benz V-Class creates room for delegations, families, luggage, and airport arrivals without losing privacy.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <rect x="3" y="3.5" width="12" height="7" rx="1.5" stroke="currentColor" strokeWidth="1" />
+        <path d="M1 10.5h16M5 10.5v4M13 10.5v4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    num: '05',
+    label: 'The Route',
+    eyebrow: '05 — The Route',
+    heading: 'Zurich to',
+    italic: 'wherever.',
+    body: 'Zurich, Geneva, Davos, St. Moritz, Milan, and Munich: routes are handled as private passages, not transfers.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 2C6.24 2 4 4.24 4 7c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z" stroke="currentColor" strokeWidth="1" />
+        <circle cx="9" cy="7" r="1.5" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    ),
+  },
+  {
+    num: '06',
+    label: 'The Protocol',
+    eyebrow: '06 — The Protocol',
+    heading: 'Discretion',
+    italic: 'by design.',
+    body: 'Punctuality, privacy, controlled handover, and no unnecessary visibility. The service stays precise and nearly invisible.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 2l6 2.5V9c0 3.5-2.5 6.2-6 7-3.5-.8-6-3.5-6-7V4.5L9 2z" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    ),
+  },
+  {
+    num: '07',
+    label: 'The Arrival',
+    eyebrow: '07 — The Arrival',
+    heading: 'Arrival',
+    italic: 'without noise.',
+    body: 'Hotel entrance, private aviation terminal, board dinner, or residence: the final moment is calm, direct, and unannounced.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M3 14h12M9 3v8" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+        <path d="M5 8l4 4 4-4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    num: '08',
+    label: 'The Booking',
+    eyebrow: '08 — The Booking Ritual',
+    heading: 'Reserved',
+    italic: 'quietly.',
+    body: 'A premium request flow: direct contact, route details, timing, passengers, luggage, and any preference that should be remembered.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <rect x="2" y="4" width="14" height="12" rx="1.5" stroke="currentColor" strokeWidth="1" />
+        <path d="M2 8h14M6 2v3M12 2v3" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+];
+
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function CinematicScrollStory() {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const routePathRef = useRef<SVGPathElement>(null);
-  const chapterRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [active, setActive] = useState(4);
+  const [paused, setPaused] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: '-80px' });
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    if (shouldReduceMotion) return undefined;
+    if (shouldReduceMotion || paused) return;
+    const id = setInterval(() => {
+      setActive((p) => (p + 1) % CARDS.length);
+    }, 4200);
+    return () => clearInterval(id);
+  }, [shouldReduceMotion, paused]);
 
-    const ctx = gsap.context(() => {
-      const chapters = chapterRefs.current.filter((chapter): chapter is HTMLDivElement => Boolean(chapter));
-      const routePath = routePathRef.current;
-      const pathLength = routePath?.getTotalLength() ?? 0;
-
-      gsap.set(chapters, { opacity: 0, y: 46, filter: 'blur(12px)' });
-      gsap.set(chapters[0], { opacity: 1, y: 0, filter: 'blur(0px)' });
-      gsap.set(progressRef.current, { scaleX: 0, transformOrigin: 'left center' });
-
-      if (routePath) {
-        gsap.set(routePath, {
-          strokeDasharray: pathLength,
-          strokeDashoffset: pathLength,
-          opacity: 0,
-        });
-      }
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: wrapRef.current,
-          start: 'top top',
-          end: scrollChapterEnd(cinematicChapters.length),
-          pin: stickyRef.current,
-          pinSpacing: true,
-          scrub: 1.35,
-          anticipatePin: 1,
-        },
-      });
-
-      const step = 1.45;
-      const total = cinematicChapters.length * step;
-
-      tl.to(progressRef.current, { scaleX: 1, ease: 'none', duration: total }, 0);
-
-      chapters.forEach((chapter, index) => {
-        if (index === 0) return;
-        const at = index * step;
-        tl.to(chapters[index - 1], { opacity: 0, y: -42, filter: 'blur(12px)', duration: 0.72 }, at - 0.5)
-          .to(chapter, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.94 }, at);
-      });
-
-      if (routePath) {
-        tl.to(routePath, { opacity: 0.78, duration: 0.4 }, step * 4 - 0.4)
-          .to(routePath, { strokeDashoffset: 0, duration: 1.5, ease: 'none' }, step * 4 - 0.2)
-          .to(routePath, { opacity: 0.18, duration: 0.8 }, step * 5.6);
-      }
-
-      tl.to(chapters[chapters.length - 1], { opacity: 0.28, y: -16, filter: 'blur(3px)', duration: 0.75 }, total - 0.25);
-    }, wrapRef);
-
-    return () => ctx.revert();
-  }, [shouldReduceMotion]);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') setActive((p) => Math.max(0, p - 1));
+      if (e.key === 'ArrowRight') setActive((p) => Math.min(CARDS.length - 1, p + 1));
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   return (
-    <section ref={wrapRef} aria-label="Cinematic journey chapters" style={{ backgroundColor: 'var(--bg)' }}>
+    <section
+      ref={sectionRef}
+      aria-label="Alair Noir experience chapters"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      style={{
+        backgroundColor: 'var(--bg)',
+        padding: 'clamp(80px,11vw,160px) 0 clamp(80px,10vw,140px)',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* Background radial accent */}
       <div
-        ref={stickyRef}
+        aria-hidden="true"
         style={{
-          minHeight: shouldReduceMotion ? 'auto' : '100vh',
-          height: shouldReduceMotion ? 'auto' : '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          position: 'relative',
+          position: 'absolute',
+          inset: 0,
           background:
-            'radial-gradient(circle at 74% 48%, rgba(14,31,22,0.72), transparent 34%), linear-gradient(110deg, var(--bg) 0%, #0A0A0A 48%, var(--forest) 100%)',
-          padding: shouldReduceMotion ? 'clamp(84px, 12vw, 150px) 0' : 0,
+            'radial-gradient(circle at 50% 60%, rgba(14,31,22,0.5), transparent 52%), radial-gradient(circle at 80% 20%, rgba(212,175,55,0.04), transparent 30%)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Section heading */}
+      <motion.div
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.7, ease }}
+        style={{
+          textAlign: 'center',
+          marginBottom: 'clamp(44px,6vw,72px)',
+          padding: '0 clamp(24px,5vw,60px)',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--font-inter)',
+            fontWeight: 300,
+            fontSize: '9px',
+            letterSpacing: '0.26em',
+            textTransform: 'uppercase',
+            color: 'var(--gold)',
+            marginBottom: '18px',
+          }}
+        >
+          The Journey
+        </p>
+        <h2
+          style={{
+            fontFamily: 'var(--font-cormorant)',
+            fontWeight: 300,
+            fontSize: 'clamp(44px,6vw,88px)',
+            lineHeight: 0.9,
+            color: '#EDE8E0',
+          }}
+        >
+          Eight moments,
+          <br />
+          <em
+            style={{
+              fontStyle: 'italic',
+              color: 'rgba(237,232,224,0.6)',
+              paddingLeft: '5%',
+            }}
+          >
+            one passage.
+          </em>
+        </h2>
+      </motion.div>
+
+      {/* Card fan */}
+      <motion.div
+        className="fan-outer"
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.88, delay: 0.18, ease }}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          perspective: '1400px',
+          perspectiveOrigin: '50% 45%',
+          padding: '0 clamp(20px,4vw,60px)',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         <div
-          aria-hidden="true"
+          role="tablist"
+          aria-label="Experience chapters"
           style={{
-            position: 'absolute',
-            top: '50%',
-            left: 0,
-            right: 0,
-            height: '1px',
-            background: 'linear-gradient(to right, transparent, rgba(212,175,55,0.08), transparent)',
-          }}
-        />
-
-        {!shouldReduceMotion && (
-          <>
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                inset: '12% clamp(20px, 4vw, 60px)',
-                border: '1px solid rgba(212,175,55,0.06)',
-                pointerEvents: 'none',
-              }}
-            />
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 720 420"
-              preserveAspectRatio="xMidYMid meet"
-              style={{
-                position: 'absolute',
-                right: 'clamp(20px,7vw,120px)',
-                top: '50%',
-                width: 'min(44vw, 560px)',
-                transform: 'translateY(-50%)',
-                opacity: 0.55,
-              }}
-            >
-              <path
-                ref={routePathRef}
-                d="M86 274 C156 206 196 192 258 218 C318 244 348 182 414 168 C484 152 512 108 616 132"
-                fill="none"
-                stroke="rgba(212,175,55,0.82)"
-                strokeWidth="1"
-                strokeLinecap="round"
-              />
-              {[
-                ['Zurich', 86, 274],
-                ['Davos', 258, 218],
-                ['St. Moritz', 414, 168],
-                ['Milan', 616, 132],
-              ].map(([city, x, y]) => (
-                <g key={city} transform={`translate(${x} ${y})`}>
-                  <circle r="3" fill="rgba(212,175,55,0.78)" />
-                  <text x="10" y="-8" fill="rgba(246,242,233,0.32)" fontSize="12" letterSpacing="2">
-                    {city}
-                  </text>
-                </g>
-              ))}
-            </svg>
-          </>
-        )}
-
-        <div style={{ position: 'relative', width: '100%', maxWidth: '900px', padding: '0 clamp(28px, 8vw, 100px)', zIndex: 1 }}>
-          {cinematicChapters.map((ch, i) => (
-            <div
-              key={ch.eyebrow}
-              ref={(el) => { chapterRefs.current[i] = el; }}
-              style={{
-                position: shouldReduceMotion || i === 0 ? 'relative' : 'absolute',
-                inset: shouldReduceMotion || i === 0 ? 'auto' : 0,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '24px',
-                marginTop: shouldReduceMotion && i > 0 ? '56px' : 0,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'var(--font-inter)',
-                  fontWeight: 300,
-                  fontSize: '9px',
-                  letterSpacing: '0.26em',
-                  textTransform: 'uppercase',
-                  color: 'var(--gold)',
-                }}
-              >
-                {ch.eyebrow}
-              </p>
-
-              <h2
-                style={{
-                  fontFamily: 'var(--font-cormorant)',
-                  fontWeight: 300,
-                  fontSize: 'clamp(54px, 8vw, 114px)',
-                  lineHeight: 0.9,
-                  color: 'var(--text)',
-                }}
-              >
-                {ch.heading}
-                <br />
-                <em style={{ fontStyle: 'italic', color: 'rgba(246,242,233,0.6)', paddingLeft: '5%' }}>
-                  {ch.italic}
-                </em>
-              </h2>
-
-              <p
-                style={{
-                  fontFamily: 'var(--font-inter)',
-                  fontWeight: 300,
-                  fontSize: '14px',
-                  lineHeight: 1.8,
-                  color: 'var(--text-muted)',
-                  maxWidth: '500px',
-                }}
-              >
-                {ch.body}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            left: 'clamp(20px, 4vw, 60px)',
-            right: 'clamp(20px, 4vw, 60px)',
-            bottom: '84px',
-            height: '1px',
-            backgroundColor: 'rgba(246,242,233,0.08)',
-            overflow: 'hidden',
-            display: shouldReduceMotion ? 'none' : 'block',
+            display: 'flex',
+            gap: 'clamp(6px,0.55vw,9px)',
+            alignItems: 'stretch',
           }}
         >
-          <div
-            ref={progressRef}
+          {CARDS.map((card, i) => {
+            const isActive = i === active;
+            const dist = i - active;
+            const sign = dist < 0 ? 1 : -1;
+            const tilt = isActive
+              ? 0
+              : sign * Math.min(32, Math.abs(dist) * 13 + 10);
+
+            return (
+              <button
+                key={card.eyebrow}
+                type="button"
+                role="tab"
+                id={`fan-tab-${i}`}
+                aria-selected={isActive}
+                aria-controls={`fan-panel-${i}`}
+                onClick={() => setActive(i)}
+                className={`fan-card${isActive ? ' fan-card--active' : ''}`}
+                style={{
+                  width: isActive
+                    ? 'clamp(280px,26vw,340px)'
+                    : 'clamp(44px,4.5vw,58px)',
+                  height: 'clamp(320px,36vw,420px)',
+                  transform: `rotateY(${shouldReduceMotion ? 0 : tilt}deg)`,
+                  transition: shouldReduceMotion
+                    ? 'none'
+                    : 'width 0.52s cubic-bezier(0.16,1,0.3,1), transform 0.52s cubic-bezier(0.16,1,0.3,1), background 0.3s ease, border-color 0.3s ease',
+                  position: 'relative',
+                  flexShrink: 0,
+                  overflow: 'hidden',
+                  borderRadius: '10px',
+                  border: `1px solid ${isActive ? 'rgba(212,175,55,0.26)' : 'rgba(255,255,255,0.07)'}`,
+                  background: isActive
+                    ? 'rgba(255,255,255,0.055)'
+                    : 'rgba(255,255,255,0.025)',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  textAlign: 'left',
+                  padding: 0,
+                }}
+              >
+                {/* Gloss gradient overlay */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background:
+                      'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 36%, rgba(0,0,0,0.22) 100%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+
+                {/* Gold left accent on active card */}
+                {isActive && (
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: '16%',
+                      bottom: '16%',
+                      width: '1px',
+                      background:
+                        'linear-gradient(to bottom, transparent, rgba(212,175,55,0.72), transparent)',
+                    }}
+                  />
+                )}
+
+                {/* Collapsed state: rotated label */}
+                <div
+                  aria-hidden={isActive}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: isActive ? 0 : 1,
+                    transition: shouldReduceMotion ? 'none' : 'opacity 0.2s ease',
+                    pointerEvents: isActive ? 'none' : 'auto',
+                  }}
+                >
+                  <span
+                    style={{
+                      writingMode: 'vertical-rl',
+                      textOrientation: 'mixed',
+                      transform: 'rotate(180deg)',
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '8px',
+                      letterSpacing: '0.2em',
+                      textTransform: 'uppercase',
+                      color: 'rgba(246,242,233,0.3)',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {card.num}&nbsp;&nbsp;{card.label}
+                  </span>
+                </div>
+
+                {/* Expanded state: full content */}
+                <div
+                  id={`fan-panel-${i}`}
+                  role="tabpanel"
+                  aria-labelledby={`fan-tab-${i}`}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: 'clamp(20px,2.4vw,30px)',
+                    opacity: isActive ? 1 : 0,
+                    transition: shouldReduceMotion
+                      ? 'none'
+                      : 'opacity 0.28s ease 0.18s',
+                    pointerEvents: isActive ? 'auto' : 'none',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-inter)',
+                        fontWeight: 300,
+                        fontSize: '8px',
+                        letterSpacing: '0.24em',
+                        textTransform: 'uppercase',
+                        color: 'var(--gold)',
+                        marginBottom: '16px',
+                      }}
+                    >
+                      {card.eyebrow}
+                    </p>
+                    <h3
+                      style={{
+                        fontFamily: 'var(--font-cormorant)',
+                        fontWeight: 300,
+                        fontSize: 'clamp(26px,2.8vw,38px)',
+                        lineHeight: 0.92,
+                        color: '#EDE8E0',
+                      }}
+                    >
+                      {card.heading}
+                      <br />
+                      <em
+                        style={{
+                          fontStyle: 'italic',
+                          color: 'rgba(237,232,224,0.6)',
+                        }}
+                      >
+                        {card.italic}
+                      </em>
+                    </h3>
+                  </div>
+
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      fontWeight: 300,
+                      fontSize: '12px',
+                      lineHeight: 1.82,
+                      color: 'rgba(246,242,233,0.5)',
+                    }}
+                  >
+                    {card.body}
+                  </p>
+
+                  <div style={{ color: 'rgba(212,175,55,0.56)', lineHeight: 1 }}>
+                    {card.icon}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Progress dots */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '6px',
+          marginTop: 'clamp(28px,4vw,44px)',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        {CARDS.map((card, i) => (
+          <button
+            key={card.num}
+            type="button"
+            onClick={() => setActive(i)}
+            aria-label={`Chapter ${card.num}: ${card.label}`}
             style={{
-              width: '100%',
-              height: '100%',
-              transform: 'scaleX(0)',
-              transformOrigin: 'left center',
+              width: i === active ? '20px' : '5px',
+              height: '2px',
               background:
-                'linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.9), rgba(246,242,233,0.56))',
-              boxShadow: '0 0 18px rgba(212,175,55,0.2)',
+                i === active ? 'var(--gold)' : 'rgba(255,255,255,0.14)',
+              border: 'none',
+              cursor: 'pointer',
+              transition: shouldReduceMotion
+                ? 'none'
+                : 'width 0.4s cubic-bezier(0.16,1,0.3,1), background 0.3s ease',
+              borderRadius: '1px',
+              padding: 0,
+              flexShrink: 0,
             }}
           />
-        </div>
-
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            right: 'clamp(20px, 4vw, 60px)',
-            bottom: '40px',
-            fontFamily: 'var(--font-inter)',
-            fontSize: '9px',
-            letterSpacing: '0.2em',
-            color: 'var(--text-subtle)',
-            textTransform: 'uppercase',
-          }}
-        >
-          Scroll Chapters 01-08
-        </div>
+        ))}
       </div>
+
+      <style>{`
+        .fan-card:not(.fan-card--active):hover {
+          background: rgba(255, 255, 255, 0.05) !important;
+          border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        .fan-card:focus-visible {
+          outline: 1px solid var(--gold);
+          outline-offset: 2px;
+        }
+
+        @media (max-width: 700px) {
+          .fan-outer {
+            perspective: none !important;
+          }
+          .fan-card {
+            display: none !important;
+          }
+          .fan-card--active {
+            display: flex !important;
+            width: calc(100vw - clamp(40px, 8vw, 80px)) !important;
+            height: clamp(320px, 80vw, 460px) !important;
+            transform: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
