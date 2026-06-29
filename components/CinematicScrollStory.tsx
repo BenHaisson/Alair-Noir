@@ -108,19 +108,24 @@ const CARDS: FanCard[] = [
 ];
 
 const AUTOPLAY_MS = 4200;
+const PER_CARD_VH = 60;                 // scroll distance allotted per card
+const TOTAL_VH = 100 + (CARDS.length - 1) * PER_CARD_VH;
 
 export default function CinematicScrollStory() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const [windowWidth, setWindowWidth] = useState(1200);
   const [windowHeight, setWindowHeight] = useState(800);
 
+  const outerRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(innerRef, { margin: '-20% 0px -20% 0px' });
+  const inView = useInView(innerRef, { margin: '-15% 0px -15% 0px' });
   const shouldReduceMotion = useReducedMotion();
 
-  const wheelLockRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const autoScrollingRef = useRef(false);
+  const userInteractingRef = useRef(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dirRef = useRef(1);
 
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
@@ -133,54 +138,91 @@ export default function CinematicScrollStory() {
     return () => window.removeEventListener('resize', fn);
   }, []);
 
-  /* ── navigation helpers (wrap-around / endless loop) ────── */
-  const goTo = (i: number) => setActiveIndex(((i % CARDS.length) + CARDS.length) % CARDS.length);
-  const next = () => setActiveIndex((p) => (p + 1) % CARDS.length);
-  const prev = () => setActiveIndex((p) => (p - 1 + CARDS.length) % CARDS.length);
-  const handleCardClick = (i: number) => goTo(i);
-
-  /* ── autoplay: endless loop (pauses on hover / off-screen) ── */
+  /* ── scroll position → active card (native, mobile + desktop) ── */
   useEffect(() => {
-    if (shouldReduceMotion || isHovered || !inView) return;
+    const update = () => {
+      rafRef.current = null;
+      const el = outerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      const p = total > 0 ? scrolled / total : 0;
+      const idx = Math.round(p * (CARDS.length - 1));
+      setActiveIndex((prev) => (prev === idx ? prev : idx));
+    };
+    const onScroll = () => {
+      if (rafRef.current == null) rafRef.current = requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  /* ── flag genuine user scroll so autoplay yields to it ──── */
+  useEffect(() => {
+    const mark = () => {
+      if (autoScrollingRef.current) return; // ignore our own programmatic scroll
+      userInteractingRef.current = true;
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = setTimeout(() => { userInteractingRef.current = false; }, 2400);
+    };
+    window.addEventListener('wheel', mark, { passive: true });
+    window.addEventListener('touchmove', mark, { passive: true });
+    window.addEventListener('keydown', mark);
+    return () => {
+      window.removeEventListener('wheel', mark);
+      window.removeEventListener('touchmove', mark);
+      window.removeEventListener('keydown', mark);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, []);
+
+  /* ── scroll the page so a given card becomes active ─────── */
+  const scrollToCard = (i: number) => {
+    const el = outerRef.current;
+    if (!el) return;
+    const target = Math.max(0, Math.min(CARDS.length - 1, i));
+    const total = el.offsetHeight - window.innerHeight;
+    const sectionTopAbs = window.scrollY + el.getBoundingClientRect().top;
+    autoScrollingRef.current = true;
+    window.scrollTo({
+      top: sectionTopAbs + (target / (CARDS.length - 1)) * total,
+      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+    });
+    setTimeout(() => { autoScrollingRef.current = false; }, 800);
+  };
+  const handleCardClick = (i: number) => scrollToCard(i);
+
+  /* ── autoplay: endless ping-pong while pinned & idle ────── */
+  useEffect(() => {
+    if (shouldReduceMotion) return;
     const id = setInterval(() => {
-      setActiveIndex((p) => (p + 1) % CARDS.length);
+      if (userInteractingRef.current) return;
+      const el = outerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top > 1 || rect.bottom < window.innerHeight - 1) return; // only while pinned
+      if (activeIndex >= CARDS.length - 1) dirRef.current = -1;
+      else if (activeIndex <= 0) dirRef.current = 1;
+      scrollToCard(activeIndex + dirRef.current);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [shouldReduceMotion, isHovered, inView]);
+  }, [activeIndex, shouldReduceMotion]);
 
-  /* ── keyboard (wraps) ───────────────────────────────────── */
+  /* ── keyboard ───────────────────────────────────────────── */
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (!inView) return;
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') scrollToCard(activeIndex - 1);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') scrollToCard(activeIndex + 1);
     };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
-  }, [inView]);
-
-  /* ── wheel / trackpad nav (throttled, wraps) ────────────── */
-  const handleWheel = (e: React.WheelEvent) => {
-    if (wheelLockRef.current) return;
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (Math.abs(delta) < 24) return;
-    delta > 0 ? next() : prev();
-    wheelLockRef.current = setTimeout(() => { wheelLockRef.current = null; }, 650);
-  };
-
-  /* ── touch swipe (wraps) ────────────────────────────────── */
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  };
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const s = touchStartRef.current;
-    if (!s) return;
-    const dx = s.x - e.changedTouches[0].clientX;
-    const dy = s.y - e.changedTouches[0].clientY;
-    const d = isMobile ? dy : dx;
-    if (Math.abs(d) > 40) (d > 0 ? next() : prev());
-    touchStartRef.current = null;
-  };
+  }, [activeIndex, inView]);
 
   /* ── responsive sizing (fit to screen) ─────────────────── */
   // Show every card in the fan (all neighbours behind the active one).
@@ -211,23 +253,19 @@ export default function CinematicScrollStory() {
   /* ── render ─────────────────────────────────────────────── */
   return (
     <section
+      ref={outerRef}
       id="story"
       aria-label="Alair Noir experience chapters"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onWheel={handleWheel}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
       style={{
         position: 'relative',
+        height: `${TOTAL_VH}vh`,
         backgroundColor: 'var(--bg)',
-        overflow: 'hidden',
-        padding: 'clamp(64px,9vw,128px) 0',
       }}
     >
       <div
         ref={innerRef}
         style={{
+          position: 'sticky', top: 0, height: '100vh', overflow: 'hidden',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           gap: 'clamp(18px,3vh,40px)',
         }}
@@ -471,7 +509,7 @@ export default function CinematicScrollStory() {
           position: 'relative', zIndex: 1, flexShrink: 0,
         }}
       >
-        Scroll, drag, or tap to explore
+        Scroll to explore
       </p>
 
       {/* Mid-section CTA */}
