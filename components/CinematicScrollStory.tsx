@@ -224,7 +224,7 @@ export default function CinematicScrollStory() {
   const maxNeighbors = isMobile ? 2 : isTablet ? 2 : 3;
 
   // Card height driven by viewport height; width follows an elegant portrait ratio.
-  const deskH   = Math.round(Math.max(360, Math.min(isTablet ? 460 : 560, windowHeight * 0.62)));
+  const deskH   = Math.round(Math.max(360, Math.min(isTablet ? 500 : 620, windowHeight * 0.78)));
   const collW   = isTablet ? 52 : 64;
   // Ensure the whole fan (active + visible neighbours + gaps) fits the viewport width.
   const sideRoom = 2 * maxNeighbors * (collW + 8) + 96;
@@ -233,6 +233,17 @@ export default function CinematicScrollStory() {
     : Math.max(300, Math.min(Math.round(deskH * 0.82), windowWidth - sideRoom));
   const activeH = isMobile ? Math.round(Math.max(300, Math.min(360, windowHeight * 0.46))) : deskH;
   const collH   = isMobile ? 50  : deskH;
+
+  // Dynamic perspective origin so the active card stays visually centered for every chapter.
+  const gapPx = isMobile ? 10 : 5;
+  const leftCards  = isMobile ? 0 : Math.min(activeIndex, maxNeighbors);
+  const rightCards = isMobile ? 0 : Math.min(CARDS.length - 1 - activeIndex, maxNeighbors);
+  const totalContentW = leftCards * (collW + gapPx) + activeW + rightCards * (collW + gapPx);
+  const activeCenterFromContentLeft = leftCards * (collW + gapPx) + activeW / 2;
+  const perspContainerW = windowWidth;
+  const perspOriginX = Math.round(
+    ((perspContainerW / 2 - totalContentW / 2 + activeCenterFromContentLeft) / perspContainerW) * 100
+  );
 
   /* ── render ─────────────────────────────────────────────── */
   return (
@@ -302,7 +313,7 @@ export default function CinematicScrollStory() {
         style={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
           padding: '0 clamp(16px,4vw,48px)',
-          perspective: '1100px', perspectiveOrigin: '50% 46%',
+          perspective: '1100px', perspectiveOrigin: `${perspOriginX}% 46%`,
           position: 'relative', zIndex: 1, flexShrink: 0,
         }}
       >
@@ -560,7 +571,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
       }} />
 
       {/* Image */}
-      <div style={{ position: 'relative', flex: compact ? '0 0 44%' : '0 0 52%', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', flex: compact ? '0 0 54%' : '0 0 65%', overflow: 'hidden' }}>
         <motion.div
           initial={{ scale: 1.07, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
