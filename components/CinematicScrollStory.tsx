@@ -224,13 +224,13 @@ export default function CinematicScrollStory() {
   const maxNeighbors = isMobile ? 2 : isTablet ? 2 : 3;
 
   // Card height driven by viewport height; width follows an elegant portrait ratio.
-  const deskH   = Math.round(Math.max(360, Math.min(isTablet ? 500 : 620, windowHeight * 0.78)));
+  const deskH   = Math.round(Math.max(320, Math.min(isTablet ? 420 : 500, windowHeight * 0.6)));
   const collW   = isTablet ? 52 : 64;
   // Ensure the whole fan (active + visible neighbours + gaps) fits the viewport width.
   const sideRoom = 2 * maxNeighbors * (collW + 8) + 96;
   const activeW = isMobile
     ? Math.min(380, windowWidth - 32)
-    : Math.max(300, Math.min(Math.round(deskH * 0.82), windowWidth - sideRoom));
+    : Math.max(340, Math.min(Math.round(deskH * 1.18), windowWidth - sideRoom));
   const activeH = isMobile ? Math.round(Math.max(300, Math.min(360, windowHeight * 0.46))) : deskH;
   const collH   = isMobile ? 50  : deskH;
 
