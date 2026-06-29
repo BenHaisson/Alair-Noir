@@ -4,6 +4,7 @@ import ScrollProgress from '@/components/ScrollProgress';
 import HeroSection from '@/components/HeroSection';
 import CinematicScrollStory from '@/components/CinematicScrollStory';
 import FleetShowcase from '@/components/FleetShowcase';
+import BmwI7Presentation from '@/components/BmwI7Presentation';
 import InteriorExperience from '@/components/InteriorExperience';
 import ServicesSection from '@/components/ServicesSection';
 import TrustSection from '@/components/TrustSection';
@@ -19,6 +20,7 @@ export default function Home() {
         <HeroSection />
         <CinematicScrollStory />
         <FleetShowcase />
+        <BmwI7Presentation />
         <InteriorExperience />
         <ServicesSection />
         <TrustSection />
