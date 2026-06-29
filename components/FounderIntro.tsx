@@ -38,7 +38,7 @@ export default function FounderIntro() {
             fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase',
             color: 'var(--gold)', marginBottom: '18px',
           }}>
-            Behind the service
+            The principle
           </p>
           <h2
             id="founder-heading"
@@ -47,10 +47,10 @@ export default function FounderIntro() {
               fontSize: 'clamp(36px,4.2vw,64px)', lineHeight: 0.95, color: '#EDE8E0',
             }}
           >
-            The person behind
+            Built around
             <br />
             <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)' }}>
-              the wheel matters.
+              continuity.
             </em>
           </h2>
         </motion.div>
@@ -65,14 +65,14 @@ export default function FounderIntro() {
             fontSize: 'clamp(14px,1.1vw,16px)', lineHeight: 1.85,
             color: 'var(--text-muted)', marginBottom: '32px',
           }}>
-            ALAIR NOIR is built around continuity. A private chauffeur service should not feel random, rushed, or anonymous. Every journey is prepared with the same principle: know the route, respect the passenger, protect the silence, and arrive without noise.
+            ALAIR NOIR is a private chauffeur service that should not feel random, rushed, or anonymous. Every journey is prepared with the same principle: know the route, respect the passenger, protect the silence, and arrive without noise.
           </p>
           <p style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
             fontSize: 'clamp(22px,2.4vw,32px)', lineHeight: 1.3,
             color: '#EDE8E0', paddingTop: '28px', borderTop: '1px solid var(--border-gold)',
           }}>
-            One driver relationship. Two vehicles. One standard.
+            Continuity, discretion, and precision — on every journey.
           </p>
         </motion.div>
       </div>

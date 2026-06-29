@@ -32,7 +32,7 @@ export default function Footer() {
             fontSize: '11px', letterSpacing: '0.05em',
             color: 'var(--text)',
           }}>
-            Two vehicles. One standard.
+            Held to one standard.
           </p>
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
