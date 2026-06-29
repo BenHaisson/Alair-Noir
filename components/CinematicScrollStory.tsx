@@ -360,7 +360,7 @@ export default function CinematicScrollStory() {
                   border: isActive
                     ? '1.5px solid rgba(212,175,55,0.55)'
                     : '1px solid rgba(255,255,255,0.14)',
-                  background: '#1c1a16',
+                  background: '#2a2722',
                   cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
                   boxShadow: isActive
                     ? '0 44px 88px -22px rgba(0,0,0,0.95), 0 0 0 1px rgba(212,175,55,0.08), inset 0 1px 0 rgba(255,255,255,0.05)'
@@ -387,8 +387,8 @@ export default function CinematicScrollStory() {
                       {!isMobile && (
                         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                           <Image src={card.image} alt="" fill sizes="80px"
-                            className="object-cover" style={{ filter: 'saturate(0.72) brightness(0.55)' }} />
-                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(28,26,22,0.32)' }} />
+                            className="object-cover" style={{ filter: 'saturate(0.8) brightness(0.68)' }} />
+                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(42,39,34,0.28)' }} />
                         </div>
                       )}
 
@@ -554,7 +554,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         </motion.div>
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 38%, rgba(28,26,22,0.7) 76%, #1c1a16 100%)',
+          background: 'linear-gradient(to bottom, transparent 40%, rgba(42,39,34,0.68) 78%, #2a2722 100%)',
         }} />
         <div style={{ position: 'absolute', top: '14px', left: '16px', zIndex: 2 }}>
           <span style={{
