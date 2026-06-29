@@ -23,7 +23,7 @@ const CARDS: FanCard[] = [
     eyebrow: '01 — The Request',
     heading: 'A private',
     italic: 'request.',
-    body: 'A journey begins quietly: one message, one route, one standard of discretion before anything becomes visible.',
+    body: 'Your journey begins directly — by WhatsApp, phone, or email. No platform layer. No anonymous dispatch. Just a clear request, handled with discretion.',
     preview: 'Begin a private enquiry',
     image: '/images/chauffeur-arrival.png',
     imageAlt: 'Chauffeur awaiting arrival at dusk',
@@ -34,8 +34,8 @@ const CARDS: FanCard[] = [
     eyebrow: '02 — The Standard',
     heading: 'Two vehicles.',
     italic: 'One standard.',
-    body: 'The collection is intentionally small: a black BMW i7 and a black Mercedes-Benz V-Class, each maintained for private Swiss mobility.',
-    preview: 'View the collection',
+    body: 'The fleet is deliberately limited: a BMW i7 xDrive60 and a Mercedes-Benz V-Class. Fewer vehicles means tighter control, better preparation, and a consistent standard every time.',
+    preview: 'View the fleet',
     image: '/images/bmw-i7-studio.png',
     imageAlt: 'BMW i7 in a dark studio setting',
   },
@@ -45,19 +45,19 @@ const CARDS: FanCard[] = [
     eyebrow: '03 — The Silence',
     heading: 'Silence',
     italic: 'as a luxury.',
-    body: 'The BMW i7 xDrive60 is fully electric. No engine noise. No vibration. Just the road and the minutes before arrival.',
+    body: 'The BMW i7 xDrive60 is fully electric. No engine noise. No vibration. Just the road, the cabin, and the meeting you are preparing for.',
     preview: 'Experience the i7',
     image: '/images/bmw-i7-cockpit-night.png',
     imageAlt: 'BMW i7 cockpit at night with ambient lighting',
   },
   {
     num: '04',
-    label: 'The Space',
-    eyebrow: '04 — The Space',
-    heading: 'Executive',
-    italic: 'space.',
-    body: 'The Mercedes-Benz V-Class creates room for delegations, families, luggage, and airport arrivals without losing privacy.',
-    preview: 'Explore the V-Class',
+    label: 'The Cabin',
+    eyebrow: '04 — The Cabin',
+    heading: 'Prepared',
+    italic: 'before you enter.',
+    body: 'Lighting, seating, route timing, luggage handling, and privacy expectations are treated as part of the service — not details left to chance.',
+    preview: 'Step inside',
     image: '/images/mercedes-v-class-cabin-rear.png',
     imageAlt: 'Mercedes-Benz V-Class rear cabin executive seating',
   },
@@ -65,32 +65,32 @@ const CARDS: FanCard[] = [
     num: '05',
     label: 'The Route',
     eyebrow: '05 — The Route',
-    heading: 'Zurich to',
+    heading: 'Zürich to',
     italic: 'wherever.',
-    body: 'Zurich, Geneva, Davos, St. Moritz, Milan, and Munich: routes are handled as private passages, not transfers.',
+    body: 'Airport transfers, Davos, St. Moritz, Geneva, Basel, Milan, Munich, WEF, Art Basel, and private long-distance journeys across Switzerland and Europe.',
     preview: 'See the routes',
     image: '/images/bmw-i7-zurich.png',
     imageAlt: 'BMW i7 in Zurich city landscape at night',
   },
   {
     num: '06',
-    label: 'The Protocol',
-    eyebrow: '06 — The Protocol',
-    heading: 'Discretion',
-    italic: 'by design.',
-    body: 'Punctuality, privacy, controlled handover, and no unnecessary visibility. The service stays precise and nearly invisible.',
-    preview: 'Read the protocol',
+    label: 'The Arrival',
+    eyebrow: '06 — The Arrival',
+    heading: 'Arrive',
+    italic: 'without noise.',
+    body: 'The best arrival is not dramatic. It is punctual, calm, discreet, and already prepared before the door opens.',
+    preview: 'Plan the arrival',
     image: '/images/bmw-i7-black-studio.png',
     imageAlt: 'BMW i7 in a black studio environment',
   },
   {
     num: '07',
-    label: 'The Arrival',
-    eyebrow: '07 — The Arrival',
-    heading: 'Arrival',
-    italic: 'without noise.',
-    body: 'Hotel entrance, private aviation terminal, board dinner, or residence: the final moment is calm, direct, and unannounced.',
-    preview: 'Plan the arrival',
+    label: 'The Relationship',
+    eyebrow: '07 — The Relationship',
+    heading: 'Preferences',
+    italic: 'remembered.',
+    body: 'For returning clients, the service becomes quieter over time. Routes, timing, cabin setup, and communication preferences are understood before they need to be repeated.',
+    preview: 'A direct relationship',
     image: '/images/bmw-i7-private-office.png',
     imageAlt: 'BMW i7 rear cabin prepared for executive arrival',
   },
@@ -98,10 +98,10 @@ const CARDS: FanCard[] = [
     num: '08',
     label: 'The Booking',
     eyebrow: '08 — The Booking',
-    heading: 'Reserved',
-    italic: 'quietly.',
-    body: 'A premium request flow: direct contact, route details, timing, passengers, luggage, and any preference that should be remembered.',
-    preview: 'Reserve your passage',
+    heading: 'Ready when',
+    italic: 'you are.',
+    body: 'Send a route, date, passenger count, and preferred vehicle. You will receive a direct response without intermediary handling.',
+    preview: 'Arrange a journey',
     image: '/images/bmw-i7-dashboard-light.png',
     imageAlt: 'BMW i7 crystal dashboard with ambient lighting',
   },
@@ -233,6 +233,7 @@ export default function CinematicScrollStory() {
   return (
     <section
       ref={outerRef}
+      id="story"
       aria-label="Alair Noir experience chapters"
       style={{
         position: 'relative',
@@ -275,11 +276,19 @@ export default function CinematicScrollStory() {
         </p>
         <h2 style={{
           fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-          fontSize: 'clamp(34px,4.4vw,68px)', lineHeight: 0.9, color: '#EDE8E0',
+          fontSize: 'clamp(32px,4.2vw,64px)', lineHeight: 0.92, color: '#EDE8E0',
         }}>
-          Eight moments,
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one passage.</em>
+          A journey, held to
+          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one standard.</em>
         </h2>
+        <p style={{
+          fontFamily: 'var(--font-inter)', fontWeight: 300,
+          fontSize: 'clamp(11px,0.9vw,13px)', lineHeight: 1.7,
+          color: 'var(--text-muted)', maxWidth: '560px',
+          margin: '16px auto 0',
+        }}>
+          Every Alair Noir journey follows the same rhythm — from first request to final arrival. Not a platform. Not a rotating fleet. A private mobility service built around continuity, discretion, and precision.
+        </p>
       </motion.div>
 
       {/* 3D fan / accordion */}
@@ -487,6 +496,25 @@ export default function CinematicScrollStory() {
       >
         Scroll to explore
       </motion.p>
+
+      {/* Mid-section CTA */}
+      <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1, flexShrink: 0 }}>
+        <a
+          href="#contact"
+          style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            height: '42px', padding: '0 28px',
+            border: '1px solid rgba(212,175,55,0.45)', color: 'var(--gold)',
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
+            transition: 'background 0.25s, color 0.25s',
+          }}
+          onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
+          onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = 'var(--gold)'; }}
+        >
+          Arrange a Journey
+        </a>
+      </div>
 
       </div>
 

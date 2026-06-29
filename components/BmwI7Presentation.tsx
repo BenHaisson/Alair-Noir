@@ -8,33 +8,33 @@ const I7_SLIDES = [
   {
     src: '/images/bmw-i7-private-office.png',
     alt: 'BMW i7 rear cabin at night with an executive passenger viewing market data beside a city window',
-    label: 'Private Office',
-    title: 'Work held in silence.',
-    detail: 'A rear cabin prepared for board notes, market screens, calls, and the quiet minutes between hotel, runway, and arrival.',
+    label: 'Executive Lounge',
+    title: 'Comfort, prepared.',
+    detail: 'Rear-seat comfort designed for prepared arrivals.',
     featured: true,
   },
   {
     src: '/images/bmw-i7-dashboard-light.png',
     alt: 'BMW i7 crystalline dashboard and passenger door lighting with purple ambient illumination',
-    label: 'Ambient Command',
+    label: 'Ambient Privacy',
     title: 'Light without spectacle.',
-    detail: 'Crystal surfaces, precise controls, and a low night glow create a cabin that feels composed before the route begins.',
+    detail: 'Lighting and cabin atmosphere kept calm, discreet, and controlled.',
     featured: false,
   },
   {
     src: '/images/bmw-i7-rear-theatre.png',
     alt: 'BMW i7 rear passenger cabin with theatre display and violet ambient lighting',
-    label: 'Rear Theatre',
+    label: 'Rear Theatre Display',
     title: 'The cabin becomes a suite.',
-    detail: 'The rear display and executive seating turn distance into privacy: watch, prepare, review, or simply disappear from the city.',
+    detail: 'A long-distance cabin experience for work, media, and quiet travel.',
     featured: false,
   },
   {
     src: '/images/bmw-i7-executive-lounge.png',
     alt: 'BMW i7 rear cabin viewed from the back seats with illuminated roof and executive lounge seating',
-    label: 'Executive Lounge',
+    label: 'Business Preparation',
     title: 'Electric calm, fully settled.',
-    detail: 'An insulated electric platform, reclined passenger space, and a controlled visual field keep the journey deliberately quiet.',
+    detail: 'A space to review documents, calls, and priorities before arrival.',
     featured: false,
   },
 ];
@@ -136,8 +136,24 @@ export default function BmwI7Presentation() {
               marginBottom: '34px',
             }}
           >
-            The BMW i7 is the executive chamber of the collection: electric, insulated, and composed for the moments between boardroom, residence, runway, and evening arrival.
+            The BMW i7 is not presented as transportation. It is a private executive cabin between airport, hotel, meeting, and dinner.
           </p>
+
+          <a
+            href="#contact"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              height: '42px', padding: '0 26px', marginBottom: '34px',
+              border: '1px solid rgba(201,168,76,0.45)', color: 'var(--gold)',
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              transition: 'background 0.25s, color 0.25s',
+            }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = 'var(--gold)'; }}
+          >
+            Request the BMW i7
+          </a>
 
           <div
             role="list"

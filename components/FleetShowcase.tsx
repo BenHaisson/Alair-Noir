@@ -6,38 +6,35 @@ import { motion, useInView } from 'framer-motion';
 
 const VEHICLES = [
   {
-    badge: 'Primary Collection',
+    badge: 'Electric Executive Sedan',
     name: 'BMW i7',
-    sub: 'xDrive60 · G70',
-    type: 'Full Electric',
-    plate: 'ZH 992 590',
+    sub: 'xDrive60',
     image: '/images/bmw-i7-black-studio.png',
     imageAlt: 'Black BMW i7 xDrive60 in a dark studio setting',
-    specs: [
-      ['Interior', 'Anthracite Quilted Leather'],
-      ['Trim', 'Burgundy Contrast'],
-      ['Package', 'M Aerodynamic'],
-      ['Rear Seating', 'Executive Lounge'],
-      ['Entertainment', 'Amazon Fire TV'],
-      ['Complimentary', 'Still Water'],
-      ['Certified', 'Tachograph + Limousine Permit'],
+    copy: 'For discreet executive travel, airport transfers, board meetings, and private long-distance journeys. Silent, composed, and prepared for clients who value calm over display.',
+    bestFor: 'Executives · ZRH Airport · Private clients · Board meetings · Long-distance travel',
+    details: [
+      'Fully electric',
+      'Executive rear cabin',
+      'Rear theatre display',
+      'Silent ride quality',
+      'Plate: ZH 992 590',
     ],
   },
   {
-    badge: 'Group & Executive',
+    badge: 'Executive Group Vehicle',
     name: 'Mercedes-Benz',
-    sub: 'V-Class · Long',
-    type: 'Executive Van',
-    plate: null,
+    sub: 'V-Class',
     image: '/images/mercedes-v-class-black-studio.png',
     imageAlt: 'Black Mercedes-Benz V-Class in a dark studio setting',
-    specs: [
-      ['Seating', 'Up to 7 passengers'],
-      ['Configuration', 'Business Class layout'],
-      ['Luggage', 'Generous cargo capacity'],
-      ['Use Case', 'Group transfers, delegations'],
-      ['Coverage', 'Switzerland & Europe'],
-      ['Booking', 'On request'],
+    copy: 'For delegations, family offices, corporate teams, events, luggage-heavy transfers, and group journeys where space must still feel private.',
+    bestFor: 'Delegations · Families · Events · Assistants booking for teams · Long-distance group travel',
+    details: [
+      'Up to 7 passengers',
+      'Business-class layout',
+      'Generous luggage capacity',
+      'Executive group comfort',
+      'Ideal for events and delegations',
     ],
   },
 ];
@@ -68,7 +65,7 @@ export default function FleetShowcase() {
             marginBottom: '16px',
           }}
         >
-          The Collection
+          The Fleet
         </motion.p>
         <motion.h2
           id="collection-heading"
@@ -81,14 +78,34 @@ export default function FleetShowcase() {
             fontSize: 'clamp(42px,5.5vw,80px)',
             lineHeight: 0.92,
             color: '#EDE8E0',
+            marginBottom: '24px',
           }}
         >
-          Defined by
+          Two vehicles.
           <br />
           <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '6%' }}>
-            what you need.
+            Chosen deliberately.
           </em>
         </motion.h2>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          style={{ maxWidth: '560px' }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '14px', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '10px',
+          }}>
+            A limited fleet is not a limitation. It is how every detail stays controlled.
+          </p>
+          <p style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '13px', lineHeight: 1.8, color: 'var(--text-subtle)',
+          }}>
+            One electric executive sedan. One business-class V-Class. Both prepared to the same standard.
+          </p>
+        </motion.div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%,520px),1fr))' }}>
@@ -140,7 +157,7 @@ export default function FleetShowcase() {
                 {v.badge}
               </p>
 
-              <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
+              <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
                 <h3
                   style={{
                     fontFamily: 'var(--font-cormorant)',
@@ -165,76 +182,56 @@ export default function FleetShowcase() {
                 </span>
               </div>
 
-              <div style={{ display: 'flex', gap: '16px', marginBottom: '32px', flexWrap: 'wrap' }}>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontWeight: 300,
-                    fontSize: '10px',
-                    letterSpacing: '0.14em',
-                    color: 'var(--text-subtle)',
-                  }}
-                >
-                  {v.type}
-                </span>
-                {v.plate && (
-                  <>
-                    <span style={{ color: 'var(--border-gold)' }}>·</span>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-inter)',
-                        fontWeight: 300,
-                        fontSize: '10px',
-                        letterSpacing: '0.14em',
-                        color: 'var(--text-subtle)',
-                      }}
-                    >
-                      {v.plate}
-                    </span>
-                  </>
-                )}
-              </div>
+              <p style={{
+                fontFamily: 'var(--font-inter)', fontWeight: 300,
+                fontSize: '13px', lineHeight: 1.8, color: 'var(--text-muted)',
+                marginBottom: '28px',
+              }}>
+                {v.copy}
+              </p>
 
-              <dl style={{ display: 'flex', flexDirection: 'column' }}>
-                {v.specs.map(([label, value]) => (
-                  <div
-                    key={label}
+              {/* Best for */}
+              <p style={{
+                fontFamily: 'var(--font-inter)', fontWeight: 300,
+                fontSize: '8px', letterSpacing: '0.24em', textTransform: 'uppercase',
+                color: 'var(--text-subtle)', marginBottom: '8px',
+              }}>
+                Best for
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+                fontSize: '16px', lineHeight: 1.5, color: 'var(--text-muted)',
+                marginBottom: '28px',
+              }}>
+                {v.bestFor}
+              </p>
+
+              {/* Details */}
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column' }}>
+                {v.details.map((detail) => (
+                  <li
+                    key={detail}
                     style={{
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'baseline',
+                      alignItems: 'center',
                       gap: '12px',
                       padding: '10px 0',
                       borderBottom: '1px solid var(--border)',
+                      fontFamily: 'var(--font-inter)',
+                      fontWeight: 300,
+                      fontSize: '12px',
+                      letterSpacing: '0.04em',
+                      color: 'var(--text-muted)',
                     }}
                   >
-                    <dt
-                      style={{
-                        fontFamily: 'var(--font-inter)',
-                        fontWeight: 300,
-                        fontSize: '9px',
-                        letterSpacing: '0.16em',
-                        textTransform: 'uppercase',
-                        color: 'var(--text-subtle)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {label}
-                    </dt>
-                    <dd
-                      style={{
-                        fontFamily: 'var(--font-cormorant)',
-                        fontWeight: 300,
-                        fontSize: '15px',
-                        color: 'var(--text-muted)',
-                        textAlign: 'right',
-                      }}
-                    >
-                      {value}
-                    </dd>
-                  </div>
+                    <span aria-hidden="true" style={{
+                      width: '4px', height: '4px', borderRadius: '50%',
+                      backgroundColor: 'var(--gold)', flexShrink: 0,
+                    }} />
+                    {detail}
+                  </li>
                 ))}
-              </dl>
+              </ul>
             </div>
           </motion.article>
         ))}

@@ -89,11 +89,96 @@ export default function BookingExperience() {
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
             fontSize: '13px', lineHeight: 1.8,
-            color: 'var(--text-muted)', maxWidth: '320px',
+            color: 'var(--text-muted)', maxWidth: '360px',
           }}
         >
-          Direct booking — no platform, no intermediary. Your reservation goes straight to your driver. Response within the hour.
+          Send your route, date, time, passenger count, and preferred vehicle. Your request goes directly to the driver — no platform, no intermediary, no anonymous dispatch.
         </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.32 }}
+          style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '12px', lineHeight: 1.8,
+            color: 'var(--text-subtle)', maxWidth: '360px', marginTop: '20px',
+          }}
+        >
+          Rates are provided on request according to route, waiting time, vehicle, and schedule requirements.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '32px' }}
+        >
+          <a
+            href="mailto:booking@alairnoir.ch"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              height: '44px', padding: '0 26px',
+              backgroundColor: 'var(--gold)', color: '#080808',
+              fontFamily: 'var(--font-inter)', fontWeight: 400,
+              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              transition: 'opacity 0.25s',
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
+          >
+            Request Private Mobility
+          </a>
+          <a
+            href="https://wa.me/41772870956"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              height: '44px', padding: '0 26px',
+              border: '1px solid rgba(237,232,224,0.22)', color: '#EDE8E0',
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              transition: 'border-color 0.25s',
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.6)')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.22)')}
+          >
+            Message on WhatsApp
+          </a>
+        </motion.div>
+
+        {/* Corporate / assistant booking line */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.48 }}
+          style={{ marginTop: '40px', paddingTop: '28px', borderTop: '1px solid var(--border)', maxWidth: '380px' }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '12px', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '18px',
+          }}>
+            Arranging travel for a principal, client, or executive team? ALAIR NOIR works directly with executive assistants, family offices, and corporate bookers.
+          </p>
+          <a
+            href="mailto:booking@alairnoir.ch"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              color: 'var(--gold)', transition: 'gap 0.25s',
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.gap = '16px')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.gap = '10px')}
+          >
+            Book for a Client
+            <svg width="20" height="12" viewBox="0 0 22 14" fill="none" aria-hidden="true">
+              <path d="M0 7H20M15 1l6 6-6 6" stroke="currentColor" strokeWidth="1.1" />
+            </svg>
+          </a>
+        </motion.div>
       </div>
 
       {/* Right — channels */}
