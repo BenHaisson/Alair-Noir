@@ -193,7 +193,7 @@ export default function CinematicScrollStory() {
   const sideRoom = 2 * maxNeighbors * (collW + 5) + 80;
   const activeW = isMobile
     ? Math.min(380, windowWidth - 32)
-    : Math.max(340, Math.min(Math.round(deskH * 1.18), windowWidth - sideRoom));
+    : Math.max(360, Math.min(Math.round(deskH * 1.5), windowWidth - sideRoom));
   const activeH = isMobile ? Math.round(Math.max(300, Math.min(360, windowHeight * 0.46))) : deskH;
   const collH   = isMobile ? 50  : deskH;
 
@@ -343,9 +343,7 @@ export default function CinematicScrollStory() {
                   border: 'none',
                   background: isActive ? '#11231a' : '#0b1610',
                   cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
-                  boxShadow: isActive
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 36px -28px rgba(0,0,0,0.6)'
-                    : 'inset 0 1px 0 rgba(255,255,255,0.04), 0 2px 8px -6px rgba(0,0,0,0.4)',
+                  boxShadow: 'none',
                 }}
               >
                 <AnimatePresence>
@@ -518,20 +516,6 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
       borderRadius: '12px', background: '#11231a',
     }}>
-      {/* Royal glass gloss sweep + gold beveled edge (3D feel) */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', inset: 0, zIndex: 5, pointerEvents: 'none',
-        background:
-          'linear-gradient(125deg, rgba(255,255,255,0.10) 0%, rgba(212,175,55,0.04) 16%, transparent 40%), ' +
-          'linear-gradient(300deg, rgba(0,0,0,0.22) 0%, transparent 40%)',
-        mixBlendMode: 'screen',
-      }} />
-      <div aria-hidden="true" style={{
-        position: 'absolute', inset: 0, zIndex: 6, pointerEvents: 'none',
-        borderRadius: '12px',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.25)',
-      }} />
-
       {/* Image */}
       <div style={{ position: 'relative', flex: compact ? '0 0 54%' : '0 0 65%', overflow: 'hidden' }}>
         <motion.div
