@@ -98,719 +98,482 @@ const CARDS: FanCard[] = [
   },
 ];
 
-const TOTAL_MS = 5000;
-const STEP_MS = 40;
+const PER_CARD_VH = 80;                 // scroll distance allotted per card transition
+const TOTAL_VH = 100 + (CARDS.length - 1) * PER_CARD_VH;
+const AUTOPLAY_MS = 4200;
+const SPRING = { type: 'spring' as const, stiffness: 300, damping: 32, mass: 0.8 };
 const MAX_NEIGHBORS = 3;
-const DRAG_THRESHOLD = 48;
 
 export default function CinematicScrollStory() {
   const [active, setActive] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [windowWidth, setWindowWidth] = useState(1200);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStartX, setDragStartX] = useState<number | null>(null);
+  const [windowHeight, setWindowHeight] = useState(800);
 
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const wheelThrottleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const isScrollingProg = useRef(false);
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const outerRef = useRef<HTMLElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(innerRef, { margin: '-20% 0px -20% 0px' });
   const shouldReduceMotion = useReducedMotion();
+
+  const rafRef = useRef<number | null>(null);
+  const userInteractingRef = useRef(false);
+  const autoScrollingRef = useRef(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
 
-  /* ── window resize ──────────────────────────────────────── */
+  /* ── window size ────────────────────────────────────────── */
   useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    const fn = () => setWindowWidth(window.innerWidth);
+    const fn = () => { setWindowWidth(window.innerWidth); setWindowHeight(window.innerHeight); };
+    fn();
     window.addEventListener('resize', fn);
     return () => window.removeEventListener('resize', fn);
   }, []);
 
+  /* ── scroll → active card (drives both mobile & desktop) ── */
+  useEffect(() => {
+    const update = () => {
+      rafRef.current = null;
+      const el = outerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      const p = total > 0 ? scrolled / total : 0;
+      const idx = Math.round(p * (CARDS.length - 1));
+      setActive((prev) => (prev === idx ? prev : idx));
+    };
+    const onScroll = () => {
+      if (rafRef.current == null) rafRef.current = requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  /* ── detect user interaction (pauses autoplay) ──────────── */
+  useEffect(() => {
+    const mark = () => {
+      if (autoScrollingRef.current) return; // ignore our own programmatic scroll
+      userInteractingRef.current = true;
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = setTimeout(() => { userInteractingRef.current = false; }, 2600);
+    };
+    window.addEventListener('wheel', mark, { passive: true });
+    window.addEventListener('touchstart', mark, { passive: true });
+    window.addEventListener('keydown', mark);
+    return () => {
+      window.removeEventListener('wheel', mark);
+      window.removeEventListener('touchstart', mark);
+      window.removeEventListener('keydown', mark);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, []);
+
+  /* ── scroll the page so a given card becomes active ─────── */
+  const scrollToCard = (i: number) => {
+    const el = outerRef.current;
+    if (!el) return;
+    const total = el.offsetHeight - window.innerHeight;
+    const sectionTopAbs = window.scrollY + el.getBoundingClientRect().top;
+    const target = sectionTopAbs + (i / (CARDS.length - 1)) * total;
+    autoScrollingRef.current = true;
+    window.scrollTo({ top: target, behavior: shouldReduceMotion ? 'auto' : 'smooth' });
+    setTimeout(() => { autoScrollingRef.current = false; }, 800);
+  };
+
+  /* ── autoplay (auto-scrolls through cards while pinned) ─── */
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      if (userInteractingRef.current) return;
+      const el = outerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      // only when the slider is pinned and filling the viewport
+      if (rect.top > 1 || rect.bottom < window.innerHeight - 1) return;
+      if (active >= CARDS.length - 1) return; // reached the end — release to next section
+      scrollToCard(active + 1);
+    }, AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [active, shouldReduceMotion]);
+
   /* ── keyboard ───────────────────────────────────────────── */
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') { setPrev(active); setActive((p) => (p - 1 + CARDS.length) % CARDS.length); setProgress(0); }
-      if (e.key === 'ArrowRight') { setPrev(active); setActive((p) => (p + 1) % CARDS.length); setProgress(0); }
+      if (!inView) return;
+      if (e.key === 'ArrowLeft') scrollToCard(Math.max(0, active - 1));
+      if (e.key === 'ArrowRight') scrollToCard(Math.min(CARDS.length - 1, active + 1));
     };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
-  }, [active]);
-
-  /* ── autoplay (desktop only, pauses on hover) ───────────── */
-  useEffect(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (progressRef.current) clearInterval(progressRef.current);
-    setProgress(0);
-
-    if (!isMobile && !isHovered && !shouldReduceMotion && inView) {
-      let elapsed = 0;
-      progressRef.current = setInterval(() => {
-        elapsed += STEP_MS;
-        setProgress(Math.min((elapsed / TOTAL_MS) * 100, 100));
-      }, STEP_MS);
-      timerRef.current = setInterval(() => {
-        setPrev(active);
-        setActive((p) => (p + 1) % CARDS.length);
-        setProgress(0);
-        elapsed = 0;
-      }, TOTAL_MS);
-    }
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (progressRef.current) clearInterval(progressRef.current);
-    };
-  }, [isMobile, isHovered, active, shouldReduceMotion, inView]);
-
-  /* ── mobile: scroll carousel to active card ─────────────── */
-  useEffect(() => {
-    if (!isMobile || !carouselRef.current || isScrollingProg.current) return;
-    const el = carouselRef.current;
-    const cardW = el.clientWidth * 0.84 + 12;
-    isScrollingProg.current = true;
-    el.scrollTo({ left: active * cardW, behavior: 'smooth' });
-    setTimeout(() => { isScrollingProg.current = false; }, 600);
-  }, [active, isMobile]);
-
-  /* ── mobile: detect active card from scroll ─────────────── */
-  const handleCarouselScroll = () => {
-    if (isScrollingProg.current || !carouselRef.current) return;
-    const el = carouselRef.current;
-    const cardW = el.clientWidth * 0.84 + 12;
-    const idx = Math.round(el.scrollLeft / cardW);
-    setActive(Math.max(0, Math.min(CARDS.length - 1, idx)));
-  };
-
-  /* ── navigate helpers ───────────────────────────────────── */
-  const handleCardClick = (i: number) => {
-    if (!isDragging) { setPrev(active); setActive(i); setProgress(0); }
-  };
-  const handleNext = () => { setPrev(active); setActive((p) => (p + 1) % CARDS.length); setProgress(0); };
-  const handlePrev = () => { setPrev(active); setActive((p) => (p - 1 + CARDS.length) % CARDS.length); setProgress(0); };
-
-  /* ── mouse drag (desktop) ───────────────────────────────── */
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === 'touch') return;
-    setDragStartX(e.clientX);
-    setIsDragging(false);
-    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
-  };
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (dragStartX === null || e.pointerType === 'touch') return;
-    if (Math.abs(e.clientX - dragStartX) > 8) setIsDragging(true);
-  };
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (dragStartX === null || e.pointerType === 'touch') return;
-    const delta = e.clientX - dragStartX;
-    if (Math.abs(delta) > DRAG_THRESHOLD) { delta < 0 ? handleNext() : handlePrev(); }
-    setDragStartX(null);
-    setIsDragging(false);
-  };
-
-  /* ── wheel / trackpad (desktop) ─────────────────────────── */
-  const handleWheel = (e: React.WheelEvent) => {
-    if (wheelThrottleRef.current) return;
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (Math.abs(delta) < 30) return;
-    delta > 0 ? handleNext() : handlePrev();
-    wheelThrottleRef.current = setTimeout(() => { wheelThrottleRef.current = null; }, 700);
-  };
+  }, [active, inView]);
 
   /* ── sizing ─────────────────────────────────────────────── */
-  const activeW = isTablet ? 310 : 360;
-  const collW   = isTablet ? 52  : 60;
-  const cardH   = isTablet ? 420 : 480;
+  const cardH   = Math.round(Math.max(340, Math.min(isTablet ? 480 : 560, windowHeight * 0.66)));
+  const activeW = isMobile ? Math.round(windowWidth * 0.82) : isTablet ? 380 : 460;
+  const collW   = isTablet ? 58 : 68;
 
   /* ── render ─────────────────────────────────────────────── */
   return (
     <section
-      ref={sectionRef}
+      ref={outerRef}
       aria-label="Alair Noir experience chapters"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       style={{
-        backgroundColor: 'var(--bg)',
-        padding: 'clamp(64px,9vw,128px) 0 clamp(72px,10vw,140px)',
-        overflow: 'hidden',
         position: 'relative',
+        height: `${TOTAL_VH}vh`,
+        backgroundColor: 'var(--bg)',
       }}
     >
-      {/* Ambient background */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background:
-          'radial-gradient(circle at 50% 58%, rgba(14,31,22,0.5), transparent 52%), ' +
-          'radial-gradient(circle at 80% 16%, rgba(212,175,55,0.04), transparent 28%)',
-      }} />
-
-      {/* ── Section heading ─────────────────────────────────── */}
-      <motion.div
-        initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      <div
+        ref={innerRef}
         style={{
-          textAlign: 'center',
-          marginBottom: 'clamp(36px,5vw,64px)',
-          padding: '0 clamp(24px,5vw,60px)',
-          position: 'relative',
-          zIndex: 1,
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: 'clamp(20px,3vh,40px)',
         }}
       >
-        <p style={{
-          fontFamily: 'var(--font-inter)', fontWeight: 300,
-          fontSize: '9px', letterSpacing: '0.26em',
-          textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '18px',
-        }}>
-          The Journey
-        </p>
-        <h2 style={{
-          fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-          fontSize: 'clamp(42px,5.6vw,84px)', lineHeight: 0.9, color: '#EDE8E0',
-        }}>
-          Eight moments,
-          <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)', paddingLeft: '5%' }}>
-            one passage.
-          </em>
-        </h2>
-      </motion.div>
+        {/* Ambient background */}
+        <div aria-hidden="true" style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background:
+            'radial-gradient(circle at 50% 56%, rgba(14,31,22,0.5), transparent 52%), ' +
+            'radial-gradient(circle at 80% 16%, rgba(212,175,55,0.05), transparent 28%)',
+        }} />
 
-      {/* ── DESKTOP 3D fan ──────────────────────────────────── */}
-      {!isMobile && (
+        {/* ── Heading ────────────────────────────────────────── */}
         <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.9, delay: 0.2 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '0 clamp(16px,3vw,48px)',
-            perspective: '1400px',
-            perspectiveOrigin: '50% 46%',
+            textAlign: 'center',
+            padding: '0 clamp(24px,5vw,60px)',
             position: 'relative',
             zIndex: 1,
-            cursor: isDragging ? 'grabbing' : 'grab',
-            userSelect: 'none',
+            flexShrink: 0,
           }}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerLeave={handlePointerUp}
-          onWheel={handleWheel}
         >
-          <div
-            role="tablist"
-            aria-label="Experience chapters"
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'nowrap',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 'clamp(5px,0.4vw,9px)',
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            {CARDS.map((card, i) => {
-              const isActive = i === active;
-              const diff = Math.abs(i - active);
-              const isVisible = diff <= MAX_NEIGHBORS;
+          <p style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '9px', letterSpacing: '0.26em',
+            textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '14px',
+          }}>
+            The Journey
+          </p>
+          <h2 style={{
+            fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+            fontSize: 'clamp(36px,4.6vw,68px)', lineHeight: 0.9, color: '#EDE8E0',
+          }}>
+            Eight moments,
+            <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one passage.</em>
+          </h2>
+        </motion.div>
 
-              let rotateY = 0, z = 0, opacity = 1;
-              if (i < active) {
-                const d = active - i;
-                rotateY = isVisible ? 9 + (d - 1) * 9  : 45;
-                z       = isVisible ? -18 * d           : -160;
-                opacity = isVisible ? Math.max(1 - d * 0.16, 0.36) : 0;
-              } else if (i > active) {
-                const d = i - active;
-                rotateY = isVisible ? -(9 + (d - 1) * 9) : -45;
-                z       = isVisible ? -18 * d              : -160;
-                opacity = isVisible ? Math.max(1 - d * 0.16, 0.36) : 0;
-              } else {
-                z = 44;
-              }
+        {/* ── MOBILE: single card crossfade (scroll-driven) ──── */}
+        {isMobile && (
+          <div style={{
+            position: 'relative', zIndex: 1, flex: '0 0 auto',
+            display: 'flex', justifyContent: 'center', alignItems: 'center',
+            height: cardH, padding: '0 9vw',
+          }}>
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, scale: 0.94, y: 16 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: -16 }}
+                transition={shouldReduceMotion ? { duration: 0 } : SPRING}
+                style={{ width: '100%', maxWidth: '380px', height: '100%' }}
+              >
+                <CardFace card={CARDS[active]} cardH={cardH} active activeW={activeW} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        )}
 
-              return (
-                <motion.div
-                  key={card.eyebrow}
-                  role="tab"
-                  id={`fan-tab-${i}`}
-                  aria-selected={isActive}
-                  aria-controls={`fan-panel-${i}`}
-                  tabIndex={isVisible ? 0 : -1}
-                  aria-label={`Chapter ${card.num}: ${card.label}`}
-                  onClick={() => handleCardClick(i)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick(i); }
-                  }}
-                  animate={{
-                    width:   isVisible ? (isActive ? activeW : collW) : 0,
-                    height:  isVisible ? cardH : 0,
-                    rotateY: rotateY,
-                    z:       z,
-                    opacity: isVisible ? opacity : 0,
-                  }}
-                  transition={
-                    shouldReduceMotion
-                      ? { duration: 0 }
-                      : { type: 'spring', stiffness: 120, damping: 20, mass: 1.0 }
-                  }
-                  className="fan-card"
-                  style={{
-                    position: 'relative',
-                    flexShrink: 0,
-                    overflow: 'hidden',
-                    borderRadius: '10px',
-                    border: isActive
-                      ? '1px solid rgba(212,175,55,0.28)'
-                      : '1px solid rgba(255,255,255,0.05)',
-                    background: '#0c0c0c',
-                    cursor: 'inherit',
-                    transformStyle: 'preserve-3d',
-                    outline: 'none',
-                    boxShadow: isActive
-                      ? '0 40px 80px -20px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.04)'
-                      : '0 8px 24px -4px rgba(0,0,0,0.6)',
-                  }}
-                >
-                  {/* ── Collapsed card ─────────────────────────── */}
-                  <AnimatePresence mode="wait">
-                    {!isActive && isVisible && (
-                      <motion.div
-                        key="collapsed"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.14 }}
-                        style={{
-                          position: 'absolute', inset: 0,
-                          display: 'flex', flexDirection: 'column',
-                          alignItems: 'center', justifyContent: 'space-between',
-                          padding: '20px 0 18px',
-                          pointerEvents: 'none',
-                          zIndex: 2,
-                        }}
-                      >
-                        {/* Image fills collapsed card */}
-                        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                          <Image
-                            src={card.image}
-                            alt=""
-                            fill
-                            sizes="80px"
-                            className="object-cover"
-                            style={{ filter: 'saturate(0.5) brightness(0.28)' }}
-                          />
-                        </div>
+        {/* ── DESKTOP / TABLET: 3D fan (scroll-driven) ───────── */}
+        {!isMobile && (
+          <div style={{
+            display: 'flex', justifyContent: 'center',
+            padding: '0 clamp(16px,3vw,48px)',
+            perspective: '1500px', perspectiveOrigin: '50% 48%',
+            position: 'relative', zIndex: 1, flexShrink: 0,
+          }}>
+            <div
+              role="tablist"
+              aria-label="Experience chapters"
+              style={{
+                display: 'flex', flexDirection: 'row', flexWrap: 'nowrap',
+                alignItems: 'center', justifyContent: 'center',
+                gap: 'clamp(5px,0.4vw,9px)', transformStyle: 'preserve-3d',
+              }}
+            >
+              {CARDS.map((card, i) => {
+                const isActive = i === active;
+                const d = Math.abs(i - active);
+                const isVisible = d <= MAX_NEIGHBORS;
 
-                        {/* Number */}
-                        <span style={{
-                          position: 'relative', zIndex: 1,
-                          fontFamily: 'var(--font-inter)', fontSize: '7px',
-                          letterSpacing: '0.14em', color: 'rgba(246,242,233,0.22)',
-                        }}>
-                          {card.num}
-                        </span>
+                let rotateY = 0, z = 0, opacity = 1;
+                if (i < active) {
+                  rotateY = isVisible ? 9 + (d - 1) * 9  : 46;
+                  z       = isVisible ? -20 * d           : -180;
+                  opacity = isVisible ? Math.max(1 - d * 0.16, 0.4) : 0;
+                } else if (i > active) {
+                  rotateY = isVisible ? -(9 + (d - 1) * 9) : -46;
+                  z       = isVisible ? -20 * d              : -180;
+                  opacity = isVisible ? Math.max(1 - d * 0.16, 0.4) : 0;
+                } else {
+                  z = 48;
+                }
 
-                        {/* Vertical label */}
-                        <span style={{
-                          position: 'relative', zIndex: 1,
-                          writingMode: 'vertical-rl', textOrientation: 'mixed',
-                          transform: 'rotate(180deg)',
-                          fontFamily: 'var(--font-inter)', fontSize: '7.5px',
-                          letterSpacing: '0.2em', textTransform: 'uppercase',
-                          color: 'rgba(246,242,233,0.26)', whiteSpace: 'nowrap', userSelect: 'none',
-                        }}>
-                          {card.label}
-                        </span>
-
-                        {/* Gold dot */}
-                        <div style={{
-                          position: 'relative', zIndex: 1,
-                          width: '3px', height: '3px', borderRadius: '50%',
-                          background: 'rgba(212,175,55,0.4)',
-                        }} />
-                      </motion.div>
-                    )}
-
-                    {/* ── Expanded / active card ──────────────── */}
-                    {isActive && (
-                      <motion.div
-                        key="expanded"
-                        role="tabpanel"
-                        id={`fan-panel-${i}`}
-                        aria-labelledby={`fan-tab-${i}`}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.28, ease: 'easeOut' }}
-                        style={{
-                          position: 'absolute', inset: 0,
-                          display: 'flex', flexDirection: 'column',
-                          zIndex: 10, outline: 'none', overflow: 'hidden',
-                        }}
-                      >
-                        {/* Image — top 52% with Ken Burns animation */}
-                        <div style={{
-                          position: 'relative', flex: '0 0 52%', overflow: 'hidden',
-                        }}>
-                          <motion.div
-                            key={`img-${i}`}
-                            initial={{ scale: 1.06, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-                            style={{ position: 'absolute', inset: 0 }}
-                          >
-                            <Image
-                              src={card.image}
-                              alt={card.imageAlt}
-                              fill
-                              sizes={`${activeW}px`}
-                              className="object-cover"
-                              style={{ filter: 'saturate(0.82) contrast(1.08)' }}
-                              priority={i === 0}
-                            />
-                          </motion.div>
-                          {/* Gradient fade from image to card body */}
-                          <div aria-hidden="true" style={{
+                return (
+                  <motion.div
+                    key={card.eyebrow}
+                    role="tab"
+                    aria-selected={isActive}
+                    tabIndex={isVisible ? 0 : -1}
+                    aria-label={`Chapter ${card.num}: ${card.label}`}
+                    onClick={() => scrollToCard(i)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToCard(i); }
+                    }}
+                    animate={{
+                      width:   isVisible ? (isActive ? activeW : collW) : 0,
+                      height:  isVisible ? cardH : 0,
+                      rotateY,
+                      z,
+                      opacity: isVisible ? opacity : 0,
+                    }}
+                    transition={shouldReduceMotion ? { duration: 0 } : SPRING}
+                    className="fan-card"
+                    style={{
+                      position: 'relative', flexShrink: 0, overflow: 'hidden',
+                      borderRadius: '12px',
+                      border: isActive
+                        ? '1.5px solid rgba(212,175,55,0.55)'
+                        : '1px solid rgba(255,255,255,0.14)',
+                      background: '#0c0c0c',
+                      cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
+                      boxShadow: isActive
+                        ? '0 44px 88px -22px rgba(0,0,0,0.95), 0 0 0 1px rgba(212,175,55,0.08), inset 0 1px 0 rgba(255,255,255,0.05)'
+                        : '0 10px 30px -6px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.03)',
+                    }}
+                  >
+                    <AnimatePresence mode="wait">
+                      {!isActive && isVisible && (
+                        <motion.div
+                          key="collapsed"
+                          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                          transition={{ duration: 0.14 }}
+                          style={{
                             position: 'absolute', inset: 0,
-                            background: 'linear-gradient(to bottom, transparent 35%, rgba(12,12,12,0.7) 72%, #0c0c0c 100%)',
-                          }} />
-                          {/* Counter badge over image */}
+                            display: 'flex', flexDirection: 'column',
+                            alignItems: 'center', justifyContent: 'space-between',
+                            padding: '20px 0 18px', pointerEvents: 'none', zIndex: 2,
+                          }}
+                        >
+                          <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                            <Image src={card.image} alt="" fill sizes="80px"
+                              className="object-cover" style={{ filter: 'saturate(0.5) brightness(0.3)' }} />
+                            <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,12,12,0.4)' }} />
+                          </div>
+                          <span style={{
+                            position: 'relative', zIndex: 1,
+                            fontFamily: 'var(--font-inter)', fontSize: '7px',
+                            letterSpacing: '0.14em', color: 'rgba(246,242,233,0.4)',
+                          }}>{card.num}</span>
+                          <span style={{
+                            position: 'relative', zIndex: 1,
+                            writingMode: 'vertical-rl', textOrientation: 'mixed',
+                            transform: 'rotate(180deg)',
+                            fontFamily: 'var(--font-inter)', fontSize: '8px',
+                            letterSpacing: '0.2em', textTransform: 'uppercase',
+                            color: 'rgba(246,242,233,0.5)', whiteSpace: 'nowrap',
+                          }}>{card.label}</span>
                           <div style={{
-                            position: 'absolute', top: '14px', left: '16px', zIndex: 2,
-                          }}>
-                            <span style={{
-                              fontFamily: 'var(--font-inter)', fontSize: '7.5px',
-                              letterSpacing: '0.16em', color: 'rgba(246,242,233,0.5)',
-                              background: 'rgba(0,0,0,0.38)',
-                              backdropFilter: 'blur(6px)',
-                              border: '1px solid rgba(255,255,255,0.08)',
-                              borderRadius: '999px', padding: '3px 10px',
-                            }}>
-                              {card.num}&ensp;/&ensp;08
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Content — bottom 48% */}
-                        <div style={{
-                          flex: '1 1 auto', display: 'flex', flexDirection: 'column',
-                          justifyContent: 'space-between', padding: '18px 20px 16px',
-                          background: '#0c0c0c', position: 'relative', overflow: 'hidden',
-                        }}>
-                          {/* Watermark number */}
-                          <div aria-hidden="true" style={{
-                            position: 'absolute', right: '-4px', bottom: '-16px',
-                            fontFamily: 'var(--font-cormorant)', fontSize: '120px',
-                            fontWeight: 300, lineHeight: 1,
-                            color: 'rgba(212,175,55,0.055)',
-                            userSelect: 'none', pointerEvents: 'none',
-                          }}>
-                            {card.num}
-                          </div>
-
-                          {/* Gold left accent */}
-                          <div aria-hidden="true" style={{
-                            position: 'absolute', left: 0, top: '10%', bottom: '10%', width: '1px',
-                            background: 'linear-gradient(to bottom, transparent, rgba(212,175,55,0.7), transparent)',
+                            position: 'relative', zIndex: 1,
+                            width: '4px', height: '4px', borderRadius: '50%',
+                            background: 'rgba(212,175,55,0.5)',
                           }} />
+                        </motion.div>
+                      )}
 
-                          <div style={{ position: 'relative', zIndex: 1 }}>
-                            {/* Gold eyebrow */}
-                            <p style={{
-                              fontFamily: 'var(--font-inter)', fontWeight: 300,
-                              fontSize: '7.5px', letterSpacing: '0.26em',
-                              textTransform: 'uppercase', color: 'var(--gold)',
-                              marginBottom: '9px',
-                            }}>
-                              {card.eyebrow}
-                            </p>
-
-                            {/* Heading */}
-                            <h3 style={{
-                              fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                              fontSize: 'clamp(24px,2.6vw,36px)', lineHeight: 0.9,
-                              color: '#EDE8E0', marginBottom: '10px',
-                            }}>
-                              {card.heading}
-                              <br />
-                              <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.55)' }}>
-                                {card.italic}
-                              </em>
-                            </h3>
-
-                            {/* Body */}
-                            <p style={{
-                              fontFamily: 'var(--font-inter)', fontWeight: 300,
-                              fontSize: '10.5px', lineHeight: 1.8,
-                              color: 'rgba(246,242,233,0.42)',
-                            }}>
-                              {card.body}
-                            </p>
-                          </div>
-
-                          {/* Footer + autoplay progress bar */}
-                          <div style={{ position: 'relative', zIndex: 1 }}>
-                            {/* Progress bar */}
-                            {!isHovered && !isMobile && (
-                              <div style={{
-                                height: '1px', width: '100%', marginBottom: '10px',
-                                background: 'rgba(255,255,255,0.06)',
-                                borderRadius: '1px', overflow: 'hidden',
-                              }}>
-                                <motion.div
-                                  style={{
-                                    height: '100%',
-                                    background: 'rgba(212,175,55,0.55)',
-                                    borderRadius: '1px',
-                                  }}
-                                  animate={{ width: `${progress}%` }}
-                                  transition={{ duration: 0 }}
-                                />
-                              </div>
-                            )}
-                            <div style={{
-                              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            }}>
-                              <span style={{
-                                fontFamily: 'var(--font-inter)', fontSize: '7px',
-                                letterSpacing: '0.22em', textTransform: 'uppercase',
-                                color: 'rgba(246,242,233,0.16)',
-                              }}>
-                                Alair Noir
-                              </span>
-                              <span style={{
-                                fontFamily: 'var(--font-inter)', fontSize: '7px',
-                                letterSpacing: '0.14em', color: 'rgba(212,175,55,0.38)',
-                              }}>
-                                {card.label}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
+                      {isActive && (
+                        <motion.div
+                          key="expanded"
+                          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                          transition={{ duration: 0.26, ease: 'easeOut' }}
+                          style={{ position: 'absolute', inset: 0, zIndex: 10 }}
+                        >
+                          <CardFace card={card} cardH={cardH} active activeW={activeW} />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
-        </motion.div>
-      )}
+        )}
 
-      {/* ── MOBILE horizontal snap carousel ─────────────────── */}
-      {isMobile && (
-        <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          style={{ position: 'relative', zIndex: 1 }}
-        >
-          <div
-            ref={carouselRef}
-            onScroll={handleCarouselScroll}
-            className="mobile-carousel"
-            style={{
-              display: 'flex', overflowX: 'auto',
-              scrollSnapType: 'x mandatory',
-              WebkitOverflowScrolling: 'touch',
-              scrollbarWidth: 'none',
-              gap: '12px',
-              paddingLeft: '8vw', paddingRight: '8vw',
-            }}
-          >
-            {CARDS.map((card, i) => {
-              const isActive = i === active;
-              return (
-                <div
-                  key={card.eyebrow}
-                  onClick={() => handleCardClick(i)}
-                  style={{
-                    flex: '0 0 84vw', maxWidth: '360px', height: '420px',
-                    scrollSnapAlign: 'center', position: 'relative',
-                    overflow: 'hidden', borderRadius: '10px',
-                    border: isActive ? '1px solid rgba(212,175,55,0.28)' : '1px solid rgba(255,255,255,0.05)',
-                    background: '#0c0c0c',
-                    boxShadow: isActive ? '0 24px 56px -12px rgba(0,0,0,0.9)' : '0 8px 24px -4px rgba(0,0,0,0.5)',
-                    transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
-                    cursor: 'pointer',
-                    display: 'flex', flexDirection: 'column',
-                  }}
-                >
-                  {/* Image — top 48% */}
-                  <div style={{ position: 'relative', flex: '0 0 48%', overflow: 'hidden' }}>
-                    <Image
-                      src={card.image}
-                      alt={card.imageAlt}
-                      fill
-                      sizes="84vw"
-                      className="object-cover"
-                      style={{ filter: 'saturate(0.82) contrast(1.06)' }}
-                    />
-                    <div aria-hidden="true" style={{
-                      position: 'absolute', inset: 0,
-                      background: 'linear-gradient(to bottom, transparent 30%, rgba(12,12,12,0.65) 70%, #0c0c0c 100%)',
-                    }} />
-                    {/* Counter badge */}
-                    <div style={{ position: 'absolute', top: '12px', left: '14px', zIndex: 2 }}>
-                      <span style={{
-                        fontFamily: 'var(--font-inter)', fontSize: '7.5px',
-                        letterSpacing: '0.16em', color: 'rgba(246,242,233,0.48)',
-                        background: 'rgba(0,0,0,0.36)', backdropFilter: 'blur(6px)',
-                        border: '1px solid rgba(255,255,255,0.07)',
-                        borderRadius: '999px', padding: '3px 9px',
-                      }}>
-                        {card.num}&ensp;/&ensp;08
-                      </span>
-                    </div>
-                  </div>
+        {/* ── Screen reader live region ──────────────────────── */}
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          {`${CARDS[active].eyebrow}: ${CARDS[active].body}`}
+        </div>
 
-                  {/* Content — bottom 52% */}
-                  <div style={{
-                    flex: '1 1 auto', display: 'flex', flexDirection: 'column',
-                    justifyContent: 'space-between', padding: '16px 18px 14px',
-                    background: '#0c0c0c', position: 'relative', overflow: 'hidden',
-                  }}>
-                    {/* Watermark */}
-                    <div aria-hidden="true" style={{
-                      position: 'absolute', right: '-4px', bottom: '-12px',
-                      fontFamily: 'var(--font-cormorant)', fontSize: '100px',
-                      fontWeight: 300, lineHeight: 1,
-                      color: 'rgba(212,175,55,0.055)',
-                      userSelect: 'none', pointerEvents: 'none',
-                    }}>
-                      {card.num}
-                    </div>
+        {/* ── Progress dots ──────────────────────────────────── */}
+        <div style={{
+          display: 'flex', justifyContent: 'center', gap: '6px',
+          position: 'relative', zIndex: 1, flexShrink: 0,
+        }}>
+          {CARDS.map((card, i) => (
+            <button
+              key={card.num}
+              type="button"
+              onClick={() => scrollToCard(i)}
+              aria-label={`Chapter ${card.num}: ${card.label}`}
+              style={{
+                width: i === active ? '24px' : '6px',
+                height: '3px',
+                background: i === active ? 'var(--gold)' : 'rgba(255,255,255,0.18)',
+                border: 'none', cursor: 'pointer', borderRadius: '2px', padding: 0, flexShrink: 0,
+                transition: shouldReduceMotion ? 'none'
+                  : 'width 0.45s cubic-bezier(0.16,1,0.3,1), background 0.3s ease',
+              }}
+            />
+          ))}
+        </div>
 
-                    {/* Gold left accent */}
-                    {isActive && (
-                      <div aria-hidden="true" style={{
-                        position: 'absolute', left: 0, top: '8%', bottom: '8%', width: '1px',
-                        background: 'linear-gradient(to bottom, transparent, rgba(212,175,55,0.7), transparent)',
-                      }} />
-                    )}
-
-                    <div style={{ position: 'relative', zIndex: 1 }}>
-                      <p style={{
-                        fontFamily: 'var(--font-inter)', fontWeight: 300,
-                        fontSize: '7.5px', letterSpacing: '0.24em',
-                        textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '8px',
-                      }}>
-                        {card.eyebrow}
-                      </p>
-                      <h3 style={{
-                        fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                        fontSize: '30px', lineHeight: 0.9, color: '#EDE8E0', marginBottom: '8px',
-                      }}>
-                        {card.heading}
-                        <br />
-                        <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.55)' }}>
-                          {card.italic}
-                        </em>
-                      </h3>
-                      <p style={{
-                        fontFamily: 'var(--font-inter)', fontWeight: 300,
-                        fontSize: '10.5px', lineHeight: 1.78, color: 'rgba(246,242,233,0.4)',
-                      }}>
-                        {card.body}
-                      </p>
-                    </div>
-
-                    <div style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.06)',
-                      position: 'relative', zIndex: 1,
-                    }}>
-                      <span style={{
-                        fontFamily: 'var(--font-inter)', fontSize: '7px',
-                        letterSpacing: '0.22em', textTransform: 'uppercase',
-                        color: 'rgba(246,242,233,0.16)',
-                      }}>
-                        Alair Noir
-                      </span>
-                      <span style={{
-                        fontFamily: 'var(--font-inter)', fontSize: '7px',
-                        letterSpacing: '0.12em', color: 'rgba(212,175,55,0.36)',
-                      }}>
-                        {card.label}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
-      )}
-
-      {/* ── Screen reader live region ────────────────────────── */}
-      <div className="sr-only" aria-live="polite" aria-atomic="true">
-        {`${CARDS[active].eyebrow}: ${CARDS[active].body}`}
-      </div>
-
-      {/* ── Progress dots ───────────────────────────────────── */}
-      <div style={{
-        display: 'flex', justifyContent: 'center', gap: '6px',
-        marginTop: 'clamp(24px,3.5vw,40px)', position: 'relative', zIndex: 1,
-      }}>
-        {CARDS.map((card, i) => (
-          <button
-            key={card.num}
-            type="button"
-            onClick={() => handleCardClick(i)}
-            aria-label={`Chapter ${card.num}: ${card.label}`}
-            style={{
-              width: i === active ? '22px' : '5px',
-              height: '2px',
-              background: i === active ? 'var(--gold)' : 'rgba(255,255,255,0.12)',
-              border: 'none', cursor: 'pointer', borderRadius: '1px', padding: 0, flexShrink: 0,
-              transition: shouldReduceMotion
-                ? 'none'
-                : 'width 0.45s cubic-bezier(0.16,1,0.3,1), background 0.3s ease',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* ── Drag hint ───────────────────────────────────────── */}
-      {!isMobile && (
+        {/* ── Scroll hint ────────────────────────────────────── */}
         <motion.p
-          initial={{ opacity: 0.32 }}
-          animate={{ opacity: 0 }}
-          transition={{ duration: 1.4, delay: 4 }}
+          initial={{ opacity: 0.34 }}
+          animate={{ opacity: active >= CARDS.length - 1 ? 0 : 0.34 }}
+          transition={{ duration: 0.5 }}
           aria-hidden="true"
           style={{
-            textAlign: 'center', marginTop: '18px',
+            textAlign: 'center',
             fontFamily: 'var(--font-inter)', fontSize: '8px',
             letterSpacing: '0.22em', textTransform: 'uppercase',
-            color: 'rgba(246,242,233,0.2)', pointerEvents: 'none',
-            position: 'relative', zIndex: 1,
+            color: 'rgba(246,242,233,0.26)', pointerEvents: 'none',
+            position: 'relative', zIndex: 1, flexShrink: 0,
           }}
         >
-          Drag or scroll to explore
+          Scroll to explore
         </motion.p>
-      )}
+      </div>
 
       <style>{`
         .fan-card:not([aria-selected="true"]):hover {
-          background: rgba(255,255,255,0.04) !important;
-          border-color: rgba(255,255,255,0.1) !important;
+          border-color: rgba(255,255,255,0.24) !important;
         }
         .fan-card:focus-visible {
           outline: 1px solid var(--gold) !important;
           outline-offset: 2px;
         }
-        .mobile-carousel::-webkit-scrollbar { display: none; }
       `}</style>
     </section>
+  );
+}
+
+/* ── Shared expanded card face (image top, content bottom) ── */
+function CardFace({ card, cardH, activeW }: { card: FanCard; cardH: number; active: boolean; activeW: number }) {
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      display: 'flex', flexDirection: 'column', overflow: 'hidden',
+      borderRadius: '12px', background: '#0c0c0c',
+    }}>
+      {/* Image — top */}
+      <div style={{ position: 'relative', flex: '0 0 52%', overflow: 'hidden' }}>
+        <motion.div
+          initial={{ scale: 1.07, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          style={{ position: 'absolute', inset: 0 }}
+        >
+          <Image src={card.image} alt={card.imageAlt} fill
+            sizes={`${activeW}px`} className="object-cover"
+            style={{ filter: 'saturate(0.85) contrast(1.08)' }} />
+        </motion.div>
+        <div aria-hidden="true" style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, transparent 35%, rgba(12,12,12,0.72) 74%, #0c0c0c 100%)',
+        }} />
+        <div style={{ position: 'absolute', top: '16px', left: '18px', zIndex: 2 }}>
+          <span style={{
+            fontFamily: 'var(--font-inter)', fontSize: '8px',
+            letterSpacing: '0.16em', color: 'rgba(246,242,233,0.6)',
+            background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(6px)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: '999px', padding: '4px 11px',
+          }}>{card.num}&ensp;/&ensp;08</span>
+        </div>
+      </div>
+
+      {/* Content — bottom */}
+      <div style={{
+        flex: '1 1 auto', display: 'flex', flexDirection: 'column',
+        justifyContent: 'space-between', padding: '20px 22px 18px',
+        background: '#0c0c0c', position: 'relative', overflow: 'hidden',
+      }}>
+        <div aria-hidden="true" style={{
+          position: 'absolute', right: '-6px', bottom: '-18px',
+          fontFamily: 'var(--font-cormorant)', fontSize: '128px',
+          fontWeight: 300, lineHeight: 1, color: 'rgba(212,175,55,0.06)',
+          userSelect: 'none', pointerEvents: 'none',
+        }}>{card.num}</div>
+
+        <div aria-hidden="true" style={{
+          position: 'absolute', left: 0, top: '10%', bottom: '10%', width: '2px',
+          background: 'linear-gradient(to bottom, transparent, rgba(212,175,55,0.8), transparent)',
+        }} />
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <p style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '8px', letterSpacing: '0.26em',
+            textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '11px',
+          }}>{card.eyebrow}</p>
+          <h3 style={{
+            fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+            fontSize: 'clamp(26px,2.6vw,40px)', lineHeight: 0.9,
+            color: '#EDE8E0', marginBottom: '12px',
+          }}>
+            {card.heading}
+            <br />
+            <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.58)' }}>{card.italic}</em>
+          </h3>
+          <p style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '11.5px', lineHeight: 1.82, color: 'rgba(246,242,233,0.5)',
+          }}>{card.body}</p>
+        </div>
+
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)',
+          position: 'relative', zIndex: 1,
+        }}>
+          <span style={{
+            fontFamily: 'var(--font-inter)', fontSize: '7px',
+            letterSpacing: '0.22em', textTransform: 'uppercase',
+            color: 'rgba(246,242,233,0.2)',
+          }}>Alair Noir</span>
+          <span style={{
+            fontFamily: 'var(--font-inter)', fontSize: '7px',
+            letterSpacing: '0.12em', color: 'rgba(212,175,55,0.42)',
+          }}>{card.label}</span>
+        </div>
+      </div>
+    </div>
   );
 }
