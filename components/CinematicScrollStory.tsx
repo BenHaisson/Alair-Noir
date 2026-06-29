@@ -221,13 +221,14 @@ export default function CinematicScrollStory() {
   const handleCardClick = (i: number) => scrollToCard(i);
 
   /* ── responsive sizing (fit to screen) ─────────────────── */
-  const maxNeighbors = isMobile ? 2 : isTablet ? 2 : 3;
+  // Show every card in the fan (all neighbours behind the active one).
+  const maxNeighbors = isMobile ? 2 : isTablet ? 4 : CARDS.length - 1;
 
-  // Card height driven by viewport height; width follows an elegant portrait ratio.
+  // Card height driven by viewport height; width follows a landscape proportion.
   const deskH   = Math.round(Math.max(320, Math.min(isTablet ? 420 : 500, windowHeight * 0.6)));
-  const collW   = isTablet ? 52 : 64;
+  const collW   = isTablet ? 44 : 46;
   // Ensure the whole fan (active + visible neighbours + gaps) fits the viewport width.
-  const sideRoom = 2 * maxNeighbors * (collW + 8) + 96;
+  const sideRoom = 2 * maxNeighbors * (collW + 5) + 80;
   const activeW = isMobile
     ? Math.min(380, windowWidth - 32)
     : Math.max(340, Math.min(Math.round(deskH * 1.18), windowWidth - sideRoom));
@@ -269,9 +270,9 @@ export default function CinematicScrollStory() {
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         background:
-          'radial-gradient(circle at 50% 50%, rgba(40,38,32,0.55), transparent 60%), ' +
-          'radial-gradient(circle at 50% 54%, rgba(20,40,30,0.4), transparent 52%), ' +
-          'radial-gradient(circle at 80% 16%, rgba(212,175,55,0.05), transparent 28%)',
+          'radial-gradient(circle at 50% 46%, rgba(16,44,30,0.7), transparent 58%), ' +
+          'radial-gradient(circle at 50% 80%, rgba(10,26,18,0.6), transparent 55%), ' +
+          'radial-gradient(circle at 82% 14%, rgba(212,175,55,0.08), transparent 30%)',
       }} />
 
       {/* Heading */}
@@ -324,7 +325,7 @@ export default function CinematicScrollStory() {
             display: 'flex',
             flexDirection: isMobile ? 'column' : 'row',
             flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center',
-            gap: isMobile ? '10px' : 'clamp(5px,0.4vw,9px)',
+            gap: isMobile ? '10px' : '5px',
             width: isMobile ? '100%' : 'auto',
             transformStyle: 'preserve-3d',
           }}
@@ -337,12 +338,12 @@ export default function CinematicScrollStory() {
             let rotateY = 0, rotateX = 0, z = 0, y = 0, opacity = 1;
             if (index < activeIndex) {
               if (isMobile) { rotateX = 18 - (d - 1) * 3; z = -20 * d; y = 12 * d; }
-              else { rotateY = isVisible ? 32 + (d - 1) * 6 : 52; z = isVisible ? -52 * d : -240; }
-              opacity = isVisible ? Math.max(1 - d * 0.14, 0.46) : 0;
+              else { rotateY = isVisible ? Math.min(22 + (d - 1) * 4, 48) : 52; z = isVisible ? -34 * d : -300; }
+              opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
             } else if (index > activeIndex) {
               if (isMobile) { rotateX = -(18 - (d - 1) * 3); z = -20 * d; y = -12 * d; }
-              else { rotateY = isVisible ? -(32 + (d - 1) * 6) : -52; z = isVisible ? -52 * d : -240; }
-              opacity = isVisible ? Math.max(1 - d * 0.14, 0.46) : 0;
+              else { rotateY = isVisible ? -Math.min(22 + (d - 1) * 4, 48) : -52; z = isVisible ? -34 * d : -300; }
+              opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
             } else {
               z = 80;
             }
@@ -374,13 +375,13 @@ export default function CinematicScrollStory() {
                   position: 'relative', flexShrink: 0, overflow: 'hidden',
                   borderRadius: '12px',
                   border: isActive
-                    ? '1.5px solid rgba(212,175,55,0.55)'
-                    : '1px solid rgba(255,255,255,0.14)',
-                  background: '#2a2722',
+                    ? '1.5px solid rgba(212,175,55,0.75)'
+                    : '1px solid rgba(212,175,55,0.28)',
+                  background: isActive ? '#11231a' : '#0b1610',
                   cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
                   boxShadow: isActive
-                    ? '0 16px 40px -24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 0 1px rgba(212,175,55,0.12)'
-                    : '0 6px 16px -10px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05)',
+                    ? 'inset 0 1px 0 rgba(255,255,255,0.12), inset 0 0 0 1px rgba(212,175,55,0.3), 0 18px 44px -26px rgba(0,0,0,0.7)'
+                    : 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(212,175,55,0.1), 0 6px 16px -10px rgba(0,0,0,0.5)',
                 }}
               >
                 <AnimatePresence mode="wait">
@@ -403,8 +404,8 @@ export default function CinematicScrollStory() {
                       {!isMobile && (
                         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                           <Image src={card.image} alt="" fill sizes="80px"
-                            className="object-cover" style={{ filter: 'saturate(0.8) brightness(0.68)' }} />
-                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(42,39,34,0.28)' }} />
+                            className="object-cover" style={{ filter: 'saturate(0.7) brightness(0.6)' }} />
+                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,22,16,0.42)' }} />
                         </div>
                       )}
 
@@ -537,7 +538,7 @@ export default function CinematicScrollStory() {
 
       <style>{`
         .fan-card:not([aria-selected="true"]):hover {
-          border-color: rgba(255,255,255,0.24) !important;
+          border-color: rgba(212,175,55,0.5) !important;
         }
         .fan-card:focus-visible {
           outline: 1px solid var(--gold) !important;
@@ -554,20 +555,20 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
     <div style={{
       position: 'absolute', inset: 0,
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
-      borderRadius: '12px', background: '#2a2722',
+      borderRadius: '12px', background: '#11231a',
     }}>
-      {/* Luxury glass gloss sweep + edge highlight (3D feel) */}
+      {/* Royal glass gloss sweep + gold beveled edge (3D feel) */}
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, zIndex: 5, pointerEvents: 'none',
         background:
-          'linear-gradient(125deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 18%, transparent 42%), ' +
-          'linear-gradient(300deg, rgba(0,0,0,0.18) 0%, transparent 40%)',
+          'linear-gradient(125deg, rgba(255,255,255,0.10) 0%, rgba(212,175,55,0.04) 16%, transparent 40%), ' +
+          'linear-gradient(300deg, rgba(0,0,0,0.22) 0%, transparent 40%)',
         mixBlendMode: 'screen',
       }} />
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, zIndex: 6, pointerEvents: 'none',
         borderRadius: '12px',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14), inset 0 -1px 0 rgba(0,0,0,0.25)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14), inset 0 0 0 1px rgba(212,175,55,0.22), inset 0 -1px 0 rgba(0,0,0,0.3)',
       }} />
 
       {/* Image */}
@@ -584,7 +585,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         </motion.div>
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 40%, rgba(42,39,34,0.68) 78%, #2a2722 100%)',
+          background: 'linear-gradient(to bottom, transparent 42%, rgba(17,35,26,0.7) 78%, #11231a 100%)',
         }} />
         <div style={{ position: 'absolute', top: '14px', left: '16px', zIndex: 2 }}>
           <span style={{
