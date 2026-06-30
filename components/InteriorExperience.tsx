@@ -35,7 +35,12 @@ const INTERIOR_IMAGES = [
   },
 ];
 
-const SIGNALS = ['Group comfort', 'Luggage-ready space', 'Warm ambient lighting'];
+const FEATURES = [
+  { name: 'Business-Class Layout', desc: 'Comfortable executive seating for group transfers and longer routes.' },
+  { name: 'Delegation Comfort', desc: 'A composed cabin for corporate teams, guests, and private delegations.' },
+  { name: 'Luggage Capacity', desc: 'Prepared for airport arrivals, event transfers, and multi-day journeys.' },
+  { name: 'Family Office & Events', desc: 'Discreet movement for families, assistants, guests, and VIP groups.' },
+];
 
 export default function InteriorExperience() {
   const ref = useRef<HTMLElement>(null);
@@ -118,7 +123,7 @@ export default function InteriorExperience() {
               marginBottom: '34px',
             }}
           >
-            The Mercedes-Benz V-Class brings private space to airport arrivals, family travel, delegations, and luggage-heavy routes. Warm lighting and upright seating keep the cabin composed without spectacle.
+            The Mercedes-Benz V-Class brings the same Alair Noir standard to group travel. More space does not mean less discretion. It means every passenger, bag, and schedule is handled with the same calm precision.
           </motion.p>
 
           <motion.div
@@ -128,44 +133,62 @@ export default function InteriorExperience() {
             role="list"
             style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid var(--border)' }}
           >
-            {SIGNALS.map((signal) => (
+            {FEATURES.map((feature) => (
               <div
-                key={signal}
+                key={feature.name}
                 role="listitem"
                 style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: '20px',
-                  padding: '14px 0',
+                  flexDirection: 'column',
+                  gap: '6px',
+                  padding: '16px 0',
                   borderBottom: '1px solid var(--border)',
                 }}
               >
                 <span
                   style={{
-                    fontFamily: 'var(--font-inter)',
+                    fontFamily: 'var(--font-cormorant)',
                     fontWeight: 300,
-                    fontSize: '9px',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: 'var(--text-subtle)',
+                    fontSize: '20px',
+                    color: '#EDE8E0',
                   }}
                 >
-                  Included
+                  {feature.name}
                 </span>
                 <span
                   style={{
-                    fontFamily: 'var(--font-cormorant)',
+                    fontFamily: 'var(--font-inter)',
                     fontWeight: 300,
-                    fontSize: '18px',
+                    fontSize: '12px',
+                    lineHeight: 1.6,
                     color: 'var(--text-muted)',
-                    textAlign: 'right',
                   }}
                 >
-                  {signal}
+                  {feature.desc}
                 </span>
               </div>
             ))}
           </motion.div>
+
+          <motion.a
+            href="#contact"
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              height: '42px', padding: '0 26px', marginTop: '32px',
+              border: '1px solid rgba(201,168,76,0.45)', color: 'var(--gold)',
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              alignSelf: 'flex-start',
+              transition: 'background 0.25s, color 0.25s',
+            }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = 'var(--gold)'; }}
+          >
+            Request the V-Class
+          </motion.a>
         </div>
 
         <div

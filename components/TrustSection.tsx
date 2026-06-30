@@ -3,11 +3,19 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const SIGNALS = [
-  { label: 'Limousine Permit',   value: 'Kanton Zürich' },
-  { label: 'Tachograph',         value: 'Certified' },
-  { label: 'UID',                value: 'CHE-411.952.415' },
-  { label: 'Response Time',      value: 'Within the hour' },
+const TESTIMONIALS = [
+  {
+    quote: 'Punctual, immaculate, and utterly discreet. Exactly what I need every time I land in Zürich.',
+    cite: 'Frequent ZRH Traveller',
+  },
+  {
+    quote: 'The value is consistency. Same standard, same calm communication, same prepared arrival.',
+    cite: 'Executive Assistant, Private Office',
+  },
+  {
+    quote: 'For client movements during event weeks, discretion and timing matter more than anything. Alair Noir understands both.',
+    cite: 'Corporate Guest Coordinator',
+  },
 ];
 
 export default function TrustSection() {
@@ -17,119 +25,76 @@ export default function TrustSection() {
   return (
     <section
       ref={ref}
-      aria-label="Testimonial and trust signals"
-      style={{ backgroundColor: '#080808', borderTop: '1px solid var(--border)' }}
+      aria-label="Client testimonials"
+      style={{
+        backgroundColor: '#080808',
+        borderTop: '1px solid var(--border)',
+        padding: 'clamp(80px,10vw,140px) clamp(28px,8vw,140px)',
+      }}
     >
-      {/* Testimonial */}
-      <div
-        style={{
-          padding: 'clamp(80px,10vw,140px) clamp(28px,8vw,140px)',
-          display: 'grid',
-          gridTemplateColumns: '1fr 3fr',
-          gap: 'clamp(40px,6vw,100px)',
-          alignItems: 'center',
-          borderBottom: '1px solid var(--border)',
-        }}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.7 }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: 'clamp(48px,6vw,72px)' }}
       >
-        {/* Gold rule + label */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.7 }}
-          style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
-        >
-          <span
-            aria-hidden="true"
-            style={{ display: 'block', width: '32px', height: '1px', backgroundColor: 'var(--gold)' }}
-          />
-          <p style={{
-            fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '9px', letterSpacing: '0.24em', textTransform: 'uppercase',
-            color: 'var(--text-subtle)',
-          }}>
-            Client — Zürich, 2026
-          </p>
-        </motion.div>
+        <span
+          aria-hidden="true"
+          style={{ display: 'block', width: '32px', height: '1px', backgroundColor: 'var(--gold)' }}
+        />
+        <p style={{
+          fontFamily: 'var(--font-inter)', fontWeight: 300,
+          fontSize: '9px', letterSpacing: '0.24em', textTransform: 'uppercase',
+          color: 'var(--text-subtle)',
+        }}>
+          In their words
+        </p>
+      </motion.div>
 
-        {/* Quote */}
-        <motion.blockquote
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, delay: 0.15 }}
-        >
-          <p style={{
-            fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
-            fontSize: 'clamp(26px,3.2vw,48px)', lineHeight: 1.2,
-            color: '#EDE8E0',
-          }}>
-            &ldquo;Punctual, immaculate, and utterly discreet. Exactly what I need every time I land in Zürich.&rdquo;
-          </p>
-          <footer style={{ marginTop: '20px' }}>
-            <cite style={{
-              fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase',
-              color: 'var(--text-subtle)', fontStyle: 'normal',
-            }}>
-              Regular Traveller
-            </cite>
-          </footer>
-        </motion.blockquote>
-      </div>
-
-      {/* Trust signals strip */}
       <div
-        role="list"
+        className="testimonials-grid"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 'clamp(28px,4vw,56px)',
         }}
       >
-        {SIGNALS.map((s, i) => (
-          <motion.div
-            key={s.label}
-            role="listitem"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 + i * 0.08 }}
+        {TESTIMONIALS.map((t, i) => (
+          <motion.blockquote
+            key={t.cite}
+            initial={{ opacity: 0, y: 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.15 + i * 0.12 }}
             style={{
-              padding: 'clamp(28px,3vw,44px) clamp(20px,3vw,40px)',
-              borderRight: i < 3 ? '1px solid var(--border)' : 'none',
-              display: 'flex', flexDirection: 'column', gap: '8px',
+              display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+              gap: '28px',
+              borderTop: '1px solid var(--border-gold)',
+              paddingTop: '28px',
             }}
           >
-            <span style={{
-              fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '8px', letterSpacing: '0.22em', textTransform: 'uppercase',
-              color: 'var(--text-subtle)',
+            <p style={{
+              fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
+              fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1.3,
+              color: '#EDE8E0',
             }}>
-              {s.label}
-            </span>
-            <span style={{
-              fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-              fontSize: 'clamp(16px,1.6vw,22px)',
-              color: 'var(--text-muted)',
-            }}>
-              {s.value}
-            </span>
-          </motion.div>
+              &ldquo;{t.quote}&rdquo;
+            </p>
+            <footer>
+              <cite style={{
+                fontFamily: 'var(--font-inter)', fontWeight: 300,
+                fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase',
+                color: 'var(--text-subtle)', fontStyle: 'normal',
+              }}>
+                — {t.cite}
+              </cite>
+            </footer>
+          </motion.blockquote>
         ))}
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          section[aria-label="Testimonial and trust signals"] > div:first-of-type {
-            grid-template-columns: 1fr !important;
-          }
-          section[aria-label="Testimonial and trust signals"] > div[role="list"] {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-          section[aria-label="Testimonial and trust signals"] > div[role="list"] > div:nth-child(2) {
-            border-right: none !important;
-          }
-          section[aria-label="Testimonial and trust signals"] > div[role="list"] > div:nth-child(3),
-          section[aria-label="Testimonial and trust signals"] > div[role="list"] > div:nth-child(4) {
-            border-top: 1px solid var(--border);
-          }
+        @media (max-width: 900px) {
+          .testimonials-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>

@@ -4,12 +4,12 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const SERVICES = [
-  { n: '01', title: 'Airport Transfer',        body: 'ZRH curbside pickup and drop-off. Flight tracking included. Your driver monitors arrivals in real time.' },
-  { n: '02', title: 'Corporate & Executive',   body: 'Discreet transport for executives, board members, and VIP clients. Absolute confidentiality.' },
-  { n: '03', title: 'Long Distance',            body: 'Davos, St. Moritz, Geneva, Milan, Munich. Door to door across Switzerland and Europe.' },
-  { n: '04', title: 'Hourly Disposition',       body: 'Vehicle retained by the hour for multi-stop business days. Your schedule, your pace.' },
-  { n: '05', title: 'WEF / Davos / Events',    body: 'World Economic Forum, Zürich Film Festival, Art Basel, and all major international events.' },
-  { n: '06', title: 'Private Client',           body: 'Dedicated service for returning clients. Preferences remembered, direct contact with your driver.' },
+  { n: '01', title: 'Airport Transfer',      body: 'Zürich Airport transfers with flight tracking, direct communication, luggage handling, and calm curbside timing.', bestFor: 'ZRH arrivals · Departures · Guest pickup · Executive travel' },
+  { n: '02', title: 'Corporate & Executive', body: 'Discreet transport for executives, board members, clients, and leadership teams.', bestFor: 'Meetings · Roadshows · Client visits · Confidential schedules' },
+  { n: '03', title: 'Long Distance',         body: 'Door-to-door private travel across Switzerland and selected European routes.', bestFor: 'Davos · St. Moritz · Geneva · Basel · Milan · Munich' },
+  { n: '04', title: 'Hourly Disposition',    body: 'Vehicle retained by the hour for multi-stop business days and flexible private schedules.', bestFor: 'Meetings · Shopping · Events · City-to-city schedules' },
+  { n: '05', title: 'WEF / Davos / Events',  body: 'Prepared transport for international events, high-demand dates, and VIP movements.', bestFor: 'WEF Davos · Art Basel · Zürich Film Festival · Private events' },
+  { n: '06', title: 'Private Client',        body: 'A direct chauffeur relationship for returning clients whose preferences should not need repeating.', bestFor: 'Family offices · HNW clients · Regular travellers · Private guests' },
 ];
 
 export default function ServicesSection() {
@@ -48,12 +48,24 @@ export default function ServicesSection() {
             lineHeight: 0.92, color: '#EDE8E0',
           }}
         >
-          Every journey,
+          Private mobility,
           <br />
           <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '5%' }}>
-            attended to.
+            arranged around the moment.
           </em>
         </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          style={{
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '14px', lineHeight: 1.8, color: 'var(--text-muted)',
+            maxWidth: '560px', marginTop: '24px',
+          }}
+        >
+          From airport arrivals to multi-day executive schedules, each journey is handled directly and discreetly.
+        </motion.p>
       </div>
 
       {/* Grid */}
@@ -118,8 +130,43 @@ export default function ServicesSection() {
             }}>
               {s.body}
             </p>
+
+            <div style={{ marginTop: 'auto' }}>
+              <p style={{
+                fontFamily: 'var(--font-inter)', fontWeight: 300,
+                fontSize: '8px', letterSpacing: '0.22em', textTransform: 'uppercase',
+                color: 'var(--text-subtle)', marginBottom: '6px',
+              }}>
+                Best for
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+                fontSize: '15px', lineHeight: 1.4, color: 'var(--text-muted)',
+              }}>
+                {s.bestFor}
+              </p>
+            </div>
           </motion.article>
         ))}
+      </div>
+
+      {/* CTA */}
+      <div style={{ padding: 'clamp(40px,5vw,64px) clamp(28px,8vw,140px) 0', display: 'flex', justifyContent: 'center' }}>
+        <a
+          href="#contact"
+          style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            height: '46px', padding: '0 32px',
+            backgroundColor: 'var(--gold)', color: '#080808',
+            fontFamily: 'var(--font-inter)', fontWeight: 400,
+            fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
+            transition: 'opacity 0.25s',
+          }}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
+          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
+        >
+          Request Availability
+        </a>
       </div>
 
       {/* Mobile: override to 1 col */}

@@ -131,19 +131,34 @@ export default function HeroSection() {
           transition={{ duration: 1.0, delay: 0.28, ease }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(52px,8.5vw,128px)',
-            lineHeight: 0.9,
+            fontSize: 'clamp(44px,6.6vw,104px)',
+            lineHeight: 0.92,
             color: '#EDE8E0',
-            maxWidth: '820px',
+            maxWidth: '900px',
+            marginBottom: 'clamp(14px,1.8vw,22px)',
+          }}
+        >
+          Private Chauffeur Service
+          <br />
+          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.68)', paddingLeft: '0.12em' }}>
+            in Zürich.
+          </em>
+        </motion.h1>
+
+        {/* Poetic line */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.42, ease }}
+          style={{
+            fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
+            fontSize: 'clamp(20px,2.4vw,34px)', lineHeight: 1.1,
+            color: 'rgba(237,232,224,0.55)',
             marginBottom: 'clamp(20px,2.5vw,32px)',
           }}
         >
-          The art
-          <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.68)', paddingLeft: '0.12em' }}>
-            of arrival.
-          </em>
-        </motion.h1>
+          The art of arrival.
+        </motion.p>
 
         {/* Subline + CTAs row */}
         <motion.div
@@ -159,16 +174,23 @@ export default function HeroSection() {
           }}
         >
           {/* Sub text */}
-          <p style={{
-            fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: 'clamp(12px,1vw,14px)', letterSpacing: '0.05em',
-            color: 'rgba(237,232,224,0.52)',
-            lineHeight: 1.7, maxWidth: '380px',
-          }}>
-            BMW i7 xDrive60 · Mercedes-Benz V-Class
-            <br />
-            Private &amp; Corporate · Switzerland &amp; Europe
-          </p>
+          <div style={{ maxWidth: '430px' }}>
+            <p style={{
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: 'clamp(12px,1vw,14px)', letterSpacing: '0.04em',
+              color: 'rgba(237,232,224,0.52)',
+              lineHeight: 1.7, marginBottom: '14px',
+            }}>
+              BMW i7 xDrive60 and Mercedes-Benz V-Class for private, corporate, airport, and long-distance travel across Switzerland and Europe.
+            </p>
+            <p style={{
+              fontFamily: 'var(--font-inter)', fontWeight: 300,
+              fontSize: 'clamp(9px,0.7vw,11px)', letterSpacing: '0.16em', textTransform: 'uppercase',
+              color: 'var(--gold)',
+            }}>
+              Direct booking. No platform. No intermediary.
+            </p>
+          </div>
 
           {/* CTA buttons */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
@@ -202,10 +224,25 @@ export default function HeroSection() {
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.6)')}
               onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.22)')}
             >
-              WhatsApp
+              WhatsApp Directly
             </a>
           </div>
         </motion.div>
+
+        {/* Support line */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          style={{
+            marginTop: 'clamp(20px,2.5vw,28px)',
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: 'clamp(10px,0.8vw,12px)', letterSpacing: '0.03em',
+            color: 'rgba(237,232,224,0.4)', lineHeight: 1.7, maxWidth: '520px',
+          }}
+        >
+          Your reservation goes straight to your driver — no dispatch layer, no anonymous assignment.
+        </motion.p>
 
         {/* Bottom stats strip */}
         <motion.div

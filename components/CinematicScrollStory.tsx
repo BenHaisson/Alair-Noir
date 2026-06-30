@@ -23,7 +23,7 @@ const CARDS: FanCard[] = [
     eyebrow: '01 — The Request',
     heading: 'A private',
     italic: 'request.',
-    body: 'A journey begins quietly: one message, one route, one standard of discretion before anything becomes visible.',
+    body: 'Your journey begins directly — by WhatsApp, phone, or email. No platform layer. No anonymous dispatch. Just a clear request, handled with discretion.',
     preview: 'Begin a private enquiry',
     image: '/images/chauffeur-arrival.png',
     imageAlt: 'Chauffeur awaiting arrival at dusk',
@@ -32,10 +32,10 @@ const CARDS: FanCard[] = [
     num: '02',
     label: 'The Standard',
     eyebrow: '02 — The Standard',
-    heading: 'Two vehicles.',
-    italic: 'One standard.',
-    body: 'The collection is intentionally small: a black BMW i7 and a black Mercedes-Benz V-Class, each maintained for private Swiss mobility.',
-    preview: 'View the collection',
+    heading: 'A limited',
+    italic: 'fleet.',
+    body: 'The fleet is deliberately limited: a BMW i7 xDrive60 and a Mercedes-Benz V-Class. Fewer vehicles means tighter control, better preparation, and a consistent standard every time.',
+    preview: 'View the fleet',
     image: '/images/bmw-i7-studio.png',
     imageAlt: 'BMW i7 in a dark studio setting',
   },
@@ -45,19 +45,19 @@ const CARDS: FanCard[] = [
     eyebrow: '03 — The Silence',
     heading: 'Silence',
     italic: 'as a luxury.',
-    body: 'The BMW i7 xDrive60 is fully electric. No engine noise. No vibration. Just the road and the minutes before arrival.',
+    body: 'The BMW i7 xDrive60 is fully electric. No engine noise. No vibration. Just the road, the cabin, and the meeting you are preparing for.',
     preview: 'Experience the i7',
     image: '/images/bmw-i7-cockpit-night.png',
     imageAlt: 'BMW i7 cockpit at night with ambient lighting',
   },
   {
     num: '04',
-    label: 'The Space',
-    eyebrow: '04 — The Space',
-    heading: 'Executive',
-    italic: 'space.',
-    body: 'The Mercedes-Benz V-Class creates room for delegations, families, luggage, and airport arrivals without losing privacy.',
-    preview: 'Explore the V-Class',
+    label: 'The Cabin',
+    eyebrow: '04 — The Cabin',
+    heading: 'Prepared',
+    italic: 'before you enter.',
+    body: 'Lighting, seating, route timing, luggage handling, and privacy expectations are treated as part of the service — not details left to chance.',
+    preview: 'Step inside',
     image: '/images/mercedes-v-class-cabin-rear.png',
     imageAlt: 'Mercedes-Benz V-Class rear cabin executive seating',
   },
@@ -65,32 +65,32 @@ const CARDS: FanCard[] = [
     num: '05',
     label: 'The Route',
     eyebrow: '05 — The Route',
-    heading: 'Zurich to',
+    heading: 'Zürich to',
     italic: 'wherever.',
-    body: 'Zurich, Geneva, Davos, St. Moritz, Milan, and Munich: routes are handled as private passages, not transfers.',
+    body: 'Airport transfers, Davos, St. Moritz, Geneva, Basel, Milan, Munich, WEF, Art Basel, and private long-distance journeys across Switzerland and Europe.',
     preview: 'See the routes',
     image: '/images/bmw-i7-zurich.png',
     imageAlt: 'BMW i7 in Zurich city landscape at night',
   },
   {
     num: '06',
-    label: 'The Protocol',
-    eyebrow: '06 — The Protocol',
-    heading: 'Discretion',
-    italic: 'by design.',
-    body: 'Punctuality, privacy, controlled handover, and no unnecessary visibility. The service stays precise and nearly invisible.',
-    preview: 'Read the protocol',
+    label: 'The Arrival',
+    eyebrow: '06 — The Arrival',
+    heading: 'Arrive',
+    italic: 'without noise.',
+    body: 'The best arrival is not dramatic. It is punctual, calm, discreet, and already prepared before the door opens.',
+    preview: 'Plan the arrival',
     image: '/images/bmw-i7-black-studio.png',
     imageAlt: 'BMW i7 in a black studio environment',
   },
   {
     num: '07',
-    label: 'The Arrival',
-    eyebrow: '07 — The Arrival',
-    heading: 'Arrival',
-    italic: 'without noise.',
-    body: 'Hotel entrance, private aviation terminal, board dinner, or residence: the final moment is calm, direct, and unannounced.',
-    preview: 'Plan the arrival',
+    label: 'The Relationship',
+    eyebrow: '07 — The Relationship',
+    heading: 'Preferences',
+    italic: 'remembered.',
+    body: 'For returning clients, the service becomes quieter over time. Routes, timing, cabin setup, and communication preferences are understood before they need to be repeated.',
+    preview: 'A direct relationship',
     image: '/images/bmw-i7-private-office.png',
     imageAlt: 'BMW i7 rear cabin prepared for executive arrival',
   },
@@ -98,18 +98,18 @@ const CARDS: FanCard[] = [
     num: '08',
     label: 'The Booking',
     eyebrow: '08 — The Booking',
-    heading: 'Reserved',
-    italic: 'quietly.',
-    body: 'A premium request flow: direct contact, route details, timing, passengers, luggage, and any preference that should be remembered.',
-    preview: 'Reserve your passage',
+    heading: 'Ready when',
+    italic: 'you are.',
+    body: 'Send a route, date, passenger count, and preferred vehicle. You will receive a direct response without intermediary handling.',
+    preview: 'Arrange a journey',
     image: '/images/bmw-i7-dashboard-light.png',
     imageAlt: 'BMW i7 crystal dashboard with ambient lighting',
   },
 ];
 
-const PER_CARD_VH = 75;                 // scroll distance allotted per card transition
-const TOTAL_VH = 100 + (CARDS.length - 1) * PER_CARD_VH;
 const AUTOPLAY_MS = 4200;
+const PER_CARD_VH = 60;                 // scroll distance allotted per card
+const TOTAL_VH = 100 + (CARDS.length - 1) * PER_CARD_VH;
 
 export default function CinematicScrollStory() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -118,13 +118,14 @@ export default function CinematicScrollStory() {
 
   const outerRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(innerRef, { margin: '-20% 0px -20% 0px' });
+  const inView = useInView(innerRef, { margin: '-15% 0px -15% 0px' });
   const shouldReduceMotion = useReducedMotion();
 
   const rafRef = useRef<number | null>(null);
-  const userInteractingRef = useRef(false);
   const autoScrollingRef = useRef(false);
+  const userInteractingRef = useRef(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dirRef = useRef(1);
 
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
@@ -137,7 +138,7 @@ export default function CinematicScrollStory() {
     return () => window.removeEventListener('resize', fn);
   }, []);
 
-  /* ── scroll → active card (drives both mobile & desktop) ── */
+  /* ── scroll position → active card (native, mobile + desktop) ── */
   useEffect(() => {
     const update = () => {
       rafRef.current = null;
@@ -161,20 +162,20 @@ export default function CinematicScrollStory() {
     };
   }, []);
 
-  /* ── detect user interaction (pauses autoplay) ──────────── */
+  /* ── flag genuine user scroll so autoplay yields to it ──── */
   useEffect(() => {
     const mark = () => {
-      if (autoScrollingRef.current) return;
+      if (autoScrollingRef.current) return; // ignore our own programmatic scroll
       userInteractingRef.current = true;
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      idleTimerRef.current = setTimeout(() => { userInteractingRef.current = false; }, 2600);
+      idleTimerRef.current = setTimeout(() => { userInteractingRef.current = false; }, 2400);
     };
     window.addEventListener('wheel', mark, { passive: true });
-    window.addEventListener('touchstart', mark, { passive: true });
+    window.addEventListener('touchmove', mark, { passive: true });
     window.addEventListener('keydown', mark);
     return () => {
       window.removeEventListener('wheel', mark);
-      window.removeEventListener('touchstart', mark);
+      window.removeEventListener('touchmove', mark);
       window.removeEventListener('keydown', mark);
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
@@ -184,15 +185,19 @@ export default function CinematicScrollStory() {
   const scrollToCard = (i: number) => {
     const el = outerRef.current;
     if (!el) return;
+    const target = Math.max(0, Math.min(CARDS.length - 1, i));
     const total = el.offsetHeight - window.innerHeight;
     const sectionTopAbs = window.scrollY + el.getBoundingClientRect().top;
-    const target = sectionTopAbs + (i / (CARDS.length - 1)) * total;
     autoScrollingRef.current = true;
-    window.scrollTo({ top: target, behavior: shouldReduceMotion ? 'auto' : 'smooth' });
+    window.scrollTo({
+      top: sectionTopAbs + (target / (CARDS.length - 1)) * total,
+      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+    });
     setTimeout(() => { autoScrollingRef.current = false; }, 800);
   };
+  const handleCardClick = (i: number) => scrollToCard(i);
 
-  /* ── autoplay (auto-scrolls through cards while pinned) ─── */
+  /* ── autoplay: endless ping-pong while pinned & idle ────── */
   useEffect(() => {
     if (shouldReduceMotion) return;
     const id = setInterval(() => {
@@ -201,8 +206,9 @@ export default function CinematicScrollStory() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       if (rect.top > 1 || rect.bottom < window.innerHeight - 1) return; // only while pinned
-      if (activeIndex >= CARDS.length - 1) return;                       // release after last card
-      scrollToCard(activeIndex + 1);
+      if (activeIndex >= CARDS.length - 1) dirRef.current = -1;
+      else if (activeIndex <= 0) dirRef.current = 1;
+      scrollToCard(activeIndex + dirRef.current);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
   }, [activeIndex, shouldReduceMotion]);
@@ -211,28 +217,44 @@ export default function CinematicScrollStory() {
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (!inView) return;
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') scrollToCard(Math.max(0, activeIndex - 1));
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') scrollToCard(Math.min(CARDS.length - 1, activeIndex + 1));
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') scrollToCard(activeIndex - 1);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') scrollToCard(activeIndex + 1);
     };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
   }, [activeIndex, inView]);
 
-  const handleCardClick = (i: number) => scrollToCard(i);
+  /* ── responsive sizing (fit to screen) ─────────────────── */
+  // Show every card in the fan (all neighbours behind the active one).
+  const maxNeighbors = isMobile ? 2 : isTablet ? 4 : CARDS.length - 1;
 
-  /* ── responsive sizing ──────────────────────────────────── */
-  const maxNeighbors = isMobile ? 2 : isTablet ? 2 : 3;
-
-  const deskH   = Math.round(Math.max(380, Math.min(isTablet ? 460 : 540, windowHeight * 0.58)));
-  const activeW = isMobile ? Math.min(380, windowWidth - 32) : isTablet ? 380 : 460;
-  const collW   = isMobile ? Math.min(380, windowWidth - 32) : isTablet ? 58 : 68;
+  // Card height driven by viewport height; width follows a landscape proportion.
+  const deskH   = Math.round(Math.max(320, Math.min(isTablet ? 420 : 500, windowHeight * 0.6)));
+  const collW   = isTablet ? 44 : 46;
+  // Ensure the whole fan (active + visible neighbours + gaps) fits the viewport width.
+  const sideRoom = 2 * maxNeighbors * (collW + 5) + 80;
+  const activeW = isMobile
+    ? Math.min(380, windowWidth - 32)
+    : Math.max(360, Math.min(Math.round(deskH * 1.5), windowWidth - sideRoom));
   const activeH = isMobile ? Math.round(Math.max(300, Math.min(360, windowHeight * 0.46))) : deskH;
   const collH   = isMobile ? 50  : deskH;
+
+  // Dynamic perspective origin so the active card stays visually centered for every chapter.
+  const gapPx = isMobile ? 10 : 5;
+  const leftCards  = isMobile ? 0 : Math.min(activeIndex, maxNeighbors);
+  const rightCards = isMobile ? 0 : Math.min(CARDS.length - 1 - activeIndex, maxNeighbors);
+  const totalContentW = leftCards * (collW + gapPx) + activeW + rightCards * (collW + gapPx);
+  const activeCenterFromContentLeft = leftCards * (collW + gapPx) + activeW / 2;
+  const perspContainerW = windowWidth;
+  const perspOriginX = Math.round(
+    ((perspContainerW / 2 - totalContentW / 2 + activeCenterFromContentLeft) / perspContainerW) * 100
+  );
 
   /* ── render ─────────────────────────────────────────────── */
   return (
     <section
       ref={outerRef}
+      id="story"
       aria-label="Alair Noir experience chapters"
       style={{
         position: 'relative',
@@ -252,8 +274,9 @@ export default function CinematicScrollStory() {
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         background:
-          'radial-gradient(circle at 50% 54%, rgba(14,31,22,0.5), transparent 52%), ' +
-          'radial-gradient(circle at 80% 16%, rgba(212,175,55,0.05), transparent 28%)',
+          'radial-gradient(circle at 50% 46%, rgba(16,44,30,0.7), transparent 58%), ' +
+          'radial-gradient(circle at 50% 80%, rgba(10,26,18,0.6), transparent 55%), ' +
+          'radial-gradient(circle at 82% 14%, rgba(212,175,55,0.08), transparent 30%)',
       }} />
 
       {/* Heading */}
@@ -275,11 +298,19 @@ export default function CinematicScrollStory() {
         </p>
         <h2 style={{
           fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-          fontSize: 'clamp(34px,4.4vw,68px)', lineHeight: 0.9, color: '#EDE8E0',
+          fontSize: 'clamp(32px,4.2vw,64px)', lineHeight: 0.92, color: '#EDE8E0',
         }}>
-          Eight moments,
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one passage.</em>
+          A journey, held to
+          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one standard.</em>
         </h2>
+        <p style={{
+          fontFamily: 'var(--font-inter)', fontWeight: 300,
+          fontSize: 'clamp(11px,0.9vw,13px)', lineHeight: 1.7,
+          color: 'var(--text-muted)', maxWidth: '560px',
+          margin: '16px auto 0',
+        }}>
+          Every Alair Noir journey follows the same rhythm — from first request to final arrival. Not a platform. Not a rotating fleet. A private mobility service built around continuity, discretion, and precision.
+        </p>
       </motion.div>
 
       {/* 3D fan / accordion */}
@@ -287,7 +318,7 @@ export default function CinematicScrollStory() {
         style={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
           padding: '0 clamp(16px,4vw,48px)',
-          perspective: '1400px', perspectiveOrigin: '50% 48%',
+          perspective: '1100px', perspectiveOrigin: `${perspOriginX}% 46%`,
           position: 'relative', zIndex: 1, flexShrink: 0,
         }}
       >
@@ -298,7 +329,7 @@ export default function CinematicScrollStory() {
             display: 'flex',
             flexDirection: isMobile ? 'column' : 'row',
             flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center',
-            gap: isMobile ? '10px' : 'clamp(5px,0.4vw,9px)',
+            gap: isMobile ? '10px' : '5px',
             width: isMobile ? '100%' : 'auto',
             transformStyle: 'preserve-3d',
           }}
@@ -311,14 +342,14 @@ export default function CinematicScrollStory() {
             let rotateY = 0, rotateX = 0, z = 0, y = 0, opacity = 1;
             if (index < activeIndex) {
               if (isMobile) { rotateX = 18 - (d - 1) * 3; z = -20 * d; y = 12 * d; }
-              else { rotateY = isVisible ? 10 + (d - 1) * 10 : 45; z = isVisible ? -20 * d : -160; }
-              opacity = isVisible ? Math.max(1 - d * 0.15, 0.4) : 0;
+              else { rotateY = isVisible ? Math.min(22 + (d - 1) * 4, 48) : 52; z = isVisible ? -34 * d : -300; }
+              opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
             } else if (index > activeIndex) {
               if (isMobile) { rotateX = -(18 - (d - 1) * 3); z = -20 * d; y = -12 * d; }
-              else { rotateY = isVisible ? -(10 + (d - 1) * 10) : -45; z = isVisible ? -20 * d : -160; }
-              opacity = isVisible ? Math.max(1 - d * 0.15, 0.4) : 0;
+              else { rotateY = isVisible ? -Math.min(22 + (d - 1) * 4, 48) : -52; z = isVisible ? -34 * d : -300; }
+              opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
             } else {
-              z = 44;
+              z = 80;
             }
 
             return (
@@ -347,17 +378,13 @@ export default function CinematicScrollStory() {
                 style={{
                   position: 'relative', flexShrink: 0, overflow: 'hidden',
                   borderRadius: '12px',
-                  border: isActive
-                    ? '1.5px solid rgba(212,175,55,0.55)'
-                    : '1px solid rgba(255,255,255,0.14)',
-                  background: '#0c0c0c',
+                  border: 'none',
+                  background: isActive ? '#11231a' : '#0b1610',
                   cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
-                  boxShadow: isActive
-                    ? '0 44px 88px -22px rgba(0,0,0,0.95), 0 0 0 1px rgba(212,175,55,0.08), inset 0 1px 0 rgba(255,255,255,0.05)'
-                    : '0 10px 30px -6px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.03)',
+                  boxShadow: 'none',
                 }}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                   {/* COLLAPSED */}
                   {!isActive && isVisible && (
                     <motion.div
@@ -377,8 +404,8 @@ export default function CinematicScrollStory() {
                       {!isMobile && (
                         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                           <Image src={card.image} alt="" fill sizes="80px"
-                            className="object-cover" style={{ filter: 'saturate(0.5) brightness(0.3)' }} />
-                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,12,12,0.4)' }} />
+                            className="object-cover" style={{ filter: 'saturate(0.7) brightness(0.6)' }} />
+                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,22,16,0.42)' }} />
                         </div>
                       )}
 
@@ -471,14 +498,11 @@ export default function CinematicScrollStory() {
         ))}
       </div>
 
-      {/* Scroll hint (fades out near the end) */}
-      <motion.p
-        initial={{ opacity: 0.34 }}
-        animate={{ opacity: activeIndex >= CARDS.length - 1 ? 0 : 0.34 }}
-        transition={{ duration: 0.5 }}
+      {/* Hint */}
+      <p
         aria-hidden="true"
         style={{
-          textAlign: 'center',
+          textAlign: 'center', opacity: 0.3,
           fontFamily: 'var(--font-inter)', fontSize: '8px',
           letterSpacing: '0.22em', textTransform: 'uppercase',
           color: 'rgba(246,242,233,0.26)', pointerEvents: 'none',
@@ -486,13 +510,32 @@ export default function CinematicScrollStory() {
         }}
       >
         Scroll to explore
-      </motion.p>
+      </p>
+
+      {/* Mid-section CTA */}
+      <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1, flexShrink: 0 }}>
+        <a
+          href="#contact"
+          style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            height: '42px', padding: '0 28px',
+            border: '1px solid rgba(212,175,55,0.45)', color: 'var(--gold)',
+            fontFamily: 'var(--font-inter)', fontWeight: 300,
+            fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
+            transition: 'background 0.25s, color 0.25s',
+          }}
+          onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
+          onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = 'var(--gold)'; }}
+        >
+          Arrange a Journey
+        </a>
+      </div>
 
       </div>
 
       <style>{`
         .fan-card:not([aria-selected="true"]):hover {
-          border-color: rgba(255,255,255,0.24) !important;
+          filter: brightness(1.18);
         }
         .fan-card:focus-visible {
           outline: 1px solid var(--gold) !important;
@@ -509,10 +552,10 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
     <div style={{
       position: 'absolute', inset: 0,
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
-      borderRadius: '12px', background: '#0c0c0c',
+      borderRadius: '12px', background: '#11231a',
     }}>
       {/* Image */}
-      <div style={{ position: 'relative', flex: compact ? '0 0 44%' : '0 0 52%', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', flex: compact ? '0 0 54%' : '0 0 65%', overflow: 'hidden' }}>
         <motion.div
           initial={{ scale: 1.07, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -521,11 +564,11 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         >
           <Image src={card.image} alt={card.imageAlt} fill
             sizes={`${activeW}px`} className="object-cover"
-            style={{ filter: 'saturate(0.85) contrast(1.08)' }} />
+            style={{ filter: 'saturate(0.95) contrast(1.04) brightness(1.12)' }} />
         </motion.div>
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 35%, rgba(12,12,12,0.72) 74%, #0c0c0c 100%)',
+          background: 'linear-gradient(to bottom, transparent 42%, rgba(17,35,26,0.7) 78%, #11231a 100%)',
         }} />
         <div style={{ position: 'absolute', top: '14px', left: '16px', zIndex: 2 }}>
           <span style={{
@@ -573,7 +616,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
           </h3>
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: compact ? '11px' : '11.5px', lineHeight: 1.8, color: 'rgba(246,242,233,0.5)',
+            fontSize: compact ? '11px' : '11.5px', lineHeight: 1.8, color: 'rgba(246,242,233,0.66)',
           }}>{card.body}</p>
         </div>
 

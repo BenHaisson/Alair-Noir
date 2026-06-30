@@ -14,9 +14,9 @@ export const cinematicChapters: Chapter[] = [
   },
   {
     eyebrow: '02 — The Standard',
-    heading: 'Two vehicles.',
-    italic: 'One standard.',
-    body: 'The collection is intentionally small: a black BMW i7 and a black Mercedes-Benz V-Class, each maintained for private Swiss mobility.',
+    heading: 'A limited',
+    italic: 'fleet.',
+    body: 'The fleet is deliberately limited: a BMW i7 xDrive60 and a Mercedes-Benz V-Class, each maintained to a consistent private standard.',
   },
   {
     eyebrow: '03 — The Silence',

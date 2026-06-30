@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'ALAIR NOIR — Private Mobility. Perfectly Delivered.',
-    description: 'Two vehicles. One standard. Executive chauffeur across Switzerland and Europe.',
+    description: 'Private chauffeur service in Zürich. Executive chauffeur across Switzerland and Europe.',
     type: 'website',
     locale: 'en_CH',
   },
