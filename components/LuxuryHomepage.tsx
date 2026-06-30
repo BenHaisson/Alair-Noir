@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Logo from './Logo';
 
@@ -383,90 +383,96 @@ function SceneRail() {
   );
 }
 
-function IntroOverlay() {
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <div className="intro-overlay" aria-label="ALAIR NOIR opening animation">
-      <div className="grain" aria-hidden="true" />
-      <motion.div
-        className="intro-vignette"
-        initial={shouldReduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.1, ease }}
-        aria-hidden="true"
-      />
-      <motion.div className="intro-inner" initial={shouldReduceMotion ? false : { opacity: 1 }} animate={{ opacity: 1 }}>
-        <motion.div
-          className="intro-icon"
-          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.94, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 1.2, delay: 0.2, ease }}
-        >
-          <Logo variant="icon" animate color="#F6F2E9" accentColor="#D6C7B0" />
-        </motion.div>
-        <motion.p
-          className="intro-name"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 1.3, ease }}
-        >
-          ALAIR NOIR
-        </motion.p>
-        <motion.p
-          className="intro-slogan"
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 2.05, ease }}
-        >
-          <span>NOT FOR EVERYONE</span>
-          <span>FOR YOU</span>
-        </motion.p>
-      </motion.div>
-      <motion.div
-        className="intro-exit"
-        initial={shouldReduceMotion ? false : { scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.95, delay: 3.25, ease }}
-      />
-    </div>
-  );
-}
-
 function HeroArrival() {
   const shouldReduceMotion = useReducedMotion();
+  const ref = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end end'],
+  });
+
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.34, 0.58, 1], [0, 0.12, 1, 1]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.58, 1], [1.16, 1.04, 1]);
+  const darkOpacity = useTransform(scrollYProgress, [0, 0.42, 0.72, 1], [1, 0.9, 0.52, 0.38]);
+  const lightOpacity = useTransform(scrollYProgress, [0.36, 0.58, 0.76], [0, 0.2, 0.08]);
+  const iconOpacity = useTransform(scrollYProgress, [0.02, 0.14, 0.34, 0.48], [0, 1, 1, 0]);
+  const iconScale = useTransform(scrollYProgress, [0.02, 0.22, 0.48], [0.88, 1, 0.96]);
+  const nameOpacity = useTransform(scrollYProgress, [0.18, 0.3, 0.42, 0.56], [0, 1, 1, 0]);
+  const nameY = useTransform(scrollYProgress, [0.18, 0.3, 0.56], [24, 0, -14]);
+  const sloganOpacity = useTransform(scrollYProgress, [0.34, 0.46, 0.58, 0.68], [0, 1, 1, 0]);
+  const sloganY = useTransform(scrollYProgress, [0.34, 0.46, 0.68], [18, 0, -16]);
+  const titleOpacity = useTransform(scrollYProgress, [0.64, 0.8, 1], [0, 1, 1]);
+  const titleY = useTransform(scrollYProgress, [0.64, 0.84, 1], [42, 0, 0]);
+  const factsOpacity = useTransform(scrollYProgress, [0.78, 0.92], [0, 1]);
+
+  if (shouldReduceMotion) {
+    return (
+      <section className="hero-arrival hero-arrival--reduced" id="arrival">
+        <div className="hero-image">
+          <Image src="/images/hero-bmw-i7.jpg" alt="Black BMW i7 prepared for private arrival" fill priority sizes="100vw" />
+        </div>
+        <div className="hero-scrim" aria-hidden="true" />
+        <div className="lux-container hero-content">
+          <p className="eyebrow">Private chauffeur service / Zurich</p>
+          <h1>Private chauffeur service in Zurich for those who move with intention.</h1>
+          <div className="hero-copy">
+            <p>
+              ALAIR NOIR arranges discreet private mobility for CEOs, founders, executives, private clients, family offices,
+              corporate guests, and high-level airport arrivals across Switzerland and selected European routes.
+            </p>
+            <p>
+              This is not transport as a transaction. It is timing, privacy, cabin atmosphere, and arrival control, prepared
+              before you step outside.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="hero-arrival" id="arrival">
-      <motion.div
-        className="hero-image"
-        initial={shouldReduceMotion ? undefined : { scale: 1.06, opacity: 0.68 }}
-        animate={shouldReduceMotion ? undefined : { scale: 1, opacity: 1 }}
-        transition={{ duration: 1.8, ease }}
-      >
-        <Image src="/images/hero-bmw-i7.jpg" alt="Black BMW i7 prepared for private arrival" fill priority sizes="100vw" />
-      </motion.div>
-      <div className="hero-scrim" aria-hidden="true" />
-      <div className="lux-container hero-content">
-        <motion.p className="eyebrow" {...reveal(shouldReduceMotion, 0.1)}>Private chauffeur service / Zurich</motion.p>
-        <motion.h1 {...reveal(shouldReduceMotion, 0.18)}>
-          Private chauffeur service in Zurich for those who move with intention.
-        </motion.h1>
-        <motion.div className="hero-copy" {...reveal(shouldReduceMotion, 0.28)}>
-          <p>
-            ALAIR NOIR arranges discreet private mobility for CEOs, founders, executives, private clients, family offices,
-            corporate guests, and high-level airport arrivals across Switzerland and selected European routes.
-          </p>
-          <p>
-            This is not transport as a transaction. It is timing, privacy, cabin atmosphere, and arrival control, prepared
-            before you step outside.
-          </p>
+    <section className="hero-sequence" id="arrival" ref={ref} aria-label="ALAIR NOIR cinematic opening">
+      <div className="hero-sequence-sticky">
+        <motion.div className="hero-sequence-image" style={{ opacity: imageOpacity, scale: imageScale }}>
+          <Image src="/images/hero-bmw-i7.jpg" alt="Black BMW i7 prepared for private arrival" fill priority sizes="100vw" />
         </motion.div>
-        <motion.div className="hero-actions" {...reveal(shouldReduceMotion, 0.36)}>
-          <LuxuryButton href="#request">Request Private Mobility</LuxuryButton>
-          <LuxuryButton href="https://wa.me/41772870956" variant="secondary">WhatsApp Direct</LuxuryButton>
+        <motion.div className="hero-sequence-dark" style={{ opacity: darkOpacity }} aria-hidden="true" />
+        <motion.div className="hero-sequence-light" style={{ opacity: lightOpacity }} aria-hidden="true" />
+        <div className="grain hero-grain" aria-hidden="true" />
+
+        <div className="hero-brand-stage" aria-hidden="true">
+          <motion.div className="hero-brand-icon" style={{ opacity: iconOpacity, scale: iconScale }}>
+            <Logo variant="icon" animate color="#F6F2E9" accentColor="#D6C7B0" />
+          </motion.div>
+          <motion.p className="hero-brand-name" style={{ opacity: nameOpacity, y: nameY }}>
+            ALAIR NOIR
+          </motion.p>
+          <motion.p className="hero-brand-slogan" style={{ opacity: sloganOpacity, y: sloganY }}>
+            <span>NOT FOR EVERYONE</span>
+            <span>FOR YOU</span>
+          </motion.p>
+        </div>
+
+        <motion.div className="lux-container hero-sequence-content" style={{ opacity: titleOpacity, y: titleY }}>
+          <p className="eyebrow">Private chauffeur service / Zurich</p>
+          <h1>Private chauffeur service in Zurich for those who move with intention.</h1>
+          <div className="hero-copy">
+            <p>
+              ALAIR NOIR arranges discreet private mobility for CEOs, founders, executives, private clients, family offices,
+              corporate guests, and high-level airport arrivals across Switzerland and selected European routes.
+            </p>
+            <p>
+              This is not transport as a transaction. It is timing, privacy, cabin atmosphere, and arrival control, prepared
+              before you step outside.
+            </p>
+          </div>
+          <div className="hero-actions">
+            <LuxuryButton href="#request">Request Private Mobility</LuxuryButton>
+            <LuxuryButton href="https://wa.me/41772870956" variant="secondary">WhatsApp Direct</LuxuryButton>
+          </div>
         </motion.div>
-        <motion.div className="quick-facts" {...reveal(shouldReduceMotion, 0.44)}>
+
+        <motion.div className="quick-facts hero-sequence-facts" style={{ opacity: factsOpacity }}>
           <span>BMW i7 xDrive60</span>
           <span>Mercedes-Benz V-Class</span>
           <span>Zurich-based. Switzerland-ready.</span>
@@ -976,7 +982,6 @@ function LuxuryFooter() {
 export default function LuxuryHomepage() {
   return (
     <>
-      <IntroOverlay />
       <main id="main-content" className="luxury-page-shell">
         <HeroArrival />
         <SceneRail />

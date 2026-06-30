@@ -18,13 +18,21 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [ready, setReady] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 60);
+    const handler = () => {
+      setScrolled(window.scrollY > 60);
+      setReady(window.scrollY > window.innerHeight * 2.85);
+    };
     window.addEventListener('scroll', handler, { passive: true });
+    window.addEventListener('resize', handler);
     handler();
-    return () => window.removeEventListener('scroll', handler);
+    return () => {
+      window.removeEventListener('scroll', handler);
+      window.removeEventListener('resize', handler);
+    };
   }, []);
 
   useEffect(() => {
@@ -42,6 +50,8 @@ export default function Navbar() {
           backgroundColor: scrolled ? 'rgba(10,10,10,0.92)' : 'transparent',
           backdropFilter: scrolled ? 'blur(16px)' : 'none',
           borderBottom: scrolled ? '1px solid rgba(214,199,176,0.12)' : '1px solid transparent',
+          opacity: ready || open ? 1 : 0,
+          pointerEvents: ready || open ? 'auto' : 'none',
         }}
       >
         <div className="nav-inner">

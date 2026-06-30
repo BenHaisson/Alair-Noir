@@ -10,7 +10,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     gsap.registerPlugin(ScrollTrigger);
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (reduceMotion.matches) {
+    if (reduceMotion.matches || document.querySelector('.hero-sequence')) {
       ScrollTrigger.refresh();
       return undefined;
     }
