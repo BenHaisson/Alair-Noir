@@ -1,18 +1,24 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 type Card = {
   title: string;
   body: string;
   meta?: string;
+  image?: string;
+  detail?: string;
 };
 
 type ImageSlide = {
   src: string;
   alt: string;
   caption: string;
+  body?: string;
+  meta?: string;
 };
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -45,30 +51,63 @@ const pillars: Card[] = [
   },
 ];
 
+const journeyScenes: Card[] = [
+  {
+    meta: 'Scene 01',
+    title: 'The request is read as a schedule, not an errand.',
+    body: 'Date, route, passenger count, luggage, privacy needs, and arrival posture become the brief before a vehicle is assigned.',
+    detail: 'Prepared before movement',
+  },
+  {
+    meta: 'Scene 02',
+    title: 'The public part of travel is shortened.',
+    body: 'Airport, hotel, residence, meeting, or event movement is planned to reduce waiting, visibility, confusion, and unnecessary exposure.',
+    detail: 'Uncertainty removed',
+  },
+  {
+    meta: 'Scene 03',
+    title: 'The cabin becomes the private interval.',
+    body: 'A quiet space for calls, preparation, rest, or silence, arranged around the passenger rather than the distance.',
+    detail: 'Composure protected',
+  },
+  {
+    meta: 'Scene 04',
+    title: 'The arrival is the final detail.',
+    body: 'The moment at the door matters: timing, route, handover, and presence must feel already understood.',
+    detail: 'Arrival controlled',
+  },
+];
+
 const audiences: Card[] = [
   {
     title: 'CEOs & Founders',
     body: 'For those moving between decisions, meetings, investors, hotels, airports, and private obligations where the day cannot feel improvised.',
+    image: '/images/bmw-i7-private-office.png',
   },
   {
     title: 'Executives',
     body: 'For board meetings, client visits, roadshows, airport arrivals, corporate dinners, and schedules where timing matters.',
+    image: '/images/bmw-i7-executive-lounge.png',
   },
   {
     title: 'Private Clients',
     body: 'For residence transfers, hotels, restaurants, appointments, shopping, private events, and long-distance travel handled without exposure.',
+    image: '/images/bmw-i7-zurich.png',
   },
   {
     title: 'Family Offices',
     body: 'For principals, relatives, guests, luggage-heavy airport arrivals, recurring schedules, and cross-border journeys.',
+    image: '/images/mercedes-v-class-cabin-rear.png',
   },
   {
     title: 'Executive Assistants',
     body: 'For clear confirmations, reliable communication, vehicle recommendation, route details, and professional handling on behalf of someone else.',
+    image: '/images/brand-stationery.png',
   },
   {
     title: 'Corporate Guests',
     body: 'For visiting clients, senior leadership, investors, delegations, and event guests who should be received with control.',
+    image: '/images/mercedes-v-class-cabin-side.png',
   },
 ];
 
@@ -92,11 +131,89 @@ const airportCards: Card[] = [
 ];
 
 const cabinSlides: ImageSlide[] = [
-  { src: '/images/bmw-i7-executive-lounge.png', alt: 'BMW i7 executive rear cabin', caption: 'Executive lounge' },
-  { src: '/images/bmw-i7-cockpit-night.png', alt: 'BMW i7 ambient night cockpit', caption: 'Ambient privacy' },
-  { src: '/images/bmw-i7-rear-theatre.png', alt: 'BMW i7 rear cabin theatre display', caption: 'Rear cabin focus' },
-  { src: '/images/bmw-i7-private-office.png', alt: 'BMW i7 private office cabin', caption: 'Business preparation' },
-  { src: '/images/mercedes-v-class-cabin-seats.png', alt: 'Mercedes-Benz V-Class rear seating', caption: 'Passenger silence' },
+  {
+    src: '/images/bmw-i7-executive-lounge.png',
+    alt: 'BMW i7 executive rear cabin',
+    caption: 'Executive lounge',
+    meta: '01',
+    body: 'A rear cabin arranged as a controlled room between obligations.',
+  },
+  {
+    src: '/images/bmw-i7-cockpit-night.png',
+    alt: 'BMW i7 ambient night cockpit',
+    caption: 'Ambient privacy',
+    meta: '02',
+    body: 'Low light, low noise, and a cabin mood that lets the day slow down.',
+  },
+  {
+    src: '/images/bmw-i7-rear-theatre.png',
+    alt: 'BMW i7 rear cabin theatre display',
+    caption: 'Rear cabin focus',
+    meta: '03',
+    body: 'The passenger remains inside a prepared private environment.',
+  },
+  {
+    src: '/images/bmw-i7-private-office.png',
+    alt: 'BMW i7 private office cabin',
+    caption: 'Business preparation',
+    meta: '04',
+    body: 'Calls, notes, silence, and transitions handled without exposure.',
+  },
+  {
+    src: '/images/mercedes-v-class-cabin-seats.png',
+    alt: 'Mercedes-Benz V-Class rear seating',
+    caption: 'Passenger silence',
+    meta: '05',
+    body: 'Group movement without losing the private rhythm of the journey.',
+  },
+];
+
+const bmwSlides: ImageSlide[] = [
+  {
+    src: '/images/bmw-i7-black-studio.png',
+    alt: 'BMW i7 black studio exterior',
+    caption: 'Exterior presence',
+    meta: 'BMW i7',
+    body: 'Silent electric arrival with a composed executive profile.',
+  },
+  {
+    src: '/images/bmw-i7-rear-theatre.png',
+    alt: 'BMW i7 rear theatre cabin',
+    caption: 'Rear cabin theatre',
+    meta: 'BMW i7',
+    body: 'A private rear environment for focus, calls, and decompression.',
+  },
+  {
+    src: '/images/bmw-i7-dashboard-light.png',
+    alt: 'BMW i7 dashboard detail',
+    caption: 'Cabin detail',
+    meta: 'BMW i7',
+    body: 'Technology remains quiet, atmospheric, and controlled.',
+  },
+];
+
+const vClassSlides: ImageSlide[] = [
+  {
+    src: '/images/mercedes-v-class-cabin-side.png',
+    alt: 'Mercedes-Benz V-Class side cabin',
+    caption: 'Group cabin',
+    meta: 'V-Class',
+    body: 'Space for guests, assistants, luggage, and changing schedules.',
+  },
+  {
+    src: '/images/mercedes-v-class-cabin-rear.png',
+    alt: 'Mercedes-Benz V-Class rear cabin',
+    caption: 'Private group seating',
+    meta: 'V-Class',
+    body: 'Discreet movement for families, delegations, and corporate guests.',
+  },
+  {
+    src: '/images/mercedes-v-class-black-studio.png',
+    alt: 'Mercedes-Benz V-Class black exterior',
+    caption: 'Prepared presence',
+    meta: 'V-Class',
+    body: 'A calm arrival solution for space-heavy private movement.',
+  },
 ];
 
 const executiveDay: Card[] = [
@@ -128,12 +245,36 @@ const routes: Card[] = [
 ];
 
 const occasions: Card[] = [
-  { title: 'Zurich Airport Arrival', body: 'For landings, departures, guest pickup, luggage consideration, and hotel or residence transfers.' },
-  { title: 'CEO & Executive Schedule', body: 'For meetings, board appointments, investor days, client dinners, roadshows, and confidential business movement.' },
-  { title: 'Private Client Movement', body: 'For residences, hotels, dinners, appointments, shopping, private events, and quiet city travel.' },
-  { title: 'Event Week Mobility', body: 'For WEF Davos, Art Basel, Zurich Film Festival, private events, brand activations, and high-demand dates.' },
-  { title: 'Long-Distance Route', body: 'For Davos, St. Moritz, Geneva, Basel, Lucerne, Milan, Munich, and selected European journeys.' },
-  { title: 'Guest & Delegation Reception', body: 'For principals, families, corporate guests, private offices, assistants, and group movement requiring space and discretion.' },
+  {
+    title: 'Zurich Airport Arrival',
+    body: 'For landings, departures, guest pickup, luggage consideration, and hotel or residence transfers.',
+    image: '/images/chauffeur-arrival.png',
+  },
+  {
+    title: 'CEO & Executive Schedule',
+    body: 'For meetings, board appointments, investor days, client dinners, roadshows, and confidential business movement.',
+    image: '/images/bmw-i7-private-office.png',
+  },
+  {
+    title: 'Private Client Movement',
+    body: 'For residences, hotels, dinners, appointments, shopping, private events, and quiet city travel.',
+    image: '/images/bmw-i7-zurich.png',
+  },
+  {
+    title: 'Event Week Mobility',
+    body: 'For WEF Davos, Art Basel, Zurich Film Festival, private events, brand activations, and high-demand dates.',
+    image: '/images/mercedes-v-class-black-studio.png',
+  },
+  {
+    title: 'Long-Distance Route',
+    body: 'For Davos, St. Moritz, Geneva, Basel, Lucerne, Milan, Munich, and selected European journeys.',
+    image: '/images/bmw-i7-studio.png',
+  },
+  {
+    title: 'Guest & Delegation Reception',
+    body: 'For principals, families, corporate guests, private offices, assistants, and group movement requiring space and discretion.',
+    image: '/images/mercedes-v-class-cabin-side.png',
+  },
 ];
 
 const proof: Card[] = [
@@ -215,11 +356,29 @@ function CinematicCard({ item, index }: { item: Card; index: number }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <motion.article className="cinematic-card" {...reveal(shouldReduceMotion, index * 0.04)}>
+    <motion.article className={`cinematic-card ${item.image ? 'cinematic-card--image' : ''}`} {...reveal(shouldReduceMotion, index * 0.04)}>
+      {item.image && (
+        <div className="card-image" aria-hidden="true">
+          <Image src={item.image} alt="" fill sizes="(max-width: 900px) 100vw, 34vw" />
+        </div>
+      )}
       {item.meta && <span className="card-meta">{item.meta}</span>}
       <h3>{item.title}</h3>
       <p>{item.body}</p>
+      {item.detail && <span className="card-detail">{item.detail}</span>}
     </motion.article>
+  );
+}
+
+function SceneRail() {
+  return (
+    <SectionFrame eyebrow="Private sequence" title="A journey that feels already prepared." className="scene-rail-section">
+      <div className="scene-rail">
+        {journeyScenes.map((item, index) => (
+          <CinematicCard key={item.title} item={item} index={index} />
+        ))}
+      </div>
+    </SectionFrame>
   );
 }
 
@@ -230,7 +389,7 @@ function BrandOpening() {
     <section className="brand-opening" aria-label="ALAIR NOIR introduction">
       <div className="grain" aria-hidden="true" />
       <motion.div className="opening-inner" {...reveal(shouldReduceMotion)}>
-        <p className="opening-location">Zurich · Switzerland</p>
+        <p className="opening-location">Zurich / Switzerland</p>
         <p className="opening-logo">ALAIR NOIR</p>
         <div className="opening-line" />
         <p className="opening-slogan">
@@ -258,7 +417,7 @@ function HeroArrival() {
       </motion.div>
       <div className="hero-scrim" aria-hidden="true" />
       <div className="lux-container hero-content">
-        <motion.p className="eyebrow" {...reveal(shouldReduceMotion, 0.1)}>Private chauffeur service · Zurich</motion.p>
+        <motion.p className="eyebrow" {...reveal(shouldReduceMotion, 0.1)}>Private chauffeur service / Zurich</motion.p>
         <motion.h1 {...reveal(shouldReduceMotion, 0.18)}>
           Private chauffeur service in Zurich for those who move with intention.
         </motion.h1>
@@ -391,16 +550,71 @@ function AirportMoment() {
   );
 }
 
-function DiaporamaSlider({ slides }: { slides: ImageSlide[] }) {
+function DiaporamaSlider({ slides, label = 'Cinematic image sequence' }: { slides: ImageSlide[]; label?: string }) {
+  const shouldReduceMotion = useReducedMotion();
+  const [active, setActive] = useState(0);
+  const activeSlide = slides[active];
+
+  useEffect(() => {
+    if (shouldReduceMotion || slides.length < 2) return undefined;
+    const id = window.setInterval(() => {
+      setActive((current) => (current + 1) % slides.length);
+    }, 7600);
+    return () => window.clearInterval(id);
+  }, [shouldReduceMotion, slides.length]);
+
+  const go = (direction: 1 | -1) => {
+    setActive((current) => (current + direction + slides.length) % slides.length);
+  };
+
   return (
-    <div className="diaporama" aria-label="Cinematic cabin images">
-      <div className="diaporama-track">
+    <div className="diaporama" aria-label={label}>
+      <motion.div
+        key={activeSlide.src}
+        className="diaporama-stage"
+        initial={shouldReduceMotion ? false : { opacity: 0, scale: 1.025 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.1, ease }}
+      >
+        <Image src={activeSlide.src} alt={activeSlide.alt} fill sizes="(max-width: 900px) 100vw, 72vw" />
+        <div className="diaporama-caption">
+          <span>{activeSlide.meta ?? String(active + 1).padStart(2, '0')}</span>
+          <h3>{activeSlide.caption}</h3>
+          {activeSlide.body && <p>{activeSlide.body}</p>}
+        </div>
+      </motion.div>
+      <div className="diaporama-console">
+        <div className="slider-counter" aria-hidden="true">
+          <span>{String(active + 1).padStart(2, '0')}</span>
+          <i />
+          <span>{String(slides.length).padStart(2, '0')}</span>
+        </div>
+        <div className="slider-progress" aria-hidden="true">
+          <span style={{ width: `${((active + 1) / slides.length) * 100}%` }} />
+        </div>
+        <div className="slider-actions">
+          <button type="button" onClick={() => go(-1)} aria-label="Previous image">
+            <ArrowLeft size={16} strokeWidth={1.3} />
+          </button>
+          <button type="button" onClick={() => go(1)} aria-label="Next image">
+            <ArrowRight size={16} strokeWidth={1.3} />
+          </button>
+        </div>
+      </div>
+      <div className="diaporama-track" role="tablist" aria-label={`${label} slides`}>
         {slides.map((slide, index) => (
-          <article className="slide" key={slide.src}>
-            <Image src={slide.src} alt={slide.alt} fill sizes="(max-width: 900px) 82vw, 42vw" />
+          <button
+            type="button"
+            className={`slide ${index === active ? 'slide--active' : ''}`}
+            key={slide.src}
+            onClick={() => setActive(index)}
+            role="tab"
+            aria-selected={index === active}
+          >
+            <Image src={slide.src} alt="" fill sizes="(max-width: 900px) 42vw, 18vw" />
             <span>{String(index + 1).padStart(2, '0')}</span>
             <p>{slide.caption}</p>
-          </article>
+          </button>
         ))}
       </div>
     </div>
@@ -420,7 +634,7 @@ function CabinExperience() {
         </p>
         <p>Silence is not emptiness. It is space to think.</p>
       </motion.div>
-      <DiaporamaSlider slides={cabinSlides} />
+      <DiaporamaSlider slides={cabinSlides} label="Cabin experience sequence" />
     </SectionFrame>
   );
 }
@@ -433,7 +647,7 @@ function VehicleCollection() {
           id="bmw-i7"
           label="BMW i7 xDrive60"
           title="Silence before the meeting."
-          image="/images/bmw-i7-black-studio.png"
+          slides={bmwSlides}
           body="The BMW i7 xDrive60 is arranged for executive airport arrivals, private city travel, board meetings, hotel transfers, and long-distance journeys where the passenger needs quiet, privacy, and focus."
           specs={['Fully electric', 'Executive rear cabin', 'Private focus', 'Composed long-distance travel']}
           cta="Request the BMW i7"
@@ -442,7 +656,7 @@ function VehicleCollection() {
           id="v-class"
           label="Mercedes-Benz V-Class"
           title="Space for guests, luggage, and schedules."
-          image="/images/mercedes-v-class-cabin-side.png"
+          slides={vClassSlides}
           body="The Mercedes-Benz V-Class is arranged for private groups, families, delegations, corporate teams, assistants booking for others, and airport arrivals where space must remain calm and discreet."
           specs={['Executive group seating', 'Generous luggage capacity', 'Comfort for longer routes', 'Prepared for events and guest movement']}
           cta="Request the V-Class"
@@ -453,14 +667,12 @@ function VehicleCollection() {
   );
 }
 
-function VehiclePanel({ id, label, title, image, body, specs, cta, reverse = false }: { id: string; label: string; title: string; image: string; body: string; specs: string[]; cta: string; reverse?: boolean }) {
+function VehiclePanel({ id, label, title, slides, body, specs, cta, reverse = false }: { id: string; label: string; title: string; slides: ImageSlide[]; body: string; specs: string[]; cta: string; reverse?: boolean }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.article id={id} className={`vehicle-panel ${reverse ? 'vehicle-panel--reverse' : ''}`} {...reveal(shouldReduceMotion)}>
-      <div className="vehicle-media">
-        <Image src={image} alt={`${label} cinematic presentation`} fill sizes="(max-width: 900px) 100vw, 50vw" />
-      </div>
+      <VehicleMediaGallery slides={slides} label={label} />
       <div className="vehicle-copy">
         <p className="eyebrow">{label}</p>
         <h3>{title}</h3>
@@ -471,6 +683,44 @@ function VehiclePanel({ id, label, title, image, body, specs, cta, reverse = fal
         <LuxuryButton href="#request" variant="secondary">{cta}</LuxuryButton>
       </div>
     </motion.article>
+  );
+}
+
+function VehicleMediaGallery({ slides, label }: { slides: ImageSlide[]; label: string }) {
+  const shouldReduceMotion = useReducedMotion();
+  const [active, setActive] = useState(0);
+  const activeSlide = slides[active];
+
+  return (
+    <div className="vehicle-gallery" aria-label={`${label} image gallery`}>
+      <motion.div
+        key={activeSlide.src}
+        className="vehicle-media"
+        initial={shouldReduceMotion ? false : { opacity: 0, clipPath: 'inset(0 12% 0 0)' }}
+        animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+        transition={{ duration: 0.9, ease }}
+      >
+        <Image src={activeSlide.src} alt={activeSlide.alt} fill sizes="(max-width: 900px) 100vw, 50vw" />
+        <div className="vehicle-media-caption">
+          <span>{activeSlide.meta}</span>
+          <p>{activeSlide.caption}</p>
+        </div>
+      </motion.div>
+      <div className="vehicle-thumb-rail">
+        {slides.map((slide, index) => (
+          <button
+            type="button"
+            key={slide.src}
+            className={index === active ? 'active' : ''}
+            onClick={() => setActive(index)}
+            aria-label={`Show ${slide.caption}`}
+          >
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            {slide.caption}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -561,12 +811,53 @@ function ProofSection() {
 function Testimonials() {
   return (
     <SectionFrame eyebrow="In their words" title="Calm is remembered.">
-      <div className="testimonial-grid">
-        {testimonials.map((item, index) => (
-          <CinematicCard key={item.source} index={index} item={{ title: item.quote, body: item.source, meta: 'Quote' }} />
-        ))}
-      </div>
+      <QuoteSlider />
     </SectionFrame>
+  );
+}
+
+function QuoteSlider() {
+  const shouldReduceMotion = useReducedMotion();
+  const [active, setActive] = useState(0);
+  const quote = testimonials[active];
+
+  useEffect(() => {
+    if (shouldReduceMotion) return undefined;
+    const id = window.setInterval(() => {
+      setActive((current) => (current + 1) % testimonials.length);
+    }, 8200);
+    return () => window.clearInterval(id);
+  }, [shouldReduceMotion]);
+
+  const go = (direction: 1 | -1) => {
+    setActive((current) => (current + direction + testimonials.length) % testimonials.length);
+  };
+
+  return (
+    <div className="quote-slider">
+      <motion.blockquote
+        key={quote.source}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease }}
+      >
+        <p>{quote.quote}</p>
+        <cite>{quote.source}</cite>
+      </motion.blockquote>
+      <div className="quote-controls">
+        <div className="slider-progress" aria-hidden="true">
+          <span style={{ width: `${((active + 1) / testimonials.length) * 100}%` }} />
+        </div>
+        <div className="slider-actions">
+          <button type="button" onClick={() => go(-1)} aria-label="Previous testimonial">
+            <ArrowLeft size={16} strokeWidth={1.3} />
+          </button>
+          <button type="button" onClick={() => go(1)} aria-label="Next testimonial">
+            <ArrowRight size={16} strokeWidth={1.3} />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -645,7 +936,7 @@ function LuxuryFooter() {
       <div className="lux-container footer-bottom">
         <a href="/impressum">Impressum</a>
         <a href="/privacy">Privacy Policy</a>
-        <span>© 2026 ALAIR NOIR GmbH · Switzerland</span>
+        <span>(C) 2026 ALAIR NOIR GmbH / Switzerland</span>
       </div>
     </footer>
   );
@@ -657,6 +948,7 @@ export default function LuxuryHomepage() {
       <main id="main-content" className="luxury-page-shell">
         <BrandOpening />
         <HeroArrival />
+        <SceneRail />
         <BrandPromise />
         <ArrivalRisk />
         <AlairStandard />
