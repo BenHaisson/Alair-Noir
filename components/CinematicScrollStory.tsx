@@ -181,7 +181,7 @@ export default function CinematicScrollStory() {
 
   /* ── responsive sizing (fit to screen) ─────────────────── */
   // Show every card in the fan (all neighbours behind the active one).
-  const maxNeighbors = isMobile ? 2 : isTablet ? 4 : CARDS.length - 1;
+  const maxNeighbors = isMobile ? 3 : isTablet ? 4 : CARDS.length - 1;
 
   // Card height driven by viewport height; width follows a landscape proportion.
   const deskH   = Math.round(Math.max(320, Math.min(isTablet ? 420 : 500, windowHeight * 0.6)));
@@ -362,31 +362,25 @@ export default function CinematicScrollStory() {
                         padding: isMobile ? '0 18px' : '20px 0 18px',
                       }}
                     >
-                      {/* Dim image backdrop (desktop narrow card) */}
-                      {!isMobile && (
-                        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-                          <Image src={card.image} alt="" fill sizes="80px"
-                            className="object-cover" style={{ filter: 'brightness(0.82)' }} />
-                          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.1) 30%, transparent 60%, rgba(0,0,0,0.35))' }} />
-                        </div>
-                      )}
+                      {/* Image backdrop — makes collapsed cards read as cards in the back */}
+                      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+                        <Image src={card.image} alt="" fill sizes={isMobile ? '100vw' : '80px'}
+                          className="object-cover" style={{ filter: 'brightness(0.78)' }} />
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.55), rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.45))' }} />
+                      </div>
 
                       {isMobile ? (
                         <>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                            <span style={{
-                              fontFamily: 'var(--font-inter)', fontSize: '9px',
-                              letterSpacing: '0.14em', color: 'rgba(246,242,233,0.4)',
-                            }}>{card.num}</span>
-                            <span style={{
-                              fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '12px',
-                              letterSpacing: '0.16em', textTransform: 'uppercase',
-                              color: 'rgba(246,242,233,0.78)',
-                            }}>{card.label}</span>
-                          </div>
+                          <span style={{
+                            position: 'relative', zIndex: 1,
+                            fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '12px',
+                            letterSpacing: '0.16em', textTransform: 'uppercase',
+                            color: 'rgba(246,242,233,0.9)',
+                          }}>{card.label}</span>
                           <div style={{
+                            position: 'relative', zIndex: 1,
                             width: '5px', height: '5px', borderRadius: '50%',
-                            background: 'rgba(212,175,55,0.5)',
+                            background: 'rgba(212,175,55,0.6)',
                           }} />
                         </>
                       ) : (
