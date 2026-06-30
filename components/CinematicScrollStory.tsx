@@ -123,6 +123,10 @@ export default function CinematicScrollStory() {
 
   const dragStartRef = useRef<number | null>(null);
   const movedRef = useRef(false);
+  const inViewRef = useRef(false);
+  const lockRef = useRef(false);
+  const touchYRef = useRef<number | null>(null);
+  const activeRef = useRef(0);
 
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
@@ -141,12 +145,54 @@ export default function CinematicScrollStory() {
   const prev = () => setActiveIndex((p) => (p - 1 + CARDS.length) % CARDS.length);
   const handleCardClick = (i: number) => { if (!movedRef.current) goTo(i); };
 
-  /* ── autoplay: slow, endless, repeats; pauses on hover ──── */
+  /* ── keep refs fresh for the imperative scroll handlers ──── */
+  useEffect(() => { inViewRef.current = inView; }, [inView]);
+  useEffect(() => { activeRef.current = activeIndex; }, [activeIndex]);
+
+  /* ── autoplay: slow, endless, repeats; pauses on hover (desktop only) ── */
   useEffect(() => {
-    if (shouldReduceMotion || isHovered || isDragging || !inView) return;
+    if (isMobile || shouldReduceMotion || isHovered || isDragging || !inView) return;
     const id = setInterval(() => next(), AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [shouldReduceMotion, isHovered, isDragging, inView]);
+  }, [isMobile, shouldReduceMotion, isHovered, isDragging, inView]);
+
+  /* ── mobile: scroll/swipe changes one card, page stays put ── */
+  useEffect(() => {
+    if (!isMobile) return;
+    const last = CARDS.length - 1;
+    const atStart = () => activeRef.current <= 0;
+    const atEnd = () => activeRef.current >= last;
+    // returns true if the gesture was consumed (page must not scroll)
+    const step = (dir: number) => {
+      if ((dir < 0 && atStart()) || (dir > 0 && atEnd())) return false; // release to page
+      if (lockRef.current) return true; // mid-cooldown: swallow but don't advance
+      setActiveIndex((i) => Math.max(0, Math.min(last, i + dir)));
+      lockRef.current = true;
+      setTimeout(() => { lockRef.current = false; }, 620);
+      return true;
+    };
+    const onWheel = (e: WheelEvent) => {
+      if (!inViewRef.current || Math.abs(e.deltaY) < 6) return;
+      if (step(e.deltaY > 0 ? 1 : -1)) e.preventDefault();
+    };
+    const onTouchStart = (e: TouchEvent) => { touchYRef.current = e.touches[0].clientY; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!inViewRef.current || touchYRef.current === null) return;
+      const dy = touchYRef.current - e.touches[0].clientY;
+      const dir = dy > 0 ? 1 : -1;
+      if ((dir < 0 && atStart()) || (dir > 0 && atEnd())) return; // let page scroll out
+      e.preventDefault(); // hold the page
+      if (Math.abs(dy) > 34) { step(dir); touchYRef.current = e.touches[0].clientY; }
+    };
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+    };
+  }, [isMobile]);
 
   /* ── keyboard ───────────────────────────────────────────── */
   useEffect(() => {
@@ -159,8 +205,9 @@ export default function CinematicScrollStory() {
     return () => window.removeEventListener('keydown', fn);
   }, [inView]);
 
-  /* ── mouse drag (no page scroll involved) ───────────────── */
+  /* ── mouse drag (desktop only; no page scroll involved) ──── */
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (isMobile) return;
     dragStartRef.current = e.clientX;
     movedRef.current = false;
     (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
@@ -180,19 +227,21 @@ export default function CinematicScrollStory() {
   };
 
   /* ── responsive sizing (fit to screen) ─────────────────── */
-  // Show every card in the fan (all neighbours behind the active one).
-  const maxNeighbors = isMobile ? 3 : isTablet ? 4 : CARDS.length - 1;
+  // Show every card behind the active one.
+  const maxNeighbors = CARDS.length - 1;
 
   // Card height driven by viewport height; width follows a landscape proportion.
   const deskH   = Math.round(Math.max(320, Math.min(isTablet ? 420 : 500, windowHeight * 0.6)));
   const collW   = isTablet ? 44 : 46;
   // Ensure the whole fan (active + visible neighbours + gaps) fits the viewport width.
-  const sideRoom = 2 * maxNeighbors * (collW + 5) + 80;
+  const sideRoom = 2 * (isTablet ? 4 : maxNeighbors) * (collW + 5) + 80;
+  // Mobile: a tall stacked deck (big active card, all others peeking behind).
+  const mobileH = Math.round(Math.max(360, Math.min(560, windowHeight * 0.6)));
   const activeW = isMobile
-    ? Math.min(380, windowWidth - 32)
+    ? Math.min(400, windowWidth - 28)
     : Math.max(360, Math.min(Math.round(deskH * 1.5), windowWidth - sideRoom));
-  const activeH = isMobile ? Math.round(Math.max(300, Math.min(360, windowHeight * 0.46))) : deskH;
-  const collH   = isMobile ? 50  : deskH;
+  const activeH = isMobile ? mobileH : deskH;
+  const collH   = isMobile ? mobileH : deskH;
 
   // Dynamic perspective origin so the active card stays visually centered for every chapter.
   const gapPx = isMobile ? 10 : 5;
@@ -216,14 +265,17 @@ export default function CinematicScrollStory() {
         position: 'relative',
         backgroundColor: 'var(--bg)',
         overflow: 'hidden',
-        padding: 'clamp(64px,9vw,128px) 0',
+        minHeight: isMobile ? '100svh' : undefined,
+        display: isMobile ? 'flex' : undefined,
+        alignItems: isMobile ? 'center' : undefined,
+        padding: isMobile ? 'clamp(40px,9vw,72px) 0' : 'clamp(64px,9vw,128px) 0',
       }}
     >
       <div
         ref={innerRef}
         style={{
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          gap: 'clamp(18px,3vh,40px)',
+          gap: 'clamp(18px,3vh,40px)', width: '100%',
         }}
       >
       {/* Ambient background (neutral) */}
@@ -288,11 +340,13 @@ export default function CinematicScrollStory() {
           role="tablist"
           aria-label="Experience chapters"
           style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
+            display: isMobile ? 'block' : 'flex',
+            position: isMobile ? 'relative' : 'static',
+            width: isMobile ? activeW : 'auto',
+            height: isMobile ? mobileH + 130 : 'auto',
+            flexDirection: 'row',
             flexWrap: 'nowrap', alignItems: 'center', justifyContent: 'center',
-            gap: isMobile ? '10px' : '5px',
-            width: isMobile ? '100%' : 'auto',
+            gap: isMobile ? '0' : '5px',
             transformStyle: 'preserve-3d',
           }}
         >
@@ -301,17 +355,16 @@ export default function CinematicScrollStory() {
             const d = Math.abs(index - activeIndex);
             const isVisible = d <= maxNeighbors;
 
-            let rotateY = 0, rotateX = 0, z = 0, y = 0, opacity = 1;
-            if (index < activeIndex) {
-              if (isMobile) { rotateX = 18 - (d - 1) * 3; z = -20 * d; y = 12 * d; }
-              else { rotateY = isVisible ? Math.min(22 + (d - 1) * 4, 48) : 52; z = isVisible ? -34 * d : -300; }
-              opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
-            } else if (index > activeIndex) {
-              if (isMobile) { rotateX = -(18 - (d - 1) * 3); z = -20 * d; y = -12 * d; }
-              else { rotateY = isVisible ? -Math.min(22 + (d - 1) * 4, 48) : -52; z = isVisible ? -34 * d : -300; }
-              opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
-            } else {
-              z = 80;
+            // ── Desktop: horizontal 3D fan ──
+            let rotateY = 0, z = 0, opacity = 1;
+            if (!isMobile) {
+              if (index < activeIndex) {
+                rotateY = isVisible ? Math.min(22 + (d - 1) * 4, 48) : 52; z = isVisible ? -34 * d : -300;
+                opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
+              } else if (index > activeIndex) {
+                rotateY = isVisible ? -Math.min(22 + (d - 1) * 4, 48) : -52; z = isVisible ? -34 * d : -300;
+                opacity = isVisible ? Math.max(1 - d * 0.08, 0.6) : 0;
+              } else { z = 80; }
             }
 
             return (
@@ -325,20 +378,32 @@ export default function CinematicScrollStory() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick(index); }
                 }}
-                animate={{
-                  width:   isMobile ? activeW : (isVisible ? (isActive ? activeW : collW) : 0),
-                  height:  isVisible ? (isActive ? activeH : collH) : 0,
-                  rotateY: isMobile ? 0 : rotateY,
-                  rotateX: isMobile ? rotateX : 0,
-                  z, y: isMobile ? y : 0,
-                  opacity: isVisible ? opacity : 0,
-                }}
+                animate={isMobile
+                  ? {
+                      y: isActive ? 0 : -(70 + (Math.min(d, 6) - 1) * 16),
+                      scale: isActive ? 1 : 1 - Math.min(d, 6) * 0.05,
+                      opacity: isActive ? 1 : Math.max(1 - Math.min(d, 6) * 0.14, 0.32),
+                    }
+                  : {
+                      width:   isVisible ? (isActive ? activeW : collW) : 0,
+                      height:  isVisible ? (isActive ? activeH : collH) : 0,
+                      rotateY,
+                      z,
+                      opacity: isVisible ? opacity : 0,
+                    }}
                 transition={shouldReduceMotion
                   ? { duration: 0 }
                   : { type: 'spring', stiffness: 200, damping: 24, mass: 0.85 }}
                 className="fan-card"
                 style={{
-                  position: 'relative', flexShrink: 0, overflow: 'hidden',
+                  ...(isMobile
+                    ? {
+                        position: 'absolute', left: 0, right: 0, marginInline: 'auto',
+                        top: '50%', marginTop: -(mobileH / 2),
+                        width: activeW, height: mobileH, zIndex: 100 - d,
+                      }
+                    : { position: 'relative', flexShrink: 0 }),
+                  overflow: 'hidden',
                   borderRadius: '12px',
                   border: 'none',
                   background: isActive ? '#242424' : '#1a1a1a',
@@ -357,16 +422,18 @@ export default function CinematicScrollStory() {
                         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2,
                         display: 'flex',
                         flexDirection: isMobile ? 'row' : 'column',
-                        alignItems: 'center',
+                        alignItems: isMobile ? 'flex-start' : 'center',
                         justifyContent: 'space-between',
-                        padding: isMobile ? '0 18px' : '20px 0 18px',
+                        padding: isMobile ? '16px 20px 0' : '20px 0 18px',
                       }}
                     >
                       {/* Image backdrop — makes collapsed cards read as cards in the back */}
                       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                         <Image src={card.image} alt="" fill sizes={isMobile ? '100vw' : '80px'}
                           className="object-cover" style={{ filter: 'brightness(1.05) contrast(1.02)' }} />
-                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.35), rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.28))' }} />
+                        <div style={{ position: 'absolute', inset: 0, background: isMobile
+                          ? 'linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.15) 30%, transparent 60%)'
+                          : 'linear-gradient(to right, rgba(0,0,0,0.35), rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.28))' }} />
                       </div>
 
                       {isMobile ? (
