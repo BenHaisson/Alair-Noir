@@ -6,11 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 
 const NAV_LINKS = [
-  { label: 'Story', href: '#story' },
-  { label: 'Fleet', href: '#collection' },
-  { label: 'Interiors', href: '#bmw-i7' },
-  { label: 'Services', href: '#services' },
-  { label: 'Contact',  href: '#contact' },
+  { label: 'Story', href: '/#story' },
+  { label: 'Fleet', href: '/#collection' },
+  { label: 'Interiors', href: '/#bmw-i7' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Journal', href: '/journal' },
+  { label: 'Contact',  href: '/#contact' },
 ];
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -73,8 +74,8 @@ export default function Navbar() {
 
           {/* Reserve CTA + burger */}
           <div className="flex items-center gap-4">
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="hidden md:inline-flex items-center justify-center"
               style={{
                 height: '36px', padding: '0 22px',
@@ -96,7 +97,7 @@ export default function Navbar() {
               }}
             >
               Reserve
-            </a>
+            </Link>
 
             {/* Burger */}
             <button
@@ -170,7 +171,7 @@ export default function Navbar() {
                 </motion.a>
               ))}
               <motion.a
-                href="#contact"
+                href="/#contact"
                 onClick={() => setOpen(false)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

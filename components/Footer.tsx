@@ -2,11 +2,12 @@
 import Logo from './Logo';
 
 const LINKS = [
-  { label: 'Story', href: '#story' },
-  { label: 'Fleet', href: '#collection' },
-  { label: 'Interiors', href: '#bmw-i7' },
-  { label: 'Services', href: '#services' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Story', href: '/#story' },
+  { label: 'Fleet', href: '/#collection' },
+  { label: 'Interiors', href: '/#bmw-i7' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Journal', href: '/journal' },
+  { label: 'Contact', href: '/#contact' },
   { label: 'WhatsApp', href: 'https://wa.me/41772870956', external: true },
   { label: 'Phone', href: 'tel:+41772870956' },
 ];
