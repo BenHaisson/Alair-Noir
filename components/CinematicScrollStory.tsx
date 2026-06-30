@@ -107,25 +107,22 @@ const CARDS: FanCard[] = [
   },
 ];
 
-const AUTOPLAY_MS = 4200;
-const PER_CARD_VH = 60;                 // scroll distance allotted per card
-const TOTAL_VH = 100 + (CARDS.length - 1) * PER_CARD_VH;
+const AUTOPLAY_MS = 5600;               // slow, deliberate card change
+const DRAG_THRESHOLD = 44;
 
 export default function CinematicScrollStory() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [windowWidth, setWindowWidth] = useState(1200);
   const [windowHeight, setWindowHeight] = useState(800);
 
-  const outerRef = useRef<HTMLElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(innerRef, { margin: '-15% 0px -15% 0px' });
   const shouldReduceMotion = useReducedMotion();
 
-  const rafRef = useRef<number | null>(null);
-  const autoScrollingRef = useRef(false);
-  const userInteractingRef = useRef(false);
-  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const dirRef = useRef(1);
+  const dragStartRef = useRef<number | null>(null);
+  const movedRef = useRef(false);
 
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
@@ -138,91 +135,49 @@ export default function CinematicScrollStory() {
     return () => window.removeEventListener('resize', fn);
   }, []);
 
-  /* ── scroll position → active card (native, mobile + desktop) ── */
-  useEffect(() => {
-    const update = () => {
-      rafRef.current = null;
-      const el = outerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const total = el.offsetHeight - window.innerHeight;
-      const scrolled = Math.min(Math.max(-rect.top, 0), total);
-      const p = total > 0 ? scrolled / total : 0;
-      const idx = Math.round(p * (CARDS.length - 1));
-      setActiveIndex((prev) => (prev === idx ? prev : idx));
-    };
-    const onScroll = () => {
-      if (rafRef.current == null) rafRef.current = requestAnimationFrame(update);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    update();
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
+  /* ── navigation (endless wrap-around loop) ──────────────── */
+  const goTo = (i: number) => setActiveIndex(((i % CARDS.length) + CARDS.length) % CARDS.length);
+  const next = () => setActiveIndex((p) => (p + 1) % CARDS.length);
+  const prev = () => setActiveIndex((p) => (p - 1 + CARDS.length) % CARDS.length);
+  const handleCardClick = (i: number) => { if (!movedRef.current) goTo(i); };
 
-  /* ── flag genuine user scroll so autoplay yields to it ──── */
+  /* ── autoplay: slow, endless, repeats; pauses on hover ──── */
   useEffect(() => {
-    const mark = () => {
-      if (autoScrollingRef.current) return; // ignore our own programmatic scroll
-      userInteractingRef.current = true;
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      idleTimerRef.current = setTimeout(() => { userInteractingRef.current = false; }, 2400);
-    };
-    window.addEventListener('wheel', mark, { passive: true });
-    window.addEventListener('touchmove', mark, { passive: true });
-    window.addEventListener('keydown', mark);
-    return () => {
-      window.removeEventListener('wheel', mark);
-      window.removeEventListener('touchmove', mark);
-      window.removeEventListener('keydown', mark);
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    };
-  }, []);
-
-  /* ── scroll the page so a given card becomes active ─────── */
-  const scrollToCard = (i: number) => {
-    const el = outerRef.current;
-    if (!el) return;
-    const target = Math.max(0, Math.min(CARDS.length - 1, i));
-    const total = el.offsetHeight - window.innerHeight;
-    const sectionTopAbs = window.scrollY + el.getBoundingClientRect().top;
-    autoScrollingRef.current = true;
-    window.scrollTo({
-      top: sectionTopAbs + (target / (CARDS.length - 1)) * total,
-      behavior: shouldReduceMotion ? 'auto' : 'smooth',
-    });
-    setTimeout(() => { autoScrollingRef.current = false; }, 800);
-  };
-  const handleCardClick = (i: number) => scrollToCard(i);
-
-  /* ── autoplay: endless ping-pong while pinned & idle ────── */
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-    const id = setInterval(() => {
-      if (userInteractingRef.current) return;
-      const el = outerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      if (rect.top > 1 || rect.bottom < window.innerHeight - 1) return; // only while pinned
-      if (activeIndex >= CARDS.length - 1) dirRef.current = -1;
-      else if (activeIndex <= 0) dirRef.current = 1;
-      scrollToCard(activeIndex + dirRef.current);
-    }, AUTOPLAY_MS);
+    if (shouldReduceMotion || isHovered || isDragging || !inView) return;
+    const id = setInterval(() => next(), AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [activeIndex, shouldReduceMotion]);
+  }, [shouldReduceMotion, isHovered, isDragging, inView]);
 
   /* ── keyboard ───────────────────────────────────────────── */
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (!inView) return;
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') scrollToCard(activeIndex - 1);
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') scrollToCard(activeIndex + 1);
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
     };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
-  }, [activeIndex, inView]);
+  }, [inView]);
+
+  /* ── mouse drag (no page scroll involved) ───────────────── */
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    dragStartRef.current = e.clientX;
+    movedRef.current = false;
+    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+  };
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartRef.current === null) return;
+    if (Math.abs(e.clientX - dragStartRef.current) > 8) { movedRef.current = true; setIsDragging(true); }
+  };
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartRef.current === null) return;
+    const delta = e.clientX - dragStartRef.current;
+    if (Math.abs(delta) > DRAG_THRESHOLD) (delta < 0 ? next() : prev());
+    dragStartRef.current = null;
+    setIsDragging(false);
+    // allow the trailing click to be suppressed, then reset
+    setTimeout(() => { movedRef.current = false; }, 0);
+  };
 
   /* ── responsive sizing (fit to screen) ─────────────────── */
   // Show every card in the fan (all neighbours behind the active one).
@@ -253,30 +208,30 @@ export default function CinematicScrollStory() {
   /* ── render ─────────────────────────────────────────────── */
   return (
     <section
-      ref={outerRef}
       id="story"
       aria-label="Alair Noir experience chapters"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         position: 'relative',
-        height: `${TOTAL_VH}vh`,
         backgroundColor: 'var(--bg)',
+        overflow: 'hidden',
+        padding: 'clamp(64px,9vw,128px) 0',
       }}
     >
       <div
         ref={innerRef}
         style={{
-          position: 'sticky', top: 0, height: '100vh', overflow: 'hidden',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           gap: 'clamp(18px,3vh,40px)',
         }}
       >
-      {/* Ambient background */}
+      {/* Ambient background (neutral) */}
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         background:
-          'radial-gradient(circle at 50% 46%, rgba(16,44,30,0.7), transparent 58%), ' +
-          'radial-gradient(circle at 50% 80%, rgba(10,26,18,0.6), transparent 55%), ' +
-          'radial-gradient(circle at 82% 14%, rgba(212,175,55,0.08), transparent 30%)',
+          'radial-gradient(circle at 50% 46%, rgba(38,38,38,0.55), transparent 60%), ' +
+          'radial-gradient(circle at 82% 14%, rgba(212,175,55,0.06), transparent 30%)',
       }} />
 
       {/* Heading */}
@@ -315,11 +270,18 @@ export default function CinematicScrollStory() {
 
       {/* 3D fan / accordion */}
       <div
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         style={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
           padding: '0 clamp(16px,4vw,48px)',
           perspective: '1100px', perspectiveOrigin: `${perspOriginX}% 46%`,
           position: 'relative', zIndex: 1, flexShrink: 0,
+          cursor: isDragging ? 'grabbing' : 'grab',
+          touchAction: 'pan-y',
+          userSelect: 'none',
         }}
       >
         <div
@@ -379,7 +341,7 @@ export default function CinematicScrollStory() {
                   position: 'relative', flexShrink: 0, overflow: 'hidden',
                   borderRadius: '12px',
                   border: 'none',
-                  background: isActive ? '#11231a' : '#0b1610',
+                  background: isActive ? '#171717' : '#0d0d0d',
                   cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
                   boxShadow: 'none',
                 }}
@@ -404,8 +366,8 @@ export default function CinematicScrollStory() {
                       {!isMobile && (
                         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                           <Image src={card.image} alt="" fill sizes="80px"
-                            className="object-cover" style={{ filter: 'saturate(0.7) brightness(0.6)' }} />
-                          <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,22,16,0.42)' }} />
+                            className="object-cover" style={{ filter: 'brightness(0.82)' }} />
+                          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.1) 30%, transparent 60%, rgba(0,0,0,0.35))' }} />
                         </div>
                       )}
 
@@ -509,7 +471,7 @@ export default function CinematicScrollStory() {
           position: 'relative', zIndex: 1, flexShrink: 0,
         }}
       >
-        Scroll to explore
+        Drag or tap to explore
       </p>
 
       {/* Mid-section CTA */}
@@ -552,7 +514,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
     <div style={{
       position: 'absolute', inset: 0,
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
-      borderRadius: '12px', background: '#11231a',
+      borderRadius: '12px', background: '#171717',
     }}>
       {/* Image */}
       <div style={{ position: 'relative', flex: compact ? '0 0 54%' : '0 0 65%', overflow: 'hidden' }}>
@@ -564,11 +526,11 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         >
           <Image src={card.image} alt={card.imageAlt} fill
             sizes={`${activeW}px`} className="object-cover"
-            style={{ filter: 'saturate(0.95) contrast(1.04) brightness(1.12)' }} />
+            style={{ filter: 'none' }} />
         </motion.div>
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 42%, rgba(17,35,26,0.7) 78%, #11231a 100%)',
+          background: 'linear-gradient(to bottom, transparent 80%, rgba(23,23,23,0.85) 100%)',
         }} />
         <div style={{ position: 'absolute', top: '14px', left: '16px', zIndex: 2 }}>
           <span style={{
