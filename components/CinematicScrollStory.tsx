@@ -246,21 +246,21 @@ export default function CinematicScrollStory() {
       >
         <p style={{
           fontFamily: 'var(--font-inter)', fontWeight: 300,
-          fontSize: '9px', letterSpacing: '0.26em',
+          fontSize: '10.4px', letterSpacing: '0.26em',
           textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '12px',
         }}>
           The Journey
         </p>
         <h2 style={{
           fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-          fontSize: 'clamp(32px,4.2vw,64px)', lineHeight: 0.92, color: '#EDE8E0',
+          fontSize: 'clamp(37.1px,4.2vw,74.2px)', lineHeight: 0.92, color: '#EDE8E0',
         }}>
           A journey, held to
           <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one standard.</em>
         </h2>
         <p style={{
           fontFamily: 'var(--font-inter)', fontWeight: 300,
-          fontSize: 'clamp(11px,0.9vw,13px)', lineHeight: 1.7,
+          fontSize: 'clamp(12.8px,0.9vw,15.1px)', lineHeight: 1.7,
           color: 'var(--text-muted)', maxWidth: '560px',
           margin: '16px auto 0',
         }}>
@@ -373,7 +373,7 @@ export default function CinematicScrollStory() {
                         <>
                           <span style={{
                             position: 'relative', zIndex: 1,
-                            fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '12px',
+                            fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '13.9px',
                             letterSpacing: '0.16em', textTransform: 'uppercase',
                             color: 'rgba(246,242,233,0.9)',
                           }}>{card.label}</span>
@@ -387,14 +387,14 @@ export default function CinematicScrollStory() {
                         <>
                           <span style={{
                             position: 'relative', zIndex: 1,
-                            fontFamily: 'var(--font-inter)', fontSize: '7px',
+                            fontFamily: 'var(--font-inter)', fontSize: '8.1px',
                             letterSpacing: '0.14em', color: 'rgba(246,242,233,0.4)',
                           }}>{card.num}</span>
                           <span style={{
                             position: 'relative', zIndex: 1,
                             writingMode: 'vertical-rl', textOrientation: 'mixed',
                             transform: 'rotate(180deg)',
-                            fontFamily: 'var(--font-inter)', fontSize: '8px',
+                            fontFamily: 'var(--font-inter)', fontSize: '9.3px',
                             letterSpacing: '0.2em', textTransform: 'uppercase',
                             color: 'rgba(246,242,233,0.5)', whiteSpace: 'nowrap',
                           }}>{card.label}</span>
@@ -459,7 +459,7 @@ export default function CinematicScrollStory() {
         aria-hidden="true"
         style={{
           textAlign: 'center', opacity: 0.3,
-          fontFamily: 'var(--font-inter)', fontSize: '8px',
+          fontFamily: 'var(--font-inter)', fontSize: '9.3px',
           letterSpacing: '0.22em', textTransform: 'uppercase',
           color: 'rgba(246,242,233,0.26)', pointerEvents: 'none',
           position: 'relative', zIndex: 1, flexShrink: 0,
@@ -477,7 +477,7 @@ export default function CinematicScrollStory() {
             height: '42px', padding: '0 28px',
             border: '1px solid rgba(212,175,55,0.45)', color: 'var(--gold)',
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
+            fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
             transition: 'background 0.25s, color 0.25s',
           }}
           onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
@@ -533,7 +533,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         }} />
         <div style={{ position: 'absolute', top: '14px', left: '16px', zIndex: 2 }}>
           <span style={{
-            fontFamily: 'var(--font-inter)', fontSize: '8px',
+            fontFamily: 'var(--font-inter)', fontSize: '9.3px',
             letterSpacing: '0.16em', color: 'rgba(246,242,233,0.6)',
             background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(6px)',
             border: '1px solid rgba(255,255,255,0.12)',
@@ -563,7 +563,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         <div style={{ position: 'relative', zIndex: 1 }}>
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '8px', letterSpacing: '0.26em',
+            fontSize: '9.3px', letterSpacing: '0.26em',
             textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '10px',
           }}>{card.eyebrow}</p>
           <h3 style={{
@@ -589,11 +589,11 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
             <span style={{
               width: '14px', height: '14px', borderRadius: '3px', flexShrink: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '9px', color: 'var(--gold)',
+              fontSize: '10.4px', color: 'var(--gold)',
               background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)',
             }}>✓</span>
             <span style={{
-              fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '10.5px',
+              fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '12.2px',
               color: 'rgba(246,242,233,0.62)', whiteSpace: 'nowrap',
               overflow: 'hidden', textOverflow: 'ellipsis',
             }}>{card.preview}</span>
@@ -604,12 +604,12 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
             paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)',
           }}>
             <span style={{
-              fontFamily: 'var(--font-inter)', fontSize: '7px',
+              fontFamily: 'var(--font-inter)', fontSize: '8.1px',
               letterSpacing: '0.22em', textTransform: 'uppercase',
               color: 'rgba(246,242,233,0.2)',
             }}>Alair Noir</span>
             <span style={{
-              fontFamily: 'var(--font-inter)', fontSize: '7px',
+              fontFamily: 'var(--font-inter)', fontSize: '8.1px',
               letterSpacing: '0.12em', color: 'rgba(212,175,55,0.42)',
             }}>{card.label}</span>
           </div>

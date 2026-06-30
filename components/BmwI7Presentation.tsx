@@ -97,7 +97,7 @@ export default function BmwI7Presentation() {
             style={{
               fontFamily: 'var(--font-inter)',
               fontWeight: 300,
-              fontSize: '9px',
+              fontSize: '10.4px',
               letterSpacing: '0.26em',
               textTransform: 'uppercase',
               color: 'var(--gold)',
@@ -112,7 +112,7 @@ export default function BmwI7Presentation() {
             style={{
               fontFamily: 'var(--font-cormorant)',
               fontWeight: 300,
-              fontSize: 'clamp(48px,6vw,96px)',
+              fontSize: 'clamp(55.7px,6vw,111.4px)',
               lineHeight: 0.9,
               color: '#EDE8E0',
               marginBottom: '30px',
@@ -129,7 +129,7 @@ export default function BmwI7Presentation() {
             style={{
               fontFamily: 'var(--font-inter)',
               fontWeight: 300,
-              fontSize: '13px',
+              fontSize: '15.1px',
               lineHeight: 1.9,
               color: 'var(--text-muted)',
               maxWidth: '430px',
@@ -146,7 +146,7 @@ export default function BmwI7Presentation() {
               height: '42px', padding: '0 26px', marginBottom: '34px',
               border: '1px solid rgba(201,168,76,0.45)', color: 'var(--gold)',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               transition: 'background 0.25s, color 0.25s',
             }}
             onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
@@ -179,7 +179,7 @@ export default function BmwI7Presentation() {
                     display: 'block',
                     fontFamily: 'var(--font-inter)',
                     fontWeight: 300,
-                    fontSize: '9px',
+                    fontSize: '10.4px',
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
                     color: 'rgba(237,232,224,0.38)',
@@ -193,7 +193,7 @@ export default function BmwI7Presentation() {
                     display: 'block',
                     fontFamily: 'var(--font-cormorant)',
                     fontWeight: 300,
-                    fontSize: '20px',
+                    fontSize: '23.2px',
                     lineHeight: 1.2,
                     color: 'rgba(237,232,224,0.76)',
                   }}
@@ -273,7 +273,7 @@ export default function BmwI7Presentation() {
                       display: 'block',
                       fontFamily: 'var(--font-inter)',
                       fontWeight: 300,
-                      fontSize: '9px',
+                      fontSize: '10.4px',
                       letterSpacing: '0.24em',
                       textTransform: 'uppercase',
                       color: 'var(--gold)',
@@ -288,7 +288,7 @@ export default function BmwI7Presentation() {
                         display: 'block',
                         fontFamily: 'var(--font-cormorant)',
                         fontWeight: 300,
-                        fontSize: 'clamp(28px,3.5vw,52px)',
+                        fontSize: 'clamp(32.5px,3.5vw,60.3px)',
                         lineHeight: 0.95,
                         color: '#EDE8E0',
                       }}
@@ -302,7 +302,7 @@ export default function BmwI7Presentation() {
                     style={{
                       fontFamily: 'var(--font-inter)',
                       fontWeight: 300,
-                      fontSize: '10px',
+                      fontSize: '11.6px',
                       lineHeight: 1.5,
                       color: 'rgba(237,232,224,0.52)',
                       maxWidth: '140px',
@@ -369,7 +369,7 @@ export default function BmwI7Presentation() {
                     display: 'block',
                     fontFamily: 'var(--font-inter)',
                     fontWeight: 300,
-                    fontSize: '9px',
+                    fontSize: '10.4px',
                     letterSpacing: '0.22em',
                     textTransform: 'uppercase',
                     color: 'var(--gold)',
@@ -383,7 +383,7 @@ export default function BmwI7Presentation() {
                     display: 'block',
                     fontFamily: 'var(--font-cormorant)',
                     fontWeight: 300,
-                    fontSize: '30px',
+                    fontSize: '34.8px',
                     lineHeight: 1,
                     color: '#EDE8E0',
                     marginBottom: '8px',
@@ -395,7 +395,7 @@ export default function BmwI7Presentation() {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     fontWeight: 300,
-                    fontSize: '11px',
+                    fontSize: '12.8px',
                     lineHeight: 1.7,
                     color: 'rgba(237,232,224,0.66)',
                     margin: 0,

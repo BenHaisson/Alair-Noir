@@ -35,7 +35,7 @@ export default function FounderIntro() {
         >
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase',
+            fontSize: '10.4px', letterSpacing: '0.26em', textTransform: 'uppercase',
             color: 'var(--gold)', marginBottom: '18px',
           }}>
             The principle
@@ -44,7 +44,7 @@ export default function FounderIntro() {
             id="founder-heading"
             style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-              fontSize: 'clamp(36px,4.2vw,64px)', lineHeight: 0.95, color: '#EDE8E0',
+              fontSize: 'clamp(41.8px,4.2vw,74.2px)', lineHeight: 0.95, color: '#EDE8E0',
             }}
           >
             Built around
@@ -62,14 +62,14 @@ export default function FounderIntro() {
         >
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: 'clamp(14px,1.1vw,16px)', lineHeight: 1.85,
+            fontSize: 'clamp(16.2px,1.1vw,18.6px)', lineHeight: 1.85,
             color: 'var(--text-muted)', marginBottom: '32px',
           }}>
             ALAIR NOIR is a private chauffeur service that should not feel random, rushed, or anonymous. Every journey is prepared with the same principle: know the route, respect the passenger, protect the silence, and arrive without noise.
           </p>
           <p style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
-            fontSize: 'clamp(22px,2.4vw,32px)', lineHeight: 1.3,
+            fontSize: 'clamp(25.5px,2.4vw,37.1px)', lineHeight: 1.3,
             color: '#EDE8E0', paddingTop: '28px', borderTop: '1px solid var(--border-gold)',
           }}>
             Continuity, discretion, and precision — on every journey.

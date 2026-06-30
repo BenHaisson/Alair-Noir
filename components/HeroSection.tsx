@@ -117,7 +117,7 @@ export default function HeroSection() {
           <span style={{ display: 'block', width: '28px', height: '1px', backgroundColor: 'var(--gold)', opacity: 0.7 }} />
           <span style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: 'clamp(9px,0.65vw,11px)', letterSpacing: '0.28em', textTransform: 'uppercase',
+            fontSize: 'clamp(10.4px,0.65vw,12.8px)', letterSpacing: '0.28em', textTransform: 'uppercase',
             color: 'var(--gold)',
           }}>
             Zürich · Switzerland · Est. 2024
@@ -131,7 +131,7 @@ export default function HeroSection() {
           transition={{ duration: 1.0, delay: 0.28, ease }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(44px,6.6vw,104px)',
+            fontSize: 'clamp(51px,6.6vw,120.6px)',
             lineHeight: 0.92,
             color: '#EDE8E0',
             maxWidth: '900px',
@@ -152,7 +152,7 @@ export default function HeroSection() {
           transition={{ duration: 0.9, delay: 0.42, ease }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
-            fontSize: 'clamp(20px,2.4vw,34px)', lineHeight: 1.1,
+            fontSize: 'clamp(23.2px,2.4vw,39.4px)', lineHeight: 1.1,
             color: 'rgba(237,232,224,0.55)',
             marginBottom: 'clamp(20px,2.5vw,32px)',
           }}
@@ -177,7 +177,7 @@ export default function HeroSection() {
           <div style={{ maxWidth: '430px' }}>
             <p style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: 'clamp(12px,1vw,14px)', letterSpacing: '0.04em',
+              fontSize: 'clamp(13.9px,1vw,16.2px)', letterSpacing: '0.04em',
               color: 'rgba(237,232,224,0.52)',
               lineHeight: 1.7, marginBottom: '14px',
             }}>
@@ -185,7 +185,7 @@ export default function HeroSection() {
             </p>
             <p style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: 'clamp(9px,0.7vw,11px)', letterSpacing: '0.16em', textTransform: 'uppercase',
+              fontSize: 'clamp(10.4px,0.7vw,12.8px)', letterSpacing: '0.16em', textTransform: 'uppercase',
               color: 'var(--gold)',
             }}>
               Direct booking. No platform. No intermediary.
@@ -201,7 +201,7 @@ export default function HeroSection() {
                 height: '44px', padding: '0 28px',
                 backgroundColor: 'var(--gold)', color: '#080808',
                 fontFamily: 'var(--font-inter)', fontWeight: 400,
-                fontSize: 'clamp(9px,0.65vw,10px)', letterSpacing: '0.22em', textTransform: 'uppercase',
+                fontSize: 'clamp(10.4px,0.65vw,11.6px)', letterSpacing: '0.22em', textTransform: 'uppercase',
                 transition: 'opacity 0.25s',
               }}
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
@@ -218,7 +218,7 @@ export default function HeroSection() {
                 height: '44px', padding: '0 28px',
                 border: '1px solid rgba(237,232,224,0.22)', color: '#EDE8E0',
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: 'clamp(9px,0.65vw,10px)', letterSpacing: '0.22em', textTransform: 'uppercase',
+                fontSize: 'clamp(10.4px,0.65vw,11.6px)', letterSpacing: '0.22em', textTransform: 'uppercase',
                 transition: 'border-color 0.25s',
               }}
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.6)')}
@@ -237,7 +237,7 @@ export default function HeroSection() {
           style={{
             marginTop: 'clamp(20px,2.5vw,28px)',
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: 'clamp(10px,0.8vw,12px)', letterSpacing: '0.03em',
+            fontSize: 'clamp(11.6px,0.8vw,13.9px)', letterSpacing: '0.03em',
             color: 'rgba(237,232,224,0.4)', lineHeight: 1.7, maxWidth: '520px',
           }}
         >
@@ -266,12 +266,12 @@ export default function HeroSection() {
             <div key={label}>
               <p style={{
                 fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                fontSize: 'clamp(22px,2.2vw,32px)', lineHeight: 1,
+                fontSize: 'clamp(25.5px,2.2vw,37.1px)', lineHeight: 1,
                 color: '#EDE8E0', marginBottom: '4px',
               }}>{n}</p>
               <p style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: 'clamp(8px,0.6vw,9px)', letterSpacing: '0.22em', textTransform: 'uppercase',
+                fontSize: 'clamp(9.3px,0.6vw,10.4px)', letterSpacing: '0.22em', textTransform: 'uppercase',
                 color: 'rgba(237,232,224,0.40)',
               }}>{label}</p>
             </div>
@@ -301,7 +301,7 @@ export default function HeroSection() {
           }}
         />
         <span style={{
-          fontFamily: 'var(--font-inter)', fontSize: '8px',
+          fontFamily: 'var(--font-inter)', fontSize: '9.3px',
           letterSpacing: '0.24em', textTransform: 'uppercase',
           color: 'rgba(237,232,224,0.35)',
         }}>

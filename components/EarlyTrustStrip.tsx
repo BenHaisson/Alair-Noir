@@ -31,7 +31,7 @@ export default function EarlyTrustStrip() {
         transition={{ duration: 0.6 }}
         style={{
           fontFamily: 'var(--font-inter)', fontWeight: 300,
-          fontSize: '9px', letterSpacing: '0.24em', textTransform: 'uppercase',
+          fontSize: '10.4px', letterSpacing: '0.24em', textTransform: 'uppercase',
           color: 'var(--gold)', marginBottom: 'clamp(24px,3vw,36px)',
         }}
       >
@@ -59,14 +59,14 @@ export default function EarlyTrustStrip() {
           >
             <span style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '8px', letterSpacing: '0.22em', textTransform: 'uppercase',
+              fontSize: '9.3px', letterSpacing: '0.22em', textTransform: 'uppercase',
               color: 'var(--text-subtle)',
             }}>
               {s.label}
             </span>
             <span style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-              fontSize: 'clamp(16px,1.6vw,22px)', color: 'var(--text-muted)',
+              fontSize: 'clamp(18.6px,1.6vw,25.5px)', color: 'var(--text-muted)',
             }}>
               {s.value}
             </span>

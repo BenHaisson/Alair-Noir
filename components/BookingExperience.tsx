@@ -57,7 +57,7 @@ export default function BookingExperience() {
           transition={{ duration: 0.6 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase',
+            fontSize: '10.4px', letterSpacing: '0.26em', textTransform: 'uppercase',
             color: 'var(--gold)', marginBottom: '20px',
           }}
         >
@@ -71,7 +71,7 @@ export default function BookingExperience() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(40px,5vw,72px)',
+            fontSize: 'clamp(46.4px,5vw,83.5px)',
             lineHeight: 0.9, color: '#EDE8E0', marginBottom: '28px',
           }}
         >
@@ -88,7 +88,7 @@ export default function BookingExperience() {
           transition={{ duration: 0.7, delay: 0.25 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '13px', lineHeight: 1.8,
+            fontSize: '15.1px', lineHeight: 1.8,
             color: 'var(--text-muted)', maxWidth: '360px',
           }}
         >
@@ -101,7 +101,7 @@ export default function BookingExperience() {
           transition={{ duration: 0.7, delay: 0.32 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '12px', lineHeight: 1.8,
+            fontSize: '13.9px', lineHeight: 1.8,
             color: 'var(--text-subtle)', maxWidth: '360px', marginTop: '20px',
           }}
         >
@@ -122,7 +122,7 @@ export default function BookingExperience() {
               height: '44px', padding: '0 26px',
               backgroundColor: 'var(--gold)', color: '#080808',
               fontFamily: 'var(--font-inter)', fontWeight: 400,
-              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               transition: 'opacity 0.25s',
             }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
@@ -139,7 +139,7 @@ export default function BookingExperience() {
               height: '44px', padding: '0 26px',
               border: '1px solid rgba(237,232,224,0.22)', color: '#EDE8E0',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               transition: 'border-color 0.25s',
             }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.6)')}
@@ -158,7 +158,7 @@ export default function BookingExperience() {
         >
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '12px', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '18px',
+            fontSize: '13.9px', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '18px',
           }}>
             Arranging travel for a principal, client, or executive team? ALAIR NOIR works directly with executive assistants, family offices, and corporate bookers.
           </p>
@@ -167,7 +167,7 @@ export default function BookingExperience() {
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '10px',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               color: 'var(--gold)', transition: 'gap 0.25s',
             }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.gap = '16px')}
@@ -208,14 +208,14 @@ export default function BookingExperience() {
                 <span style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <span style={{
                     fontFamily: 'var(--font-inter)', fontWeight: 300,
-                    fontSize: '8px', letterSpacing: '0.24em', textTransform: 'uppercase',
+                    fontSize: '9.3px', letterSpacing: '0.24em', textTransform: 'uppercase',
                     color: 'var(--text-subtle)',
                   }}>
                     {c.method}
                   </span>
                   <span style={{
                     fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                    fontSize: 'clamp(22px,2.6vw,38px)', color: '#EDE8E0',
+                    fontSize: 'clamp(25.5px,2.6vw,44.1px)', color: '#EDE8E0',
                     transition: 'color 0.3s',
                   }}>
                     {c.value}
@@ -250,7 +250,7 @@ export default function BookingExperience() {
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '12px',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase',
+              fontSize: '10.4px', letterSpacing: '0.2em', textTransform: 'uppercase',
               color: 'var(--text-subtle)',
               transition: 'color 0.3s',
             }}

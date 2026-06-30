@@ -29,14 +29,14 @@ export default function Footer() {
           <Logo variant="nav" color="#EDE8E0" accentColor="#C9A84C" />
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '11px', letterSpacing: '0.05em',
+            fontSize: '12.8px', letterSpacing: '0.05em',
             color: 'var(--text)',
           }}>
             Held to one standard.
           </p>
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '11px', lineHeight: 1.7,
+            fontSize: '12.8px', lineHeight: 1.7,
             color: 'var(--text-subtle)',
           }}>
             Private chauffeur service in Zürich for airport transfers, executive travel, events, and long-distance journeys across Switzerland and Europe.
@@ -55,7 +55,7 @@ export default function Footer() {
               {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase',
+                fontSize: '11.6px', letterSpacing: '0.18em', textTransform: 'uppercase',
                 color: 'var(--text-subtle)',
                 transition: 'color 0.2s',
               }}
@@ -73,7 +73,7 @@ export default function Footer() {
             href="mailto:booking@alairnoir.ch"
             style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '11px', letterSpacing: '0.05em', color: 'var(--text-subtle)',
+              fontSize: '12.8px', letterSpacing: '0.05em', color: 'var(--text-subtle)',
               transition: 'color 0.2s',
             }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
@@ -85,7 +85,7 @@ export default function Footer() {
             href="tel:+41772870956"
             style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '11px', letterSpacing: '0.05em', color: 'var(--text-subtle)',
+              fontSize: '12.8px', letterSpacing: '0.05em', color: 'var(--text-subtle)',
               transition: 'color 0.2s',
             }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
@@ -99,7 +99,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '11px', letterSpacing: '0.05em', color: 'var(--text-subtle)',
+              fontSize: '12.8px', letterSpacing: '0.05em', color: 'var(--text-subtle)',
               transition: 'color 0.2s',
             }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
@@ -125,7 +125,7 @@ export default function Footer() {
               href="#"
               style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase',
+                fontSize: '10.4px', letterSpacing: '0.16em', textTransform: 'uppercase',
                 color: 'var(--text-subtle)', transition: 'color 0.2s',
               }}
               onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
@@ -137,7 +137,7 @@ export default function Footer() {
         </div>
         <p style={{
           fontFamily: 'var(--font-inter)', fontWeight: 300,
-          fontSize: '9px', letterSpacing: '0.12em', textTransform: 'uppercase',
+          fontSize: '10.4px', letterSpacing: '0.12em', textTransform: 'uppercase',
           color: 'var(--text-subtle)', opacity: 0.5,
         }}>
           © {year} Alair Noir GmbH · Switzerland
