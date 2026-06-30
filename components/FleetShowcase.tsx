@@ -4,6 +4,8 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 
+const ease = [0.16, 1, 0.3, 1] as const;
+
 const VEHICLES = [
   {
     badge: 'Electric Executive Sedan',
@@ -112,13 +114,11 @@ export default function FleetShowcase() {
         {VEHICLES.map((v, i) => (
           <motion.article
             key={v.name}
-            initial={{ opacity: 0, y: 24 }}
+            className="an-card an-card-hover"
+            initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.15 + i * 0.12 }}
+            transition={{ duration: 0.9, delay: 0.15 + i * 0.12, ease }}
             style={{
-              backgroundColor: '#111111',
-              borderTop: '1px solid var(--border-gold)',
-              borderRight: i === 0 ? '1px solid var(--border)' : 'none',
               display: 'flex',
               flexDirection: 'column',
             }}

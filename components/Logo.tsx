@@ -2,13 +2,14 @@
 import { motion } from 'framer-motion';
 
 /**
- * Animated ALAIR NOIR logo built from the brand SVG.
+ * ALAIR NOIR logo — a restrained A | N monogram.
  *
- * variant="icon"  — A|N monogram only (for Nav)
- * variant="full"  — Complete stacked logo with tagline (for Hero / Footer)
- * variant="nav"   — Compact horizontal: icon + wordmark side by side
+ * variant="icon"  — A | N monogram only
+ * variant="full"  — stacked monogram + wordmark + tagline (Hero / Footer)
+ * variant="nav"   — compact horizontal: monogram + wordmark
  *
- * When animate=true the logo does a cinematic draw-in sequence on mount.
+ * When animate=true the monogram does a quiet, clean draw-in (no bounce,
+ * no sparkle, no ornament). One easing only.
  */
 
 interface LogoProps {
@@ -23,7 +24,7 @@ interface LogoProps {
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-// ── Icon-only (A|N monogram) ──────────────────────────────────────────────
+// ── Icon-only (A | N monogram) ────────────────────────────────────────────
 function IconMark({
   color,
   accent,
@@ -36,10 +37,10 @@ function IconMark({
   delay?: number;
 }) {
   return (
-    <svg viewBox="0 0 200 200" fill="none" aria-hidden="true" style={{ overflow: 'visible' }}>
+    <svg viewBox="0 0 200 170" fill="none" aria-hidden="true" style={{ overflow: 'visible' }}>
       {/* A */}
       <motion.text
-        x="78" y="138"
+        x="80" y="138"
         textAnchor="end"
         fontSize="108"
         fontFamily="var(--font-cormorant), 'Cormorant Garamond', Georgia, serif"
@@ -47,23 +48,23 @@ function IconMark({
         fill={color}
         initial={anim ? { opacity: 0, y: 12 } : false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: delay + 0.15, ease }}
+        transition={{ duration: 0.9, delay: delay + 0.12, ease }}
       >
         A
       </motion.text>
 
-      {/* Vertical bar — draws top to bottom */}
+      {/* Vertical divider — cream accent, draws top to bottom */}
       <motion.line
-        x1="100" y1="24" x2="100" y2="146"
-        stroke={color} strokeWidth="1.6" strokeLinecap="round"
+        x1="100" y1="34" x2="100" y2="136"
+        stroke={accent} strokeWidth="1.2" strokeLinecap="round"
         initial={anim ? { pathLength: 0, opacity: 0 } : false}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.7, delay: delay + 0.05, ease }}
+        transition={{ duration: 0.7, delay: delay + 0.04, ease }}
       />
 
       {/* N */}
       <motion.text
-        x="122" y="138"
+        x="120" y="138"
         textAnchor="start"
         fontSize="108"
         fontFamily="var(--font-cormorant), 'Cormorant Garamond', Georgia, serif"
@@ -71,39 +72,10 @@ function IconMark({
         fill={color}
         initial={anim ? { opacity: 0, y: 12 } : false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: delay + 0.20, ease }}
+        transition={{ duration: 0.9, delay: delay + 0.18, ease }}
       >
         N
       </motion.text>
-
-      {/* Left divider line — draws right to left from center */}
-      <motion.line
-        x1="100" y1="162" x2="28" y2="162"
-        stroke={accent} strokeWidth="1.1" strokeLinecap="round"
-        initial={anim ? { pathLength: 0, opacity: 0 } : false}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.55, delay: delay + 0.5, ease }}
-        style={{ originX: '100px' }}
-      />
-
-      {/* Right divider line — draws left to right from center */}
-      <motion.line
-        x1="100" y1="162" x2="172" y2="162"
-        stroke={accent} strokeWidth="1.1" strokeLinecap="round"
-        initial={anim ? { pathLength: 0, opacity: 0 } : false}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.55, delay: delay + 0.5, ease }}
-      />
-
-      {/* Star / diamond — sparkles in */}
-      <motion.path
-        d="M100 152 C102.4 159.5 104.4 161.5 111.9 163.9 C104.4 166.3 102.4 168.3 100 175.8 C97.6 168.3 95.6 166.3 88.1 163.9 C95.6 161.5 97.6 159.5 100 152 Z"
-        fill={color}
-        initial={anim ? { opacity: 0, scale: 0.3 } : false}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: delay + 0.62, ease: [0.34, 1.56, 0.64, 1] }}
-        style={{ transformOrigin: '100px 163.9px' }}
-      />
     </svg>
   );
 }
@@ -123,7 +95,7 @@ function FullMark({
   showTagline?: boolean;
 }) {
   return (
-    <svg viewBox="0 0 400 310" fill="none" aria-label="ALAIR NOIR — Where Luxury Moves Quietly" style={{ overflow: 'visible' }}>
+    <svg viewBox="0 0 400 300" fill="none" aria-label="ALAIR NOIR — Where Luxury Moves Quietly" style={{ overflow: 'visible' }}>
       {/* A */}
       <motion.text
         x="165" y="148"
@@ -134,15 +106,15 @@ function FullMark({
         fill={color}
         initial={anim ? { opacity: 0, y: 16 } : false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.0, delay: delay + 0.10, ease }}
+        transition={{ duration: 1.0, delay: delay + 0.08, ease }}
       >
         A
       </motion.text>
 
-      {/* Vertical bar */}
+      {/* Vertical divider — cream accent */}
       <motion.line
-        x1="200" y1="22" x2="200" y2="176"
-        stroke={color} strokeWidth="1.8" strokeLinecap="round"
+        x1="200" y1="36" x2="200" y2="150"
+        stroke={accent} strokeWidth="1.3" strokeLinecap="round"
         initial={anim ? { pathLength: 0, opacity: 0 } : false}
         animate={{ pathLength: 1, opacity: 1 }}
         transition={{ duration: 0.75, delay: delay + 0.02, ease }}
@@ -158,43 +130,14 @@ function FullMark({
         fill={color}
         initial={anim ? { opacity: 0, y: 16 } : false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.0, delay: delay + 0.16, ease }}
+        transition={{ duration: 1.0, delay: delay + 0.14, ease }}
       >
         N
       </motion.text>
 
-      {/* Left line */}
-      <motion.line
-        x1="200" y1="200" x2="60" y2="200"
-        stroke={accent} strokeWidth="1.2" strokeLinecap="round"
-        initial={anim ? { pathLength: 0, opacity: 0 } : false}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: delay + 0.52, ease }}
-        style={{ originX: '200px' }}
-      />
-
-      {/* Right line */}
-      <motion.line
-        x1="200" y1="200" x2="340" y2="200"
-        stroke={accent} strokeWidth="1.2" strokeLinecap="round"
-        initial={anim ? { pathLength: 0, opacity: 0 } : false}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: delay + 0.52, ease }}
-      />
-
-      {/* Star */}
-      <motion.path
-        d="M200 183 C202.8 192 205.2 194.5 214 197 C205.2 199.5 202.8 202 200 211 C197.2 202 194.8 199.5 186 197 C194.8 194.5 197.2 192 200 183 Z"
-        fill={color}
-        initial={anim ? { opacity: 0, scale: 0.2 } : false}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.55, delay: delay + 0.65, ease: [0.34, 1.56, 0.64, 1] }}
-        style={{ transformOrigin: '200px 197px' }}
-      />
-
       {/* ALAIR NOIR wordmark */}
       <motion.text
-        x="200" y="252"
+        x="200" y="216"
         textAnchor="middle"
         fontSize="28"
         fontFamily="var(--font-cormorant), 'Cormorant Garamond', Georgia, serif"
@@ -203,7 +146,7 @@ function FullMark({
         fill={color}
         initial={anim ? { opacity: 0, y: 10 } : false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.85, delay: delay + 0.78, ease }}
+        transition={{ duration: 0.85, delay: delay + 0.5, ease }}
       >
         ALAIR NOIR
       </motion.text>
@@ -211,7 +154,7 @@ function FullMark({
       {/* Tagline */}
       {showTagline && (
         <motion.text
-          x="200" y="286"
+          x="200" y="250"
           textAnchor="middle"
           fontSize="10.5"
           fontFamily="var(--font-inter), 'Inter', system-ui, sans-serif"
@@ -220,7 +163,7 @@ function FullMark({
           fill={accent}
           initial={anim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.0, delay: delay + 1.05 }}
+          transition={{ duration: 1.0, delay: delay + 0.75, ease }}
         >
           WHERE LUXURY MOVES QUIETLY
         </motion.text>
@@ -233,31 +176,20 @@ function FullMark({
 function NavMark({ color, accent, anim }: { color: string; accent: string; anim: boolean }) {
   return (
     <span className="flex items-center gap-3" style={{ lineHeight: 1 }}>
-      {/* Tiny inline A|N icon */}
-      <span className="flex-shrink-0" style={{ width: 28, height: 28 }}>
-        <svg viewBox="0 0 200 200" fill="none" aria-hidden="true" style={{ overflow: 'visible', width: '100%', height: '100%' }}>
-          <motion.text x="78" y="138" textAnchor="end" fontSize="108"
+      {/* Tiny inline A | N icon */}
+      <span className="flex-shrink-0" style={{ width: 26, height: 26 }}>
+        <svg viewBox="0 0 200 170" fill="none" aria-hidden="true" style={{ overflow: 'visible', width: '100%', height: '100%' }}>
+          <motion.text x="80" y="138" textAnchor="end" fontSize="108"
             fontFamily="var(--font-cormorant), Georgia, serif" fontWeight="400" fill={color}
             initial={anim ? { opacity: 0 } : false} animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.15, ease }}>A</motion.text>
-          <motion.line x1="100" y1="24" x2="100" y2="146" stroke={color} strokeWidth="1.8" strokeLinecap="round"
+            transition={{ duration: 0.8, delay: 0.12, ease }}>A</motion.text>
+          <motion.line x1="100" y1="34" x2="100" y2="136" stroke={accent} strokeWidth="1.4" strokeLinecap="round"
             initial={anim ? { pathLength: 0, opacity: 0 } : false} animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.05, ease }} />
-          <motion.text x="122" y="138" textAnchor="start" fontSize="108"
+            transition={{ duration: 0.6, delay: 0.04, ease }} />
+          <motion.text x="120" y="138" textAnchor="start" fontSize="108"
             fontFamily="var(--font-cormorant), Georgia, serif" fontWeight="400" fill={color}
             initial={anim ? { opacity: 0 } : false} animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.22, ease }}>N</motion.text>
-          <motion.line x1="100" y1="162" x2="28" y2="162" stroke={accent} strokeWidth="1.1" strokeLinecap="round"
-            initial={anim ? { pathLength: 0, opacity: 0 } : false} animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.45, delay: 0.5, ease }} style={{ originX: '100px' }} />
-          <motion.line x1="100" y1="162" x2="172" y2="162" stroke={accent} strokeWidth="1.1" strokeLinecap="round"
-            initial={anim ? { pathLength: 0, opacity: 0 } : false} animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.45, delay: 0.5, ease }} />
-          <motion.path d="M100 152 C102.4 159.5 104.4 161.5 111.9 163.9 C104.4 166.3 102.4 168.3 100 175.8 C97.6 168.3 95.6 166.3 88.1 163.9 C95.6 161.5 97.6 159.5 100 152 Z"
-            fill={color}
-            initial={anim ? { opacity: 0, scale: 0.2 } : false} animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.62, ease: [0.34, 1.56, 0.64, 1] }}
-            style={{ transformOrigin: '100px 163.9px' }} />
+            transition={{ duration: 0.8, delay: 0.18, ease }}>N</motion.text>
         </svg>
       </span>
 
@@ -267,7 +199,7 @@ function NavMark({ color, accent, anim }: { color: string; accent: string; anim:
         style={{ color }}
         initial={anim ? { opacity: 0, x: -8 } : false}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.75, delay: 0.35, ease }}
+        transition={{ duration: 0.75, delay: 0.3, ease }}
       >
         Alair Noir
       </motion.span>

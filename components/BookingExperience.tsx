@@ -45,7 +45,7 @@ export default function BookingExperience() {
       {/* Left — intro */}
       <div
         style={{
-          backgroundColor: '#111111',
+          backgroundColor: 'var(--deep-forest)',
           padding: 'clamp(60px,8vw,120px) clamp(28px,6vw,80px)',
           borderRight: '1px solid var(--border)',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
@@ -115,35 +115,14 @@ export default function BookingExperience() {
           transition={{ duration: 0.7, delay: 0.4 }}
           style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '32px' }}
         >
-          <a
-            href="mailto:booking@alairnoir.ch"
-            style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              height: '44px', padding: '0 26px',
-              backgroundColor: 'var(--gold)', color: '#0A0A0A',
-              fontFamily: 'var(--font-inter)', fontWeight: 400,
-              fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
-              transition: 'opacity 0.25s',
-            }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
-          >
+          <a href="mailto:booking@alairnoir.ch" className="an-button an-button-secondary">
             Request Private Mobility
           </a>
           <a
             href="https://wa.me/41772870956"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              height: '44px', padding: '0 26px',
-              border: '1px solid rgba(246, 242, 233,0.22)', color: '#F6F2E9',
-              fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
-              transition: 'border-color 0.25s',
-            }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.6)')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.22)')}
+            className="an-button an-button-secondary"
           >
             Message on WhatsApp
           </a>

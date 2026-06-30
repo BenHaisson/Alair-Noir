@@ -61,14 +61,13 @@ export default function HeroSection() {
         <motion.div
           aria-hidden="true"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.42 }}
+          animate={{ opacity: 0.2 }}
           transition={{ duration: 1.5, delay: 0.35, ease }}
           style={{
             position: 'absolute',
             inset: 0,
             zIndex: 1,
             pointerEvents: 'none',
-            mixBlendMode: 'screen',
           }}
         >
           <Hero3DScene />
@@ -192,37 +191,16 @@ export default function HeroSection() {
             </p>
           </div>
 
-          {/* CTA buttons */}
+          {/* CTA buttons — one filled primary, one quiet secondary */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-            <a
-              href="#contact"
-              style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                height: '44px', padding: '0 28px',
-                backgroundColor: 'var(--gold)', color: '#0A0A0A',
-                fontFamily: 'var(--font-inter)', fontWeight: 400,
-                fontSize: 'clamp(10.4px,0.65vw,11.6px)', letterSpacing: '0.22em', textTransform: 'uppercase',
-                transition: 'opacity 0.25s',
-              }}
-              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
-              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
-            >
+            <a href="#contact" className="an-button an-button-primary">
               Reserve a Journey
             </a>
             <a
               href="https://wa.me/41772870956"
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                height: '44px', padding: '0 28px',
-                border: '1px solid rgba(246, 242, 233,0.22)', color: '#F6F2E9',
-                fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: 'clamp(10.4px,0.65vw,11.6px)', letterSpacing: '0.22em', textTransform: 'uppercase',
-                transition: 'border-color 0.25s',
-              }}
-              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.6)')}
-              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.22)')}
+              className="an-button an-button-secondary"
             >
               WhatsApp Directly
             </a>

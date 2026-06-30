@@ -62,7 +62,7 @@ export default function Navbar() {
                   fontFamily: 'var(--font-inter)', fontWeight: 300,
                   fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
                   color: 'rgba(246, 242, 233,0.55)',
-                  transition: 'color 0.2s',
+                  transition: 'color 220ms cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
                 onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#F6F2E9')}
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(246, 242, 233,0.55)')}

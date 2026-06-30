@@ -285,26 +285,7 @@ function Featured({ article }: { article: Article }) {
           </p>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '18px', marginTop: '4px' }}>
-            <a
-              href={`#${article.id}`}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '46px',
-                padding: '0 32px',
-                backgroundColor: 'var(--gold)',
-                color: '#0A0A0A',
-                fontFamily: 'var(--font-inter)',
-                fontWeight: 400,
-                fontSize: '11.6px',
-                letterSpacing: '0.22em',
-                textTransform: 'uppercase',
-                transition: 'opacity 0.25s',
-              }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = '1')}
-            >
+            <a href={`#${article.id}`} className="an-button an-button-secondary">
               Read the story
             </a>
             <span
@@ -611,27 +592,7 @@ function ClosingCta() {
           When the reading is done, the road remains. Arrange a private transfer
           across Zürich, the Alps, or Europe — handled directly and discreetly.
         </p>
-        <Link
-          href="/#contact"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '48px',
-            padding: '0 34px',
-            marginTop: '8px',
-            backgroundColor: 'var(--gold)',
-            color: '#0A0A0A',
-            fontFamily: 'var(--font-inter)',
-            fontWeight: 400,
-            fontSize: '11.6px',
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            transition: 'opacity 0.25s',
-          }}
-          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
-          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = '1')}
-        >
+        <Link href="/#contact" className="an-button an-button-secondary" style={{ marginTop: '8px' }}>
           Request Availability
         </Link>
       </motion.div>

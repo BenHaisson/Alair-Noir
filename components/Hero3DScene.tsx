@@ -4,7 +4,7 @@ import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-function GoldDust({ count = 1800 }: { count?: number }) {
+function AtmosphericDust({ count = 1100 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null!);
 
   const positions = useMemo(() => {
@@ -35,29 +35,14 @@ function GoldDust({ count = 1800 }: { count?: number }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.022}
+        size={0.018}
         color="#D6C7B0"
         transparent
-        opacity={0.42}
+        opacity={0.28}
         sizeAttenuation
         depthWrite={false}
       />
     </points>
-  );
-}
-
-function AmbientRing() {
-  const ref = useRef<THREE.Mesh>(null!);
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
-    ref.current.rotation.z = t * 0.04;
-    ref.current.rotation.x = 0.4 + Math.sin(t * 0.06) * 0.08;
-  });
-  return (
-    <mesh ref={ref} position={[3, -1, -4]}>
-      <torusGeometry args={[3.5, 0.004, 6, 140]} />
-      <meshBasicMaterial color="#D6C7B0" transparent opacity={0.1} />
-    </mesh>
   );
 }
 
@@ -69,8 +54,8 @@ export default function Hero3DScene() {
       style={{ background: 'transparent', width: '100%', height: '100%' }}
       gl={{ alpha: true, antialias: false, preserveDrawingBuffer: true }}
     >
-      <GoldDust />
-      <AmbientRing />
+      {/* Atmospheric architectural shadow — not a tech demo */}
+      <AtmosphericDust />
     </Canvas>
   );
 }

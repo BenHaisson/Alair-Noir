@@ -152,19 +152,7 @@ export default function ServicesSection() {
 
       {/* CTA */}
       <div style={{ padding: 'clamp(40px,5vw,64px) clamp(28px,8vw,140px) 0', display: 'flex', justifyContent: 'center' }}>
-        <a
-          href="#contact"
-          style={{
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            height: '46px', padding: '0 32px',
-            backgroundColor: 'var(--gold)', color: '#0A0A0A',
-            fontFamily: 'var(--font-inter)', fontWeight: 400,
-            fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
-            transition: 'opacity 0.25s',
-          }}
-          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}
-          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
-        >
+        <a href="#contact" className="an-button an-button-secondary">
           Request Availability
         </a>
       </div>
