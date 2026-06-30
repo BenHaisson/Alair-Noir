@@ -58,7 +58,7 @@ export default function FleetShowcase() {
           style={{
             fontFamily: 'var(--font-inter)',
             fontWeight: 300,
-            fontSize: '9px',
+            fontSize: '10.4px',
             letterSpacing: '0.26em',
             textTransform: 'uppercase',
             color: 'var(--gold)',
@@ -75,7 +75,7 @@ export default function FleetShowcase() {
           style={{
             fontFamily: 'var(--font-cormorant)',
             fontWeight: 300,
-            fontSize: 'clamp(42px,5.5vw,80px)',
+            fontSize: 'clamp(48.7px,5.5vw,92.8px)',
             lineHeight: 0.92,
             color: '#EDE8E0',
             marginBottom: '24px',
@@ -95,13 +95,13 @@ export default function FleetShowcase() {
         >
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '14px', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '10px',
+            fontSize: '16.2px', lineHeight: 1.8, color: 'var(--text-muted)', marginBottom: '10px',
           }}>
             A limited fleet is not a limitation. It is how every detail stays controlled.
           </p>
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '13px', lineHeight: 1.8, color: 'var(--text-subtle)',
+            fontSize: '15.1px', lineHeight: 1.8, color: 'var(--text-subtle)',
           }}>
             One electric executive sedan. One business-class V-Class. Both prepared to the same standard.
           </p>
@@ -147,7 +147,7 @@ export default function FleetShowcase() {
                 style={{
                   fontFamily: 'var(--font-inter)',
                   fontWeight: 300,
-                  fontSize: '9px',
+                  fontSize: '10.4px',
                   letterSpacing: '0.24em',
                   textTransform: 'uppercase',
                   color: 'var(--gold)',
@@ -162,7 +162,7 @@ export default function FleetShowcase() {
                   style={{
                     fontFamily: 'var(--font-cormorant)',
                     fontWeight: 300,
-                    fontSize: 'clamp(32px,3.5vw,50px)',
+                    fontSize: 'clamp(37.1px,3.5vw,58px)',
                     lineHeight: 1,
                     color: '#EDE8E0',
                   }}
@@ -173,7 +173,7 @@ export default function FleetShowcase() {
                   style={{
                     fontFamily: 'var(--font-cormorant)',
                     fontWeight: 300,
-                    fontSize: 'clamp(18px,2vw,26px)',
+                    fontSize: 'clamp(20.9px,2vw,30.2px)',
                     lineHeight: 1,
                     color: 'var(--text-muted)',
                   }}
@@ -184,7 +184,7 @@ export default function FleetShowcase() {
 
               <p style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '13px', lineHeight: 1.8, color: 'var(--text-muted)',
+                fontSize: '15.1px', lineHeight: 1.8, color: 'var(--text-muted)',
                 marginBottom: '28px',
               }}>
                 {v.copy}
@@ -193,14 +193,14 @@ export default function FleetShowcase() {
               {/* Best for */}
               <p style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '8px', letterSpacing: '0.24em', textTransform: 'uppercase',
+                fontSize: '9.3px', letterSpacing: '0.24em', textTransform: 'uppercase',
                 color: 'var(--text-subtle)', marginBottom: '8px',
               }}>
                 Best for
               </p>
               <p style={{
                 fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                fontSize: '16px', lineHeight: 1.5, color: 'var(--text-muted)',
+                fontSize: '18.6px', lineHeight: 1.5, color: 'var(--text-muted)',
                 marginBottom: '28px',
               }}>
                 {v.bestFor}
@@ -219,7 +219,7 @@ export default function FleetShowcase() {
                       borderBottom: '1px solid var(--border)',
                       fontFamily: 'var(--font-inter)',
                       fontWeight: 300,
-                      fontSize: '12px',
+                      fontSize: '13.9px',
                       letterSpacing: '0.04em',
                       color: 'var(--text-muted)',
                     }}

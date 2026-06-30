@@ -59,7 +59,7 @@ export default function Navbar() {
                 href={l.href}
                 style={{
                   fontFamily: 'var(--font-inter)', fontWeight: 300,
-                  fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+                  fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
                   color: 'rgba(237,232,224,0.55)',
                   transition: 'color 0.2s',
                 }}
@@ -80,7 +80,7 @@ export default function Navbar() {
                 height: '36px', padding: '0 22px',
                 border: '1px solid rgba(201,168,76,0.45)',
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+                fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
                 color: 'var(--gold)',
                 transition: 'background 0.25s, color 0.25s',
               }}
@@ -159,7 +159,7 @@ export default function Navbar() {
                   transition={{ delay: i * 0.08, duration: 0.5, ease }}
                   style={{
                     fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                    fontSize: 'clamp(40px,10vw,64px)', lineHeight: 1.1,
+                    fontSize: 'clamp(46.4px,10vw,74.2px)', lineHeight: 1.1,
                     color: '#EDE8E0',
                     borderBottom: '1px solid rgba(237,232,224,0.07)',
                     paddingBottom: '20px', marginBottom: '20px',
@@ -180,7 +180,7 @@ export default function Navbar() {
                   height: '48px', padding: '0 32px', alignSelf: 'flex-start',
                   backgroundColor: 'var(--gold)', color: '#080808',
                   fontFamily: 'var(--font-inter)', fontWeight: 400,
-                  fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
+                  fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
                   marginTop: '12px',
                 }}
               >
@@ -202,7 +202,7 @@ export default function Navbar() {
                 href="tel:+41772870956"
                 style={{
                   fontFamily: 'var(--font-inter)', fontWeight: 300,
-                  fontSize: '12px', letterSpacing: '0.08em',
+                  fontSize: '13.9px', letterSpacing: '0.08em',
                   color: 'rgba(237,232,224,0.45)',
                 }}
               >

@@ -44,7 +44,7 @@ export default function WhyAlairNoir() {
           transition={{ duration: 0.6 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase',
+            fontSize: '10.4px', letterSpacing: '0.26em', textTransform: 'uppercase',
             color: 'var(--gold)', marginBottom: '16px',
           }}
         >
@@ -57,7 +57,7 @@ export default function WhyAlairNoir() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(38px,5vw,72px)', lineHeight: 0.92, color: '#EDE8E0',
+            fontSize: 'clamp(44.1px,5vw,83.5px)', lineHeight: 0.92, color: '#EDE8E0',
             marginBottom: '24px',
           }}
         >
@@ -73,7 +73,7 @@ export default function WhyAlairNoir() {
           transition={{ duration: 0.7, delay: 0.2 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '14px', lineHeight: 1.8, color: 'var(--text-muted)',
+            fontSize: '16.2px', lineHeight: 1.8, color: 'var(--text-muted)',
           }}
         >
           What makes the service different is not only the vehicle. It is the continuity behind it.
@@ -104,13 +104,13 @@ export default function WhyAlairNoir() {
           >
             <h3 style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-              fontSize: 'clamp(22px,2.2vw,30px)', lineHeight: 1.1, color: '#EDE8E0',
+              fontSize: 'clamp(25.5px,2.2vw,34.8px)', lineHeight: 1.1, color: '#EDE8E0',
             }}>
               {b.title}
             </h3>
             <p style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '13px', lineHeight: 1.75, color: 'var(--text-muted)',
+              fontSize: '15.1px', lineHeight: 1.75, color: 'var(--text-muted)',
             }}>
               {b.body}
             </p>

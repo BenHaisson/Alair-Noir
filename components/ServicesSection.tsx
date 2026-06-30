@@ -31,7 +31,7 @@ export default function ServicesSection() {
           transition={{ duration: 0.6 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase',
+            fontSize: '10.4px', letterSpacing: '0.26em', textTransform: 'uppercase',
             color: 'var(--gold)', marginBottom: '16px',
           }}
         >
@@ -44,7 +44,7 @@ export default function ServicesSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(42px,5.5vw,80px)',
+            fontSize: 'clamp(48.7px,5.5vw,92.8px)',
             lineHeight: 0.92, color: '#EDE8E0',
           }}
         >
@@ -60,7 +60,7 @@ export default function ServicesSection() {
           transition={{ duration: 0.7, delay: 0.2 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '14px', lineHeight: 1.8, color: 'var(--text-muted)',
+            fontSize: '16.2px', lineHeight: 1.8, color: 'var(--text-muted)',
             maxWidth: '560px', marginTop: '24px',
           }}
         >
@@ -109,7 +109,7 @@ export default function ServicesSection() {
 
             <span style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase',
+              fontSize: '10.4px', letterSpacing: '0.22em', textTransform: 'uppercase',
               color: 'var(--gold)',
             }}>
               {s.n}
@@ -117,7 +117,7 @@ export default function ServicesSection() {
 
             <h3 style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-              fontSize: 'clamp(22px,2.2vw,32px)', lineHeight: 1.05,
+              fontSize: 'clamp(25.5px,2.2vw,37.1px)', lineHeight: 1.05,
               color: '#EDE8E0',
             }}>
               {s.title}
@@ -125,7 +125,7 @@ export default function ServicesSection() {
 
             <p style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '13px', lineHeight: 1.75,
+              fontSize: '15.1px', lineHeight: 1.75,
               color: 'var(--text-muted)',
             }}>
               {s.body}
@@ -134,14 +134,14 @@ export default function ServicesSection() {
             <div style={{ marginTop: 'auto' }}>
               <p style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '8px', letterSpacing: '0.22em', textTransform: 'uppercase',
+                fontSize: '9.3px', letterSpacing: '0.22em', textTransform: 'uppercase',
                 color: 'var(--text-subtle)', marginBottom: '6px',
               }}>
                 Best for
               </p>
               <p style={{
                 fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                fontSize: '15px', lineHeight: 1.4, color: 'var(--text-muted)',
+                fontSize: '17.4px', lineHeight: 1.4, color: 'var(--text-muted)',
               }}>
                 {s.bestFor}
               </p>
@@ -159,7 +159,7 @@ export default function ServicesSection() {
             height: '46px', padding: '0 32px',
             backgroundColor: 'var(--gold)', color: '#080808',
             fontFamily: 'var(--font-inter)', fontWeight: 400,
-            fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase',
+            fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
             transition: 'opacity 0.25s',
           }}
           onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.85')}

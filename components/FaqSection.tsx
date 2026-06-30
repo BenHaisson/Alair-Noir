@@ -49,7 +49,7 @@ export default function FaqSection() {
           transition={{ duration: 0.6 }}
           style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
-            fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase',
+            fontSize: '10.4px', letterSpacing: '0.26em', textTransform: 'uppercase',
             color: 'var(--gold)', marginBottom: '16px',
           }}
         >
@@ -62,7 +62,7 @@ export default function FaqSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(38px,5vw,72px)', lineHeight: 0.92, color: '#EDE8E0',
+            fontSize: 'clamp(44.1px,5vw,83.5px)', lineHeight: 0.92, color: '#EDE8E0',
             marginBottom: 'clamp(40px,5vw,64px)',
           }}
         >
@@ -93,7 +93,7 @@ export default function FaqSection() {
                 >
                   <span style={{
                     fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                    fontSize: 'clamp(20px,2vw,28px)', lineHeight: 1.2,
+                    fontSize: 'clamp(23.2px,2vw,32.5px)', lineHeight: 1.2,
                     color: isOpen ? '#EDE8E0' : 'rgba(237,232,224,0.78)',
                     transition: 'color 0.3s',
                   }}>
@@ -129,7 +129,7 @@ export default function FaqSection() {
                     >
                       <p style={{
                         fontFamily: 'var(--font-inter)', fontWeight: 300,
-                        fontSize: '14px', lineHeight: 1.8, color: 'var(--text-muted)',
+                        fontSize: '16.2px', lineHeight: 1.8, color: 'var(--text-muted)',
                         paddingBottom: 'clamp(20px,2.5vw,28px)', maxWidth: '640px',
                       }}>
                         {item.a}

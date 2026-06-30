@@ -15,8 +15,8 @@
 
   /* ── Text on dark ── */
   --text:        #F6F2E9;
-  --text-muted:  rgba(246, 242, 233, 0.56);
-  --text-subtle: rgba(168, 158, 139, 0.58);
+  --text-muted:  rgba(246, 242, 233, 0.78);
+  --text-subtle: rgba(214, 205, 188, 0.74);
 
   /* ── Accent ── */
   --gold:        #D4AF37;
@@ -32,7 +32,7 @@
   --border-light: rgba(28, 26, 24, 0.10);
   --graphite:     #1C1A18;
   --slate:        #4A4540;
-  --stone:        #A89E8B;
+  --stone:        #C7BDA8;
   --ivory:        #F6F2E9;
   --cream:        #D6C7B0;
   --muted:        #A89E8B;
@@ -59,6 +59,11 @@ h1, h2, h3, h4 {
   font-weight: 300;
   margin: 0;
   line-height: 1;
+}
+
+/* Hero + section headlines: bold */
+h1, h1 em, h2, h2 em {
+  font-weight: 600 !important;
 }
 
 a { color: inherit; text-decoration: none; }

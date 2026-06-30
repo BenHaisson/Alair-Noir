@@ -44,7 +44,7 @@ export default function TrustSection() {
         />
         <p style={{
           fontFamily: 'var(--font-inter)', fontWeight: 300,
-          fontSize: '9px', letterSpacing: '0.24em', textTransform: 'uppercase',
+          fontSize: '10.4px', letterSpacing: '0.24em', textTransform: 'uppercase',
           color: 'var(--text-subtle)',
         }}>
           In their words
@@ -74,7 +74,7 @@ export default function TrustSection() {
           >
             <p style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
-              fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1.3,
+              fontSize: 'clamp(25.5px,2vw,34.8px)', lineHeight: 1.3,
               color: '#EDE8E0',
             }}>
               &ldquo;{t.quote}&rdquo;
@@ -82,7 +82,7 @@ export default function TrustSection() {
             <footer>
               <cite style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase',
+                fontSize: '10.4px', letterSpacing: '0.22em', textTransform: 'uppercase',
                 color: 'var(--text-subtle)', fontStyle: 'normal',
               }}>
                 — {t.cite}

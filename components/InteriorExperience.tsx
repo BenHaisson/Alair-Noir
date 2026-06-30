@@ -78,7 +78,7 @@ export default function InteriorExperience() {
             style={{
               fontFamily: 'var(--font-inter)',
               fontWeight: 300,
-              fontSize: '9px',
+              fontSize: '10.4px',
               letterSpacing: '0.26em',
               textTransform: 'uppercase',
               color: 'var(--gold)',
@@ -96,7 +96,7 @@ export default function InteriorExperience() {
             style={{
               fontFamily: 'var(--font-cormorant)',
               fontWeight: 300,
-              fontSize: 'clamp(42px,5.4vw,82px)',
+              fontSize: 'clamp(48.7px,5.4vw,95.1px)',
               lineHeight: 0.92,
               color: '#EDE8E0',
               marginBottom: '28px',
@@ -116,7 +116,7 @@ export default function InteriorExperience() {
             style={{
               fontFamily: 'var(--font-inter)',
               fontWeight: 300,
-              fontSize: '13px',
+              fontSize: '15.1px',
               lineHeight: 1.85,
               color: 'var(--text-muted)',
               maxWidth: '390px',
@@ -149,7 +149,7 @@ export default function InteriorExperience() {
                   style={{
                     fontFamily: 'var(--font-cormorant)',
                     fontWeight: 300,
-                    fontSize: '20px',
+                    fontSize: '23.2px',
                     color: '#EDE8E0',
                   }}
                 >
@@ -159,7 +159,7 @@ export default function InteriorExperience() {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     fontWeight: 300,
-                    fontSize: '12px',
+                    fontSize: '13.9px',
                     lineHeight: 1.6,
                     color: 'var(--text-muted)',
                   }}
@@ -180,7 +180,7 @@ export default function InteriorExperience() {
               height: '42px', padding: '0 26px', marginTop: '32px',
               border: '1px solid rgba(201,168,76,0.45)', color: 'var(--gold)',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
-              fontSize: '10px', letterSpacing: '0.20em', textTransform: 'uppercase',
+              fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               alignSelf: 'flex-start',
               transition: 'background 0.25s, color 0.25s',
             }}
@@ -248,7 +248,7 @@ export default function InteriorExperience() {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     fontWeight: 300,
-                    fontSize: '9px',
+                    fontSize: '10.4px',
                     letterSpacing: '0.22em',
                     textTransform: 'uppercase',
                     color: 'var(--gold)',
@@ -260,7 +260,7 @@ export default function InteriorExperience() {
                   style={{
                     fontFamily: 'var(--font-inter)',
                     fontWeight: 300,
-                    fontSize: '10px',
+                    fontSize: '11.6px',
                     lineHeight: 1.5,
                     color: 'rgba(237,232,224,0.52)',
                     maxWidth: '180px',
