@@ -21,7 +21,7 @@ export default function ServicesSection() {
       id="services"
       ref={ref}
       aria-labelledby="services-heading"
-      style={{ backgroundColor: '#0D0D0D', padding: 'clamp(80px,10vw,160px) 0' }}
+      style={{ backgroundColor: '#0A0A0A', padding: 'clamp(80px,10vw,160px) 0' }}
     >
       {/* Header */}
       <div style={{ padding: '0 clamp(28px,8vw,140px)', marginBottom: '60px' }}>
@@ -45,12 +45,12 @@ export default function ServicesSection() {
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
             fontSize: 'clamp(48.7px,5.5vw,92.8px)',
-            lineHeight: 0.92, color: '#EDE8E0',
+            lineHeight: 0.92, color: '#F6F2E9',
           }}
         >
           Private mobility,
           <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '5%' }}>
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.62)', paddingLeft: '5%' }}>
             arranged around the moment.
           </em>
         </motion.h2>
@@ -85,7 +85,7 @@ export default function ServicesSection() {
             transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
             style={{
               position: 'relative',
-              backgroundColor: '#0D0D0D',
+              backgroundColor: '#0A0A0A',
               borderRight: '1px solid var(--border)',
               borderBottom: '1px solid var(--border)',
               padding: 'clamp(28px,3.5vw,48px)',
@@ -118,7 +118,7 @@ export default function ServicesSection() {
             <h3 style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300,
               fontSize: 'clamp(25.5px,2.2vw,37.1px)', lineHeight: 1.05,
-              color: '#EDE8E0',
+              color: '#F6F2E9',
             }}>
               {s.title}
             </h3>
@@ -157,7 +157,7 @@ export default function ServicesSection() {
           style={{
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             height: '46px', padding: '0 32px',
-            backgroundColor: 'var(--gold)', color: '#080808',
+            backgroundColor: 'var(--gold)', color: '#0A0A0A',
             fontFamily: 'var(--font-inter)', fontWeight: 400,
             fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
             transition: 'opacity 0.25s',

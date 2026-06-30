@@ -12,7 +12,7 @@ export default function FounderIntro() {
       ref={ref}
       aria-labelledby="founder-heading"
       style={{
-        backgroundColor: '#0D0D0D',
+        backgroundColor: '#0A0A0A',
         borderTop: '1px solid var(--border)',
         padding: 'clamp(80px,10vw,150px) clamp(28px,8vw,140px)',
       }}
@@ -44,12 +44,12 @@ export default function FounderIntro() {
             id="founder-heading"
             style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-              fontSize: 'clamp(41.8px,4.2vw,74.2px)', lineHeight: 0.95, color: '#EDE8E0',
+              fontSize: 'clamp(41.8px,4.2vw,74.2px)', lineHeight: 0.95, color: '#F6F2E9',
             }}
           >
             Built around
             <br />
-            <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)' }}>
+            <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.62)' }}>
               continuity.
             </em>
           </h2>
@@ -70,7 +70,7 @@ export default function FounderIntro() {
           <p style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
             fontSize: 'clamp(25.5px,2.4vw,37.1px)', lineHeight: 1.3,
-            color: '#EDE8E0', paddingTop: '28px', borderTop: '1px solid var(--border-gold)',
+            color: '#F6F2E9', paddingTop: '28px', borderTop: '1px solid var(--border-gold)',
           }}>
             Continuity, discretion, and precision — on every journey.
           </p>

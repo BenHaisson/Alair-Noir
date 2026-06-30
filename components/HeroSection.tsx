@@ -27,7 +27,7 @@ export default function HeroSection() {
       style={{
         position: 'relative',
         minHeight: '100svh',
-        backgroundColor: '#080808',
+        backgroundColor: '#0A0A0A',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -89,7 +89,7 @@ export default function HeroSection() {
           height: '1px',
           transformOrigin: 'left',
           background:
-            'linear-gradient(90deg, rgba(201,168,76,0.72), rgba(201,168,76,0.12) 46%, rgba(237,232,224,0))',
+            'linear-gradient(90deg, rgba(214, 199, 176,0.72), rgba(214, 199, 176,0.12) 46%, rgba(246, 242, 233,0))',
         }}
       />
 
@@ -133,14 +133,14 @@ export default function HeroSection() {
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
             fontSize: 'clamp(51px,6.6vw,120.6px)',
             lineHeight: 0.92,
-            color: '#EDE8E0',
+            color: '#F6F2E9',
             maxWidth: '900px',
             marginBottom: 'clamp(14px,1.8vw,22px)',
           }}
         >
           Private Chauffeur Service
           <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.68)', paddingLeft: '0.12em' }}>
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.68)', paddingLeft: '0.12em' }}>
             in Zürich.
           </em>
         </motion.h1>
@@ -153,7 +153,7 @@ export default function HeroSection() {
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
             fontSize: 'clamp(23.2px,2.4vw,39.4px)', lineHeight: 1.1,
-            color: 'rgba(237,232,224,0.55)',
+            color: 'rgba(246, 242, 233,0.55)',
             marginBottom: 'clamp(20px,2.5vw,32px)',
           }}
         >
@@ -178,7 +178,7 @@ export default function HeroSection() {
             <p style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
               fontSize: 'clamp(13.9px,1vw,16.2px)', letterSpacing: '0.04em',
-              color: 'rgba(237,232,224,0.52)',
+              color: 'rgba(246, 242, 233,0.52)',
               lineHeight: 1.7, marginBottom: '14px',
             }}>
               BMW i7 xDrive60 and Mercedes-Benz V-Class for private, corporate, airport, and long-distance travel across Switzerland and Europe.
@@ -199,7 +199,7 @@ export default function HeroSection() {
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 height: '44px', padding: '0 28px',
-                backgroundColor: 'var(--gold)', color: '#080808',
+                backgroundColor: 'var(--gold)', color: '#0A0A0A',
                 fontFamily: 'var(--font-inter)', fontWeight: 400,
                 fontSize: 'clamp(10.4px,0.65vw,11.6px)', letterSpacing: '0.22em', textTransform: 'uppercase',
                 transition: 'opacity 0.25s',
@@ -216,13 +216,13 @@ export default function HeroSection() {
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 height: '44px', padding: '0 28px',
-                border: '1px solid rgba(237,232,224,0.22)', color: '#EDE8E0',
+                border: '1px solid rgba(246, 242, 233,0.22)', color: '#F6F2E9',
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
                 fontSize: 'clamp(10.4px,0.65vw,11.6px)', letterSpacing: '0.22em', textTransform: 'uppercase',
                 transition: 'border-color 0.25s',
               }}
-              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.6)')}
-              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.22)')}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.6)')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.22)')}
             >
               WhatsApp Directly
             </a>
@@ -238,7 +238,7 @@ export default function HeroSection() {
             marginTop: 'clamp(20px,2.5vw,28px)',
             fontFamily: 'var(--font-inter)', fontWeight: 300,
             fontSize: 'clamp(11.6px,0.8vw,13.9px)', letterSpacing: '0.03em',
-            color: 'rgba(237,232,224,0.4)', lineHeight: 1.7, maxWidth: '520px',
+            color: 'rgba(246, 242, 233,0.4)', lineHeight: 1.7, maxWidth: '520px',
           }}
         >
           Your reservation goes straight to your driver — no dispatch layer, no anonymous assignment.
@@ -252,7 +252,7 @@ export default function HeroSection() {
           style={{
             marginTop: 'clamp(36px,4vw,56px)',
             paddingTop: 'clamp(20px,2.5vw,28px)',
-            borderTop: '1px solid rgba(237,232,224,0.10)',
+            borderTop: '1px solid rgba(246, 242, 233,0.10)',
             display: 'flex',
             flexWrap: 'wrap',
             gap: 'clamp(24px,4vw,60px)',
@@ -267,12 +267,12 @@ export default function HeroSection() {
               <p style={{
                 fontFamily: 'var(--font-cormorant)', fontWeight: 300,
                 fontSize: 'clamp(25.5px,2.2vw,37.1px)', lineHeight: 1,
-                color: '#EDE8E0', marginBottom: '4px',
+                color: '#F6F2E9', marginBottom: '4px',
               }}>{n}</p>
               <p style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
                 fontSize: 'clamp(9.3px,0.6vw,10.4px)', letterSpacing: '0.22em', textTransform: 'uppercase',
-                color: 'rgba(237,232,224,0.40)',
+                color: 'rgba(246, 242, 233,0.40)',
               }}>{label}</p>
             </div>
           ))}
@@ -303,7 +303,7 @@ export default function HeroSection() {
         <span style={{
           fontFamily: 'var(--font-inter)', fontSize: '9.3px',
           letterSpacing: '0.24em', textTransform: 'uppercase',
-          color: 'rgba(237,232,224,0.35)',
+          color: 'rgba(246, 242, 233,0.35)',
         }}>
           Scroll
         </span>

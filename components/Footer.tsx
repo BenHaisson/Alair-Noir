@@ -16,7 +16,7 @@ const LEGAL = ['Impressum', 'Privacy Policy'];
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer style={{ backgroundColor: '#080808', borderTop: '1px solid var(--border)' }}>
+    <footer style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid var(--border)' }}>
       <div style={{
         padding: 'clamp(48px,7vw,80px) clamp(20px,5vw,80px)',
         display: 'flex',
@@ -27,7 +27,7 @@ export default function Footer() {
       }}>
         {/* Brand */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxWidth: '340px' }}>
-          <Logo variant="nav" color="#EDE8E0" accentColor="#C9A84C" />
+          <Logo variant="nav" color="#F6F2E9" accentColor="#D6C7B0" />
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300,
             fontSize: '12.8px', letterSpacing: '0.05em',

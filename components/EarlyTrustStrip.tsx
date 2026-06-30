@@ -19,7 +19,7 @@ export default function EarlyTrustStrip() {
       ref={ref}
       aria-label="Licensing and trust signals"
       style={{
-        backgroundColor: '#080808',
+        backgroundColor: '#0A0A0A',
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
         padding: 'clamp(28px,4vw,48px) clamp(28px,8vw,140px)',

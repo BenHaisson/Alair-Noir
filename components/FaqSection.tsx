@@ -62,12 +62,12 @@ export default function FaqSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(44.1px,5vw,83.5px)', lineHeight: 0.92, color: '#EDE8E0',
+            fontSize: 'clamp(44.1px,5vw,83.5px)', lineHeight: 0.92, color: '#F6F2E9',
             marginBottom: 'clamp(40px,5vw,64px)',
           }}
         >
           Before
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)' }}> you book.</em>
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.62)' }}> you book.</em>
         </motion.h2>
 
         <div style={{ borderTop: '1px solid var(--border)' }}>
@@ -94,7 +94,7 @@ export default function FaqSection() {
                   <span style={{
                     fontFamily: 'var(--font-cormorant)', fontWeight: 300,
                     fontSize: 'clamp(23.2px,2vw,32.5px)', lineHeight: 1.2,
-                    color: isOpen ? '#EDE8E0' : 'rgba(237,232,224,0.78)',
+                    color: isOpen ? '#F6F2E9' : 'rgba(246, 242, 233,0.78)',
                     transition: 'color 0.3s',
                   }}>
                     {item.q}

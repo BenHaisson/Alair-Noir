@@ -20,8 +20,8 @@ const config: Config = {
         ivory:     '#F6F2E9',
         cream:     '#D6C7B0',
         muted:     '#A89E8B',
-        // Accent
-        gold:      '#D4AF37',
+        // Accent — gold treated as warm cream (never dominant)
+        gold:      '#D6C7B0',
         // Legacy aliases kept for existing classes
         black:     '#0A0A0A',
         forest:    '#0E1F16',

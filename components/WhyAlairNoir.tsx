@@ -57,13 +57,13 @@ export default function WhyAlairNoir() {
           transition={{ duration: 0.8, delay: 0.1 }}
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-            fontSize: 'clamp(44.1px,5vw,83.5px)', lineHeight: 0.92, color: '#EDE8E0',
+            fontSize: 'clamp(44.1px,5vw,83.5px)', lineHeight: 0.92, color: '#F6F2E9',
             marginBottom: '24px',
           }}
         >
           A private standard,
           <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '5%' }}>
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.62)', paddingLeft: '5%' }}>
             personally held.
           </em>
         </motion.h2>
@@ -104,7 +104,7 @@ export default function WhyAlairNoir() {
           >
             <h3 style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-              fontSize: 'clamp(25.5px,2.2vw,34.8px)', lineHeight: 1.1, color: '#EDE8E0',
+              fontSize: 'clamp(25.5px,2.2vw,34.8px)', lineHeight: 1.1, color: '#F6F2E9',
             }}>
               {b.title}
             </h3>

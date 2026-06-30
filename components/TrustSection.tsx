@@ -27,7 +27,7 @@ export default function TrustSection() {
       ref={ref}
       aria-label="Client testimonials"
       style={{
-        backgroundColor: '#080808',
+        backgroundColor: '#0A0A0A',
         borderTop: '1px solid var(--border)',
         padding: 'clamp(80px,10vw,140px) clamp(28px,8vw,140px)',
       }}
@@ -75,7 +75,7 @@ export default function TrustSection() {
             <p style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
               fontSize: 'clamp(25.5px,2vw,34.8px)', lineHeight: 1.3,
-              color: '#EDE8E0',
+              color: '#F6F2E9',
             }}>
               &ldquo;{t.quote}&rdquo;
             </p>

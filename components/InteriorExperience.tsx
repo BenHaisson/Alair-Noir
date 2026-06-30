@@ -53,7 +53,7 @@ export default function InteriorExperience() {
       ref={ref}
       aria-labelledby="cabin-heading"
       style={{
-        backgroundColor: '#0D0D0D',
+        backgroundColor: '#0A0A0A',
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
         padding: 'clamp(80px,10vw,150px) clamp(24px,6vw,100px)',
@@ -98,13 +98,13 @@ export default function InteriorExperience() {
               fontWeight: 300,
               fontSize: 'clamp(48.7px,5.4vw,95.1px)',
               lineHeight: 0.92,
-              color: '#EDE8E0',
+              color: '#F6F2E9',
               marginBottom: '28px',
             }}
           >
             Space held
             <br />
-            <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '7%' }}>
+            <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.62)', paddingLeft: '7%' }}>
               quietly.
             </em>
           </motion.h2>
@@ -150,7 +150,7 @@ export default function InteriorExperience() {
                     fontFamily: 'var(--font-cormorant)',
                     fontWeight: 300,
                     fontSize: '23.2px',
-                    color: '#EDE8E0',
+                    color: '#F6F2E9',
                   }}
                 >
                   {feature.name}
@@ -178,13 +178,13 @@ export default function InteriorExperience() {
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               height: '42px', padding: '0 26px', marginTop: '32px',
-              border: '1px solid rgba(201,168,76,0.45)', color: 'var(--gold)',
+              border: '1px solid rgba(214, 199, 176,0.45)', color: 'var(--gold)',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
               fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               alignSelf: 'flex-start',
               transition: 'background 0.25s, color 0.25s',
             }}
-            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#0A0A0A'; }}
             onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = 'var(--gold)'; }}
           >
             Request the V-Class
@@ -213,7 +213,7 @@ export default function InteriorExperience() {
                 gridRow: image.featured ? 'span 3' : 'span 1',
                 overflow: 'hidden',
                 backgroundColor: '#090909',
-                border: '1px solid rgba(201,168,76,0.12)',
+                border: '1px solid rgba(214, 199, 176,0.12)',
               }}
             >
               <Image
@@ -262,7 +262,7 @@ export default function InteriorExperience() {
                     fontWeight: 300,
                     fontSize: '11.6px',
                     lineHeight: 1.5,
-                    color: 'rgba(237,232,224,0.52)',
+                    color: 'rgba(246, 242, 233,0.52)',
                     maxWidth: '180px',
                     textAlign: 'right',
                   }}

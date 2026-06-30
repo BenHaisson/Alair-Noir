@@ -37,9 +37,9 @@ export default function Navbar() {
       <header
         className="fixed inset-x-0 top-0 z-50 transition-all duration-500"
         style={{
-          backgroundColor: scrolled ? 'rgba(8,8,8,0.94)' : 'transparent',
+          backgroundColor: scrolled ? 'rgba(10,10,10,0.92)' : 'transparent',
           backdropFilter: scrolled ? 'blur(16px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
+          borderBottom: scrolled ? '1px solid rgba(214,199,176,0.12)' : '1px solid transparent',
         }}
       >
         <div style={{
@@ -49,7 +49,7 @@ export default function Navbar() {
         }}>
           {/* Logo */}
           <Link href="/" aria-label="Alair Noir — home" style={{ lineHeight: 0 }}>
-            <Logo variant="nav" animate color="#EDE8E0" accentColor="#C9A84C" />
+            <Logo variant="nav" animate color="#F6F2E9" accentColor="#D6C7B0" />
           </Link>
 
           {/* Desktop nav */}
@@ -61,11 +61,11 @@ export default function Navbar() {
                 style={{
                   fontFamily: 'var(--font-inter)', fontWeight: 300,
                   fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
-                  color: 'rgba(237,232,224,0.55)',
+                  color: 'rgba(246, 242, 233,0.55)',
                   transition: 'color 0.2s',
                 }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#EDE8E0')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(237,232,224,0.55)')}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#F6F2E9')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(246, 242, 233,0.55)')}
               >
                 {l.label}
               </a>
@@ -79,7 +79,7 @@ export default function Navbar() {
               className="hidden md:inline-flex items-center justify-center"
               style={{
                 height: '36px', padding: '0 22px',
-                border: '1px solid rgba(201,168,76,0.45)',
+                border: '1px solid var(--hairline)',
                 fontFamily: 'var(--font-inter)', fontWeight: 300,
                 fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
                 color: 'var(--gold)',
@@ -88,7 +88,7 @@ export default function Navbar() {
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.backgroundColor = 'var(--gold)';
-                el.style.color = '#080808';
+                el.style.color = '#0A0A0A';
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
@@ -105,7 +105,7 @@ export default function Navbar() {
               onClick={() => setOpen(!open)}
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
-              style={{ color: '#EDE8E0' }}
+              style={{ color: '#F6F2E9' }}
             >
               <span
                 style={{
@@ -143,7 +143,7 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-40 flex flex-col pt-[72px]"
-            style={{ backgroundColor: '#080808' }}
+            style={{ backgroundColor: '#0A0A0A' }}
           >
             <nav
               className="flex flex-col flex-1 justify-center"
@@ -161,8 +161,8 @@ export default function Navbar() {
                   style={{
                     fontFamily: 'var(--font-cormorant)', fontWeight: 300,
                     fontSize: 'clamp(46.4px,10vw,74.2px)', lineHeight: 1.1,
-                    color: '#EDE8E0',
-                    borderBottom: '1px solid rgba(237,232,224,0.07)',
+                    color: '#F6F2E9',
+                    borderBottom: '1px solid rgba(246, 242, 233,0.07)',
                     paddingBottom: '20px', marginBottom: '20px',
                     display: 'block',
                   }}
@@ -179,7 +179,7 @@ export default function Navbar() {
                 style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                   height: '48px', padding: '0 32px', alignSelf: 'flex-start',
-                  backgroundColor: 'var(--gold)', color: '#080808',
+                  backgroundColor: 'var(--gold)', color: '#0A0A0A',
                   fontFamily: 'var(--font-inter)', fontWeight: 400,
                   fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
                   marginTop: '12px',
@@ -196,7 +196,7 @@ export default function Navbar() {
               transition={{ delay: 0.35, duration: 0.5 }}
               style={{
                 padding: 'clamp(20px,4vw,32px) clamp(24px,8vw,64px)',
-                borderTop: '1px solid rgba(237,232,224,0.07)',
+                borderTop: '1px solid rgba(246, 242, 233,0.07)',
               }}
             >
               <a
@@ -204,7 +204,7 @@ export default function Navbar() {
                 style={{
                   fontFamily: 'var(--font-inter)', fontWeight: 300,
                   fontSize: '13.9px', letterSpacing: '0.08em',
-                  color: 'rgba(237,232,224,0.45)',
+                  color: 'rgba(246, 242, 233,0.45)',
                 }}
               >
                 +41 77 287 09 56

@@ -148,10 +148,10 @@ function Heading({ inView, compact = false }: { inView: boolean; compact?: boole
       <h2 style={{
         fontFamily: 'var(--font-cormorant)', fontWeight: 300,
         fontSize: compact ? 'clamp(30px,8vw,40px)' : 'clamp(37.1px,4.2vw,74.2px)',
-        lineHeight: 0.92, color: '#EDE8E0',
+        lineHeight: 0.92, color: '#F6F2E9',
       }}>
         A journey, held to
-        <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}> one standard.</em>
+        <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.6)' }}> one standard.</em>
       </h2>
       {!compact && (
         <p style={{
@@ -180,7 +180,7 @@ function Dots({ active, onSelect }: { active: number; onSelect: (i: number) => v
           aria-label={`Chapter ${card.num}: ${card.label}`}
           style={{
             width: i === active ? '24px' : '6px', height: '3px',
-            background: i === active ? 'var(--gold)' : 'rgba(255,255,255,0.18)',
+            background: i === active ? 'var(--gold)' : 'rgba(214,199,176,0.24)',
             border: 'none', cursor: 'pointer', borderRadius: '2px', padding: 0, flexShrink: 0,
             transition: 'width 0.45s cubic-bezier(0.16,1,0.3,1), background 0.3s ease',
           }}
@@ -240,7 +240,7 @@ function MobileStory() {
           position: 'absolute', inset: 0, pointerEvents: 'none',
           background:
             'radial-gradient(circle at 50% 42%, rgba(40,40,40,0.5), transparent 60%), ' +
-            'radial-gradient(circle at 80% 12%, rgba(212,175,55,0.06), transparent 32%)',
+            'radial-gradient(circle at 80% 12%, rgba(214, 199, 176,0.06), transparent 32%)',
         }} />
 
         <Heading inView compact />
@@ -261,7 +261,7 @@ function MobileStory() {
             <a href="#contact" style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               height: '44px', padding: '0 30px',
-              border: '1px solid rgba(212,175,55,0.45)', color: 'var(--gold)',
+              border: '1px solid rgba(214, 199, 176,0.45)', color: 'var(--gold)',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
               fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
             }}>
@@ -292,7 +292,7 @@ function MobileCard({
   const boxShadow = useTransform(r, (v) =>
     Math.abs(v) < 0.5
       ? '0 40px 90px -30px rgba(0,0,0,0.92), inset 0 1px 0 rgba(255,255,255,0.08)'
-      : '0 0 28px rgba(212,175,55,0.14), 0 20px 44px -24px rgba(0,0,0,0.72)',
+      : '0 0 28px rgba(214, 199, 176,0.14), 0 20px 44px -24px rgba(0,0,0,0.72)',
   );
 
   return (
@@ -313,10 +313,10 @@ function MobileCard({
         <>
           <Image src={card.image} alt="" fill sizes={`${cardW}px`} className="object-cover" style={{ filter: 'brightness(0.92)' }} />
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.62), rgba(0,0,0,0.18) 34%, transparent 64%)' }} />
-          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '16px', boxShadow: 'inset 0 0 0 1px rgba(212,175,55,0.16), inset 0 1px 0 rgba(255,255,255,0.06)' }} />
+          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '16px', boxShadow: 'inset 0 0 0 1px rgba(214, 199, 176,0.16), inset 0 1px 0 rgba(255,255,255,0.06)' }} />
           <div style={{ position: 'absolute', top: '18px', left: '20px', right: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
             <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 400, fontSize: '13.9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#F6F2E9' }}>{card.label}</span>
-            <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '11px', letterSpacing: '0.14em', color: 'rgba(212,175,55,0.85)' }}>{card.num}</span>
+            <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '11px', letterSpacing: '0.14em', color: 'rgba(214, 199, 176,0.85)' }}>{card.num}</span>
           </div>
         </>
       )}
@@ -422,7 +422,7 @@ function DesktopCarousel() {
           position: 'absolute', inset: 0, pointerEvents: 'none',
           background:
             'radial-gradient(circle at 50% 44%, rgba(42,42,42,0.5), transparent 60%), ' +
-            'radial-gradient(circle at 82% 12%, rgba(212,175,55,0.06), transparent 32%)',
+            'radial-gradient(circle at 82% 12%, rgba(214, 199, 176,0.06), transparent 32%)',
         }} />
 
         <Heading inView={inView} compact />
@@ -480,8 +480,8 @@ function DesktopCard({
   const zIndex = useTransform(r, (v) => Math.round(100 - Math.abs(v) * 10));
   const boxShadow = useTransform(r, (v) =>
     Math.abs(v) < 0.5
-      ? '0 0 0 1px rgba(246,242,233,0.07), 0 0 60px -24px rgba(212,175,55,0.22)'
-      : '0 0 34px -8px rgba(212,175,55,0.12)',
+      ? '0 0 0 1px rgba(246,242,233,0.07), 0 0 60px -24px rgba(214, 199, 176,0.22)'
+      : '0 0 34px -8px rgba(214, 199, 176,0.12)',
   );
 
   return (
@@ -505,10 +505,10 @@ function DesktopCard({
         <>
           <Image src={card.image} alt="" fill sizes={`${cardW}px`} className="object-cover" style={{ filter: 'brightness(0.9)' }} />
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.12) 36%, transparent 62%)' }} />
-          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '18px', boxShadow: 'inset 0 0 0 1px rgba(212,175,55,0.16), inset 0 1px 0 rgba(255,255,255,0.06)' }} />
+          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '18px', boxShadow: 'inset 0 0 0 1px rgba(214, 199, 176,0.16), inset 0 1px 0 rgba(255,255,255,0.06)' }} />
           <div style={{ position: 'absolute', top: '26px', left: '30px', right: '30px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
             <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 400, fontSize: '16px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#F6F2E9' }}>{card.label}</span>
-            <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '13px', letterSpacing: '0.14em', color: 'rgba(212,175,55,0.85)' }}>{card.num}</span>
+            <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '13px', letterSpacing: '0.14em', color: 'rgba(214, 199, 176,0.85)' }}>{card.num}</span>
           </div>
         </>
       )}
@@ -574,7 +574,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
               fontSize: 'clamp(34px,3vw,54px)', lineHeight: 0.94, color: '#F6F2E9', marginBottom: '12px',
             }}>
               {card.heading}{' '}
-              <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.66)' }}>{card.italic}</em>
+              <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.66)' }}>{card.italic}</em>
             </h3>
             <p style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: 'clamp(14px,1vw,16px)',
@@ -591,7 +591,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
                 width: '18px', height: '18px', borderRadius: '3px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '11.5px', color: 'var(--gold)',
-                background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.32)',
+                background: 'rgba(214, 199, 176,0.12)', border: '1px solid rgba(214, 199, 176,0.32)',
               }}>✓</span>
               <span style={{
                 fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '14px',
@@ -600,7 +600,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
             </div>
             <span style={{
               fontFamily: 'var(--font-inter)', fontSize: '9px', letterSpacing: '0.16em',
-              textTransform: 'uppercase', color: 'rgba(212,175,55,0.6)', flexShrink: 0,
+              textTransform: 'uppercase', color: 'rgba(214, 199, 176,0.6)', flexShrink: 0,
             }}>{card.label}</span>
           </div>
         </div>
@@ -637,7 +637,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
           <span style={{
             fontFamily: 'var(--font-inter)', fontSize: '9.3px', letterSpacing: '0.16em',
             color: 'rgba(246,242,233,0.7)', background: 'rgba(0,0,0,0.42)', backdropFilter: 'blur(6px)',
-            border: '1px solid rgba(255,255,255,0.14)', borderRadius: '999px', padding: '4px 11px',
+            border: '1px solid var(--hairline)', borderRadius: '999px', padding: '4px 11px',
           }}>{card.num}&ensp;/&ensp;08</span>
         </div>
       </div>
@@ -649,11 +649,11 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
         <div aria-hidden="true" style={{
           position: 'absolute', right: '-6px', bottom: '-18px',
           fontFamily: 'var(--font-cormorant)', fontSize: '112px', fontWeight: 300, lineHeight: 1,
-          color: 'rgba(212,175,55,0.07)', userSelect: 'none', pointerEvents: 'none',
+          color: 'rgba(214, 199, 176,0.07)', userSelect: 'none', pointerEvents: 'none',
         }}>{card.num}</div>
         <div aria-hidden="true" style={{
           position: 'absolute', left: 0, top: '10%', bottom: '10%', width: '2px',
-          background: 'linear-gradient(to bottom, transparent, rgba(212,175,55,0.85), transparent)',
+          background: 'linear-gradient(to bottom, transparent, rgba(214, 199, 176,0.85), transparent)',
         }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <p style={{
@@ -665,7 +665,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
             fontSize: 'clamp(30px,8vw,38px)', lineHeight: 0.92, color: '#F6F2E9', marginBottom: '12px',
           }}>
             {card.heading}<br />
-            <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}>{card.italic}</em>
+            <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.6)' }}>{card.italic}</em>
           </h3>
           <p style={{
             fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '13px',
@@ -678,7 +678,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
               width: '16px', height: '16px', borderRadius: '3px', flexShrink: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '10.4px', color: 'var(--gold)',
-              background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)',
+              background: 'rgba(214, 199, 176,0.1)', border: '1px solid rgba(214, 199, 176,0.3)',
             }}>✓</span>
             <span style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '12.6px',
@@ -687,7 +687,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
           </div>
           <div style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)',
+            paddingTop: '12px', borderTop: '1px solid var(--soft-hairline)',
           }}>
             <span style={{
               fontFamily: 'var(--font-inter)', fontSize: '8.1px', letterSpacing: '0.22em',
@@ -695,7 +695,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
             }}>Alair Noir</span>
             <span style={{
               fontFamily: 'var(--font-inter)', fontSize: '8.1px', letterSpacing: '0.12em',
-              color: 'rgba(212,175,55,0.5)',
+              color: 'rgba(214, 199, 176,0.5)',
             }}>{card.label}</span>
           </div>
         </div>

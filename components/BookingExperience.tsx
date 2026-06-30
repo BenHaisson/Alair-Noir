@@ -72,12 +72,12 @@ export default function BookingExperience() {
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
             fontSize: 'clamp(46.4px,5vw,83.5px)',
-            lineHeight: 0.9, color: '#EDE8E0', marginBottom: '28px',
+            lineHeight: 0.9, color: '#F6F2E9', marginBottom: '28px',
           }}
         >
           Ready when
           <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.65)', paddingLeft: '8%' }}>
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.65)', paddingLeft: '8%' }}>
             you are.
           </em>
         </motion.h2>
@@ -120,7 +120,7 @@ export default function BookingExperience() {
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               height: '44px', padding: '0 26px',
-              backgroundColor: 'var(--gold)', color: '#080808',
+              backgroundColor: 'var(--gold)', color: '#0A0A0A',
               fontFamily: 'var(--font-inter)', fontWeight: 400,
               fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               transition: 'opacity 0.25s',
@@ -137,13 +137,13 @@ export default function BookingExperience() {
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               height: '44px', padding: '0 26px',
-              border: '1px solid rgba(237,232,224,0.22)', color: '#EDE8E0',
+              border: '1px solid rgba(246, 242, 233,0.22)', color: '#F6F2E9',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
               fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               transition: 'border-color 0.25s',
             }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.6)')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(237,232,224,0.22)')}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.6)')}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(246, 242, 233,0.22)')}
           >
             Message on WhatsApp
           </a>
@@ -182,7 +182,7 @@ export default function BookingExperience() {
       </div>
 
       {/* Right — channels */}
-      <div style={{ backgroundColor: '#080808', padding: 'clamp(60px,8vw,120px) clamp(28px,6vw,80px)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div style={{ backgroundColor: '#0A0A0A', padding: 'clamp(60px,8vw,120px) clamp(28px,6vw,80px)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <ul style={{ listStyle: 'none' }}>
           {CHANNELS.map((c, i) => (
             <motion.li
@@ -215,7 +215,7 @@ export default function BookingExperience() {
                   </span>
                   <span style={{
                     fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                    fontSize: 'clamp(25.5px,2.6vw,44.1px)', color: '#EDE8E0',
+                    fontSize: 'clamp(25.5px,2.6vw,44.1px)', color: '#F6F2E9',
                     transition: 'color 0.3s',
                   }}>
                     {c.value}

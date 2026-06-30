@@ -55,7 +55,7 @@ export default function BmwI7Presentation() {
       aria-labelledby="bmw-i7-heading"
       style={{
         position: 'relative',
-        backgroundColor: '#080808',
+        backgroundColor: '#0A0A0A',
         borderTop: '1px solid rgba(214,199,176,0.1)',
         padding: 'clamp(90px,11vw,170px) clamp(20px,6vw,100px)',
       }}
@@ -66,7 +66,7 @@ export default function BmwI7Presentation() {
           position: 'absolute',
           inset: 0,
           background:
-            'radial-gradient(circle at 78% 18%, rgba(201,168,76,0.12), transparent 28%), linear-gradient(180deg, rgba(10,10,10,0), rgba(14,31,22,0.34) 100%)',
+            'radial-gradient(circle at 78% 18%, rgba(214, 199, 176,0.12), transparent 28%), linear-gradient(180deg, rgba(10,10,10,0), rgba(14,31,22,0.34) 100%)',
           pointerEvents: 'none',
         }}
       />
@@ -114,13 +114,13 @@ export default function BmwI7Presentation() {
               fontWeight: 300,
               fontSize: 'clamp(55.7px,6vw,111.4px)',
               lineHeight: 0.9,
-              color: '#EDE8E0',
+              color: '#F6F2E9',
               marginBottom: '30px',
             }}
           >
             Silence,
             <br />
-            <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)', paddingLeft: '10%' }}>
+            <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.6)', paddingLeft: '10%' }}>
               with command.
             </em>
           </h2>
@@ -144,12 +144,12 @@ export default function BmwI7Presentation() {
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               height: '42px', padding: '0 26px', marginBottom: '34px',
-              border: '1px solid rgba(201,168,76,0.45)', color: 'var(--gold)',
+              border: '1px solid rgba(214, 199, 176,0.45)', color: 'var(--gold)',
               fontFamily: 'var(--font-inter)', fontWeight: 300,
               fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
               transition: 'background 0.25s, color 0.25s',
             }}
-            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#080808'; }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--gold)'; el.style.color = '#0A0A0A'; }}
             onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = 'var(--gold)'; }}
           >
             Request the BMW i7
@@ -182,7 +182,7 @@ export default function BmwI7Presentation() {
                     fontSize: '10.4px',
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
-                    color: 'rgba(237,232,224,0.38)',
+                    color: 'rgba(246, 242, 233,0.38)',
                     marginBottom: '8px',
                   }}
                 >
@@ -195,7 +195,7 @@ export default function BmwI7Presentation() {
                     fontWeight: 300,
                     fontSize: '23.2px',
                     lineHeight: 1.2,
-                    color: 'rgba(237,232,224,0.76)',
+                    color: 'rgba(246, 242, 233,0.76)',
                   }}
                 >
                   {signal}
@@ -230,7 +230,7 @@ export default function BmwI7Presentation() {
                 gridRow: slide.featured ? 'span 3' : 'span 1',
                 overflow: 'hidden',
                 backgroundColor: '#050505',
-                border: '1px solid rgba(201,168,76,0.14)',
+                border: '1px solid rgba(214, 199, 176,0.14)',
                 margin: 0,
               }}
             >
@@ -290,7 +290,7 @@ export default function BmwI7Presentation() {
                         fontWeight: 300,
                         fontSize: 'clamp(32.5px,3.5vw,60.3px)',
                         lineHeight: 0.95,
-                        color: '#EDE8E0',
+                        color: '#F6F2E9',
                       }}
                     >
                       {slide.title}
@@ -304,7 +304,7 @@ export default function BmwI7Presentation() {
                       fontWeight: 300,
                       fontSize: '11.6px',
                       lineHeight: 1.5,
-                      color: 'rgba(237,232,224,0.52)',
+                      color: 'rgba(246, 242, 233,0.52)',
                       maxWidth: '140px',
                       textAlign: 'right',
                     }}
@@ -335,7 +335,7 @@ export default function BmwI7Presentation() {
                 height: 'min(64vw, 380px)',
                 overflow: 'hidden',
                 backgroundColor: '#050505',
-                border: '1px solid rgba(201,168,76,0.14)',
+                border: '1px solid rgba(214, 199, 176,0.14)',
                 margin: 0,
               }}
             >
@@ -385,7 +385,7 @@ export default function BmwI7Presentation() {
                     fontWeight: 300,
                     fontSize: '34.8px',
                     lineHeight: 1,
-                    color: '#EDE8E0',
+                    color: '#F6F2E9',
                     marginBottom: '8px',
                   }}
                 >
@@ -397,7 +397,7 @@ export default function BmwI7Presentation() {
                     fontWeight: 300,
                     fontSize: '12.8px',
                     lineHeight: 1.7,
-                    color: 'rgba(237,232,224,0.66)',
+                    color: 'rgba(246, 242, 233,0.66)',
                     margin: 0,
                   }}
                 >
@@ -419,7 +419,7 @@ export default function BmwI7Presentation() {
               style={{
                 flex: 1,
                 height: '1px',
-                backgroundColor: 'rgba(237,232,224,0.16)',
+                backgroundColor: 'rgba(246, 242, 233,0.16)',
               }}
             />
           ))}

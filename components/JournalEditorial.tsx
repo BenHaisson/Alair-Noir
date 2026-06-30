@@ -140,13 +140,13 @@ function Masthead() {
             fontFamily: 'var(--font-cormorant)',
             fontSize: 'clamp(54px,8vw,132px)',
             lineHeight: 0.94,
-            color: '#EDE8E0',
+            color: '#F6F2E9',
             marginTop: '22px',
             maxWidth: '14ch',
           }}
         >
           Notes from the{' '}
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}>quiet hours</em>.
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.6)' }}>quiet hours</em>.
         </motion.h1>
 
         <motion.p
@@ -265,7 +265,7 @@ function Featured({ article }: { article: Article }) {
               fontFamily: 'var(--font-cormorant)',
               fontSize: 'clamp(38px,4.4vw,72px)',
               lineHeight: 0.98,
-              color: '#EDE8E0',
+              color: '#F6F2E9',
             }}
           >
             {article.title}
@@ -294,7 +294,7 @@ function Featured({ article }: { article: Article }) {
                 height: '46px',
                 padding: '0 32px',
                 backgroundColor: 'var(--gold)',
-                color: '#080808',
+                color: '#0A0A0A',
                 fontFamily: 'var(--font-inter)',
                 fontWeight: 400,
                 fontSize: '11.6px',
@@ -411,7 +411,7 @@ function ArticleCard({ article, index, inView }: { article: Article; index: numb
               fontFamily: 'var(--font-cormorant)',
               fontSize: 'clamp(25.5px,2.2vw,34px)',
               lineHeight: 1.04,
-              color: '#EDE8E0',
+              color: '#F6F2E9',
             }}
           >
             {article.title}
@@ -485,7 +485,7 @@ function ArticleGrid() {
               fontFamily: 'var(--font-cormorant)',
               fontSize: 'clamp(42px,5vw,104px)',
               lineHeight: 0.94,
-              color: '#EDE8E0',
+              color: '#F6F2E9',
               marginTop: '16px',
             }}
           >
@@ -545,7 +545,7 @@ function PullQuote() {
             fontStyle: 'italic',
             fontSize: 'clamp(30px,4.2vw,60px)',
             lineHeight: 1.18,
-            color: '#EDE8E0',
+            color: '#F6F2E9',
           }}
         >
           “Luxury is rarely loud. It is the absence of friction —
@@ -591,12 +591,12 @@ function ClosingCta() {
             fontFamily: 'var(--font-cormorant)',
             fontSize: 'clamp(40px,5vw,92px)',
             lineHeight: 0.96,
-            color: '#EDE8E0',
+            color: '#F6F2E9',
             maxWidth: '18ch',
           }}
         >
           The next chapter is{' '}
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.6)' }}>yours to write</em>.
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.6)' }}>yours to write</em>.
         </h2>
         <p
           style={{
@@ -621,7 +621,7 @@ function ClosingCta() {
             padding: '0 34px',
             marginTop: '8px',
             backgroundColor: 'var(--gold)',
-            color: '#080808',
+            color: '#0A0A0A',
             fontFamily: 'var(--font-inter)',
             fontWeight: 400,
             fontSize: '11.6px',

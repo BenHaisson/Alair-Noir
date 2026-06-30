@@ -77,13 +77,13 @@ export default function FleetShowcase() {
             fontWeight: 300,
             fontSize: 'clamp(48.7px,5.5vw,92.8px)',
             lineHeight: 0.92,
-            color: '#EDE8E0',
+            color: '#F6F2E9',
             marginBottom: '24px',
           }}
         >
           Chosen,
           <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(237,232,224,0.62)', paddingLeft: '6%' }}>
+          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.62)', paddingLeft: '6%' }}>
             not assembled.
           </em>
         </motion.h2>
@@ -164,7 +164,7 @@ export default function FleetShowcase() {
                     fontWeight: 300,
                     fontSize: 'clamp(37.1px,3.5vw,58px)',
                     lineHeight: 1,
-                    color: '#EDE8E0',
+                    color: '#F6F2E9',
                   }}
                 >
                   {v.name}

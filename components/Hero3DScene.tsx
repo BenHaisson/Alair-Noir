@@ -36,7 +36,7 @@ function GoldDust({ count = 1800 }: { count?: number }) {
       </bufferGeometry>
       <pointsMaterial
         size={0.022}
-        color="#C9A84C"
+        color="#D6C7B0"
         transparent
         opacity={0.42}
         sizeAttenuation
@@ -56,7 +56,7 @@ function AmbientRing() {
   return (
     <mesh ref={ref} position={[3, -1, -4]}>
       <torusGeometry args={[3.5, 0.004, 6, 140]} />
-      <meshBasicMaterial color="#C9A84C" transparent opacity={0.1} />
+      <meshBasicMaterial color="#D6C7B0" transparent opacity={0.1} />
     </mesh>
   );
 }

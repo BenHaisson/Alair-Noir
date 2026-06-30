@@ -4,7 +4,9 @@ export const brandColors = {
   cream: '#D6C7B0',
   ivory: '#F6F2E9',
   stone: '#A89E8B',
-  gold: '#D4AF37',
+  deepForest: '#08130D',
+  mutedStone: '#7E7668',
+  gold: '#D6C7B0',
 } as const;
 
 export const vehicles = [
