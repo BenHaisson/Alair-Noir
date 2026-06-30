@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Logo from './Logo';
 
 type Card = {
   title: string;
@@ -382,23 +383,53 @@ function SceneRail() {
   );
 }
 
-function BrandOpening() {
+function IntroOverlay() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="brand-opening" aria-label="ALAIR NOIR introduction">
+    <div className="intro-overlay" aria-label="ALAIR NOIR opening animation">
       <div className="grain" aria-hidden="true" />
-      <motion.div className="opening-inner" {...reveal(shouldReduceMotion)}>
-        <p className="opening-location">Zurich / Switzerland</p>
-        <p className="opening-logo">ALAIR NOIR</p>
-        <div className="opening-line" />
-        <p className="opening-slogan">
+      <motion.div
+        className="intro-vignette"
+        initial={shouldReduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.1, ease }}
+        aria-hidden="true"
+      />
+      <motion.div className="intro-inner" initial={shouldReduceMotion ? false : { opacity: 1 }} animate={{ opacity: 1 }}>
+        <motion.div
+          className="intro-icon"
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.94, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.2, delay: 0.2, ease }}
+        >
+          <Logo variant="icon" animate color="#F6F2E9" accentColor="#D6C7B0" />
+        </motion.div>
+        <motion.p
+          className="intro-name"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 1.3, ease }}
+        >
+          ALAIR NOIR
+        </motion.p>
+        <motion.p
+          className="intro-slogan"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 2.05, ease }}
+        >
           <span>NOT FOR EVERYONE</span>
           <span>FOR YOU</span>
-        </p>
-        <p className="opening-copy">Private mobility for people whose arrival carries weight.</p>
+        </motion.p>
       </motion.div>
-    </section>
+      <motion.div
+        className="intro-exit"
+        initial={shouldReduceMotion ? false : { scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.95, delay: 3.25, ease }}
+      />
+    </div>
   );
 }
 
@@ -945,8 +976,8 @@ function LuxuryFooter() {
 export default function LuxuryHomepage() {
   return (
     <>
+      <IntroOverlay />
       <main id="main-content" className="luxury-page-shell">
-        <BrandOpening />
         <HeroArrival />
         <SceneRail />
         <BrandPromise />

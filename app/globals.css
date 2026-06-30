@@ -137,6 +137,56 @@ img {
   padding: 0 clamp(20px, 5vw, 84px);
 }
 
+.nav-logo-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1;
+}
+
+.nav-logo-icon {
+  display: block;
+  width: 46px;
+  height: 30px;
+}
+
+.nav-logo-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.nav-logo-name {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.full-logo-mark {
+  display: inline-grid;
+  justify-items: center;
+  gap: 18px;
+}
+
+.full-logo-icon {
+  width: min(58vw, 240px);
+}
+
+.full-logo-name {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(38px, 6vw, 82px);
+  letter-spacing: 0.26em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.full-logo-tagline {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
 .nav-link,
 .nav-request,
 .eyebrow,
@@ -231,61 +281,115 @@ img {
   text-transform: uppercase;
 }
 
-.brand-opening {
-  position: relative;
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
   display: grid;
-  min-height: 100svh;
   place-items: center;
   overflow: hidden;
-  background: var(--black);
+  background:
+    radial-gradient(circle at 50% 48%, rgba(246, 242, 233, 0.14), transparent 18%),
+    linear-gradient(90deg, rgba(246, 242, 233, 0.75), rgba(10, 10, 10, 0.88) 19%, #050505 50%, rgba(10, 10, 10, 0.88) 81%, rgba(246, 242, 233, 0.75)),
+    var(--black);
+  pointer-events: auto;
+  animation: introLeave 820ms cubic-bezier(0.16, 1, 0.3, 1) 4.45s forwards;
 }
 
-.brand-opening::before {
+.intro-overlay::before {
   position: absolute;
-  inset: 12%;
+  inset: 0;
   content: '';
-  border: 1px solid rgba(214, 199, 176, 0.08);
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(246, 242, 233, 0.025) 0,
+    rgba(246, 242, 233, 0.025) 1px,
+    transparent 1px,
+    transparent 18px
+  );
+  opacity: 0.22;
+  pointer-events: none;
 }
 
-.opening-inner {
+.intro-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(246, 242, 233, 0.22), transparent 22%),
+    radial-gradient(circle at 50% 55%, rgba(8, 19, 13, 0.92), transparent 58%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.intro-inner {
   position: relative;
   z-index: 1;
-  width: min(86vw, 760px);
+  display: grid;
+  justify-items: center;
+  width: min(88vw, 760px);
   text-align: center;
+}
+
+.intro-icon {
+  width: min(66vw, 310px);
+  filter: drop-shadow(0 0 34px rgba(246, 242, 233, 0.26));
+}
+
+.intro-icon svg {
+  width: 100%;
+  height: auto;
+}
+
+.intro-name {
+  margin-top: clamp(12px, 2.6vw, 28px);
+  color: var(--ivory);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(36px, 6vw, 78px);
+  letter-spacing: 0.26em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.intro-slogan {
+  display: grid;
+  gap: 7px;
+  margin-top: clamp(22px, 3vw, 34px);
+  color: var(--cream);
+  font-size: clamp(12px, 1.7vw, 18px);
+  letter-spacing: 0.24em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.intro-exit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  height: 1px;
+  background: var(--cream);
+  transform-origin: 0 50%;
+}
+
+@keyframes introLeave {
+  0% {
+    opacity: 1;
+    visibility: visible;
+    clip-path: inset(0 0 0 0);
+    pointer-events: auto;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    clip-path: inset(0 0 100% 0);
+    pointer-events: none;
+  }
 }
 
 .opening-location,
 .eyebrow {
   margin-bottom: 22px;
-  color: var(--stone);
-}
-
-.opening-logo {
-  color: var(--ivory);
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-size: clamp(58px, 9vw, 132px);
-  line-height: 0.9;
-}
-
-.opening-line {
-  width: min(220px, 38vw);
-  height: 1px;
-  margin: clamp(28px, 5vw, 58px) auto;
-  background: var(--hairline);
-}
-
-.opening-slogan {
-  display: grid;
-  gap: 8px;
-  color: var(--cream);
-  font-size: clamp(16px, 2.2vw, 26px);
-  letter-spacing: 0.18em;
-  line-height: 1.35;
-}
-
-.opening-copy {
-  max-width: 520px;
-  margin: 28px auto 0;
   color: var(--stone);
 }
 
