@@ -326,7 +326,7 @@ export default function CinematicScrollStory() {
                   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick(index); }
                 }}
                 animate={{
-                  width:   isVisible ? (isActive ? activeW : collW) : (isMobile ? activeW : 0),
+                  width:   isMobile ? activeW : (isVisible ? (isActive ? activeW : collW) : 0),
                   height:  isVisible ? (isActive ? activeH : collH) : 0,
                   rotateY: isMobile ? 0 : rotateY,
                   rotateX: isMobile ? rotateX : 0,
@@ -341,7 +341,7 @@ export default function CinematicScrollStory() {
                   position: 'relative', flexShrink: 0, overflow: 'hidden',
                   borderRadius: '12px',
                   border: 'none',
-                  background: isActive ? '#171717' : '#0d0d0d',
+                  background: isActive ? '#242424' : '#1a1a1a',
                   cursor: 'pointer', transformStyle: 'preserve-3d', outline: 'none',
                   boxShadow: 'none',
                 }}
@@ -365,8 +365,8 @@ export default function CinematicScrollStory() {
                       {/* Image backdrop — makes collapsed cards read as cards in the back */}
                       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
                         <Image src={card.image} alt="" fill sizes={isMobile ? '100vw' : '80px'}
-                          className="object-cover" style={{ filter: 'brightness(0.78)' }} />
-                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.55), rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.45))' }} />
+                          className="object-cover" style={{ filter: 'brightness(1.05) contrast(1.02)' }} />
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.35), rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.28))' }} />
                       </div>
 
                       {isMobile ? (
@@ -508,8 +508,13 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
     <div style={{
       position: 'absolute', inset: 0,
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
-      borderRadius: '12px', background: '#171717',
+      borderRadius: '12px', background: '#242424',
     }}>
+      {/* Soft top light (no shadow) */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', inset: 0, zIndex: 7, pointerEvents: 'none', borderRadius: '12px',
+        background: 'linear-gradient(180deg, rgba(255,255,255,0.08), transparent 22%)',
+      }} />
       {/* Image */}
       <div style={{ position: 'relative', flex: compact ? '0 0 54%' : '0 0 65%', overflow: 'hidden' }}>
         <motion.div
@@ -520,11 +525,11 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
         >
           <Image src={card.image} alt={card.imageAlt} fill
             sizes={`${activeW}px`} className="object-cover"
-            style={{ filter: 'none' }} />
+            style={{ filter: 'brightness(1.12) contrast(1.03) saturate(1.05)' }} />
         </motion.div>
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 80%, rgba(23,23,23,0.85) 100%)',
+          background: 'linear-gradient(to bottom, transparent 82%, rgba(36,36,36,0.85) 100%)',
         }} />
         <div style={{ position: 'absolute', top: '14px', left: '16px', zIndex: 2 }}>
           <span style={{
@@ -541,7 +546,7 @@ function CardFace({ card, activeW, compact }: { card: FanCard; activeW: number; 
       <div style={{
         flex: '1 1 auto', display: 'flex', flexDirection: 'column',
         justifyContent: 'space-between', padding: compact ? '16px 18px 14px' : '20px 22px 18px',
-        background: '#0c0c0c', position: 'relative', overflow: 'hidden',
+        background: '#242424', position: 'relative', overflow: 'hidden',
       }}>
         <div aria-hidden="true" style={{
           position: 'absolute', right: '-6px', bottom: '-18px',
