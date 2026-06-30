@@ -58,14 +58,11 @@ export default function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
+                className="an-nav-link"
                 style={{
                   fontFamily: 'var(--font-inter)', fontWeight: 300,
                   fontSize: '11.6px', letterSpacing: '0.20em', textTransform: 'uppercase',
-                  color: 'rgba(246, 242, 233,0.55)',
-                  transition: 'color 220ms cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#F6F2E9')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(246, 242, 233,0.55)')}
               >
                 {l.label}
               </a>
@@ -179,7 +176,7 @@ export default function Navbar() {
                 style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                   height: '48px', padding: '0 32px', alignSelf: 'flex-start',
-                  backgroundColor: 'var(--gold)', color: '#0A0A0A',
+                  backgroundColor: 'var(--ivory)', color: '#0A0A0A',
                   fontFamily: 'var(--font-inter)', fontWeight: 400,
                   fontSize: '11.6px', letterSpacing: '0.22em', textTransform: 'uppercase',
                   marginTop: '12px',

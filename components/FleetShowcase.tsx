@@ -123,7 +123,7 @@ export default function FleetShowcase() {
               flexDirection: 'column',
             }}
           >
-            <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', backgroundColor: '#0F0F0F' }}>
+            <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', backgroundColor: 'var(--black)' }}>
               <Image
                 src={v.image}
                 alt={v.imageAlt}
@@ -226,7 +226,7 @@ export default function FleetShowcase() {
                   >
                     <span aria-hidden="true" style={{
                       width: '4px', height: '4px', borderRadius: '50%',
-                      backgroundColor: 'var(--gold)', flexShrink: 0,
+                      backgroundColor: 'var(--cream)', opacity: 0.55, flexShrink: 0,
                     }} />
                     {detail}
                   </li>
