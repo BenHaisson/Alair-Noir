@@ -18,20 +18,22 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'ALAIR NOIR | Private Chauffeur Service — Zürich & Switzerland',
+  title: 'ALAIR NOIR | Private Chauffeur Service in Zürich for CEOs, Executives & Private Clients',
   description:
-    'Executive chauffeur service in Switzerland. BMW i7 and Mercedes-Benz V-Class for airport transfers, VIP transport, corporate travel, delegations, and private events.',
+    'Private chauffeur service in Zürich for CEOs, executives, private clients, family offices, airport arrivals, events, and long-distance journeys across Switzerland and selected European routes. BMW i7 xDrive60 and Mercedes-Benz V-Class available by request.',
   keywords: [
     'private chauffeur Zürich',
-    'airport transfer Zurich',
-    'BMW i7 chauffeur',
-    'Mercedes V-Class VIP',
-    'executive transport Switzerland',
-    'private driver Europe',
+    'Zurich airport transfer',
+    'executive chauffeur Zurich',
+    'luxury chauffeur Zurich',
+    'BMW i7 chauffeur Zurich',
+    'Mercedes V-Class chauffeur',
+    'family office chauffeur Switzerland',
   ],
   openGraph: {
-    title: 'ALAIR NOIR — Private Mobility. Perfectly Delivered.',
-    description: 'Private chauffeur service in Zürich. Executive chauffeur across Switzerland and Europe.',
+    title: 'ALAIR NOIR | Private Chauffeur Service in Zürich',
+    description:
+      'Private chauffeur service in Zürich for CEOs, executives, private clients, family offices, airport arrivals, events, and long-distance journeys.',
     type: 'website',
     locale: 'en_CH',
   },
