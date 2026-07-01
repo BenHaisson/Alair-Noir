@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import LineDraw from './motion/LineDraw';
 
 const CHANNELS = [
   {
@@ -176,6 +177,7 @@ export default function BookingExperience() {
                 {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="group"
                 style={{
+                  position: 'relative',
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   gap: '16px', padding: '28px 0',
                   borderBottom: '1px solid var(--border)',
@@ -184,6 +186,11 @@ export default function BookingExperience() {
                 onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--border-gold)')}
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--border)')}
               >
+                <LineDraw
+                  delay={0.3 + i * 0.15}
+                  duration={0.8}
+                  style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}
+                />
                 <span style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <span style={{
                     fontFamily: 'var(--font-inter)', fontWeight: 300,
@@ -201,11 +208,12 @@ export default function BookingExperience() {
                   </span>
                 </span>
 
-                {/* Arrow */}
+                {/* Arrow — slides 6px on hover */}
                 <svg
                   width="22" height="14" viewBox="0 0 22 14"
                   fill="none" aria-hidden="true"
-                  style={{ color: 'var(--gold)', flexShrink: 0, transition: 'transform 0.3s' }}
+                  className="group-hover:translate-x-1.5"
+                  style={{ color: 'var(--gold)', flexShrink: 0, transition: 'transform 300ms cubic-bezier(0.16, 1, 0.3, 1)' }}
                 >
                   <path d="M0 7H20M15 1l6 6-6 6" stroke="currentColor" strokeWidth="1.1" />
                 </svg>

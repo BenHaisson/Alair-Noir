@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import LineDraw from './motion/LineDraw';
 
 export default function FounderIntro() {
   const ref = useRef<HTMLElement>(null);
@@ -67,13 +68,16 @@ export default function FounderIntro() {
           }}>
             ALAIR NOIR is a private chauffeur service that should not feel random, rushed, or anonymous. Every journey is prepared with the same principle: know the route, respect the passenger, protect the silence, and arrive without noise.
           </p>
-          <p style={{
-            fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
-            fontSize: 'clamp(25.5px,2.4vw,37.1px)', lineHeight: 1.3,
-            color: '#F6F2E9', paddingTop: '28px', borderTop: '1px solid var(--border-gold)',
-          }}>
-            Continuity, discretion, and precision — on every journey.
-          </p>
+          <div style={{ position: 'relative', paddingTop: '28px' }}>
+            <LineDraw delay={0.4} style={{ position: 'absolute', top: 0, left: 0, right: 0 }} />
+            <p style={{
+              fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
+              fontSize: 'clamp(25.5px,2.4vw,37.1px)', lineHeight: 1.3,
+              color: '#F6F2E9',
+            }}>
+              Continuity, discretion, and precision — on every journey.
+            </p>
+          </div>
         </motion.div>
       </div>
 

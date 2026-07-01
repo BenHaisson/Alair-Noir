@@ -1,5 +1,6 @@
 'use client';
 import Logo from './Logo';
+import SectionReveal from './motion/SectionReveal';
 
 const LINKS = [
   { label: 'Story', href: '/#story' },
@@ -17,6 +18,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid var(--border)' }}>
+      <SectionReveal margin="-5%">
       <div style={{
         padding: 'clamp(48px,7vw,80px) clamp(20px,5vw,80px)',
         display: 'flex',
@@ -144,6 +146,7 @@ export default function Footer() {
           © {year} Alair Noir GmbH · Switzerland
         </p>
       </div>
+      </SectionReveal>
     </footer>
   );
 }

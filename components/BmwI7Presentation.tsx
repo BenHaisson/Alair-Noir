@@ -3,6 +3,8 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
+import ImageReveal from './motion/ImageReveal';
+import LineDraw from './motion/LineDraw';
 
 const I7_SLIDES = [
   {
@@ -159,11 +161,16 @@ export default function BmwI7Presentation() {
             role="list"
             aria-label="BMW i7 cabin signals"
             style={{
+              position: 'relative',
               display: 'grid',
               gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-              borderTop: '1px solid rgba(214,199,176,0.13)',
             }}
           >
+            <LineDraw
+              delay={0.3}
+              color="rgba(214,199,176,0.28)"
+              style={{ position: 'absolute', top: 0, left: 0, right: 0 }}
+            />
             {I7_SIGNALS.map((signal) => (
               <div
                 key={signal}
@@ -234,27 +241,50 @@ export default function BmwI7Presentation() {
                 margin: 0,
               }}
             >
-              <Image
-                src={slide.src}
-                alt={slide.alt}
-                fill
-                sizes={
-                  slide.featured
-                    ? '(max-width: 900px) 100vw, 48vw'
-                    : '(max-width: 900px) 100vw, 28vw'
-                }
-                className="object-cover"
-                style={{ filter: 'saturate(0.9) contrast(1.05)' }}
-              />
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background:
-                    'linear-gradient(to top, rgba(8,8,8,0.82), rgba(8,8,8,0.1) 48%, transparent)',
-                }}
-              />
+              {slide.featured ? (
+                <ImageReveal delay={0.1} duration={1.4}>
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 48vw"
+                    className="object-cover"
+                    style={{ filter: 'saturate(0.9) contrast(1.05)' }}
+                  />
+                  <motion.div
+                    aria-hidden="true"
+                    initial={{ opacity: 1 }}
+                    animate={inView ? { opacity: 0.55 } : {}}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background:
+                        'linear-gradient(to top, rgba(8,8,8,0.82), rgba(8,8,8,0.1) 48%, transparent)',
+                    }}
+                  />
+                </ImageReveal>
+              ) : (
+                <>
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 28vw"
+                    className="object-cover"
+                    style={{ filter: 'saturate(0.9) contrast(1.05)' }}
+                  />
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background:
+                        'linear-gradient(to top, rgba(8,8,8,0.82), rgba(8,8,8,0.1) 48%, transparent)',
+                    }}
+                  />
+                </>
+              )}
               <figcaption
                 style={{
                   position: 'absolute',

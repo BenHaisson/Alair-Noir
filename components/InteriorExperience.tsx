@@ -3,6 +3,8 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
+import ImageReveal from './motion/ImageReveal';
+import LineDraw from './motion/LineDraw';
 
 const INTERIOR_IMAGES = [
   {
@@ -131,8 +133,9 @@ export default function InteriorExperience() {
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.36 }}
             role="list"
-            style={{ display: 'flex', flexDirection: 'column', borderTop: '1px solid var(--border)' }}
+            style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}
           >
+            <LineDraw delay={0.5} style={{ position: 'absolute', top: 0, left: 0, right: 0 }} />
             {FEATURES.map((feature) => (
               <div
                 key={feature.name}
@@ -216,22 +219,48 @@ export default function InteriorExperience() {
                 border: '1px solid rgba(214, 199, 176,0.12)',
               }}
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes={image.featured ? '(max-width: 900px) 100vw, 48vw' : '(max-width: 900px) 100vw, 28vw'}
-                className="object-cover"
-                style={{ filter: 'saturate(0.88) contrast(1.04)' }}
-              />
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(8,8,8,0.78), rgba(8,8,8,0.1) 48%, transparent)',
-                }}
-              />
+              {image.featured ? (
+                <ImageReveal delay={0.1} duration={1.4}>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 48vw"
+                    className="object-cover"
+                    style={{ filter: 'saturate(0.88) contrast(1.04)' }}
+                  />
+                  <motion.div
+                    aria-hidden="true"
+                    initial={{ opacity: 1 }}
+                    animate={inView ? { opacity: 0.55 } : {}}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to top, rgba(8,8,8,0.78), rgba(8,8,8,0.1) 48%, transparent)',
+                    }}
+                  />
+                </ImageReveal>
+              ) : (
+                <>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 28vw"
+                    className="object-cover"
+                    style={{ filter: 'saturate(0.88) contrast(1.04)' }}
+                  />
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to top, rgba(8,8,8,0.78), rgba(8,8,8,0.1) 48%, transparent)',
+                    }}
+                  />
+                </>
+              )}
               <figcaption
                 style={{
                   position: 'absolute',

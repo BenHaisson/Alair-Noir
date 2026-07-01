@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import LineDraw from './motion/LineDraw';
 
 const TESTIMONIALS = [
   {
@@ -66,12 +67,13 @@ export default function TrustSection() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15 + i * 0.12 }}
             style={{
+              position: 'relative',
               display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
               gap: '28px',
-              borderTop: '1px solid var(--border-gold)',
               paddingTop: '28px',
             }}
           >
+            <LineDraw delay={0.25 + i * 0.12} style={{ position: 'absolute', top: 0, left: 0, right: 0 }} />
             <p style={{
               fontFamily: 'var(--font-cormorant)', fontWeight: 300, fontStyle: 'italic',
               fontSize: 'clamp(25.5px,2vw,34.8px)', lineHeight: 1.3,

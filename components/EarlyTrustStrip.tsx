@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import LineDraw from './motion/LineDraw';
 
 const SIGNALS = [
   { label: 'Limousine Permit', value: 'Kanton Zürich' },
@@ -51,12 +52,21 @@ export default function EarlyTrustStrip() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.1 + i * 0.08 }}
             style={{
+              position: 'relative',
               display: 'flex', flexDirection: 'column', gap: '8px',
               paddingRight: '24px',
-              borderRight: i < 3 ? '1px solid var(--border)' : 'none',
               paddingLeft: i > 0 ? '24px' : '0',
             }}
           >
+            {i < 3 && (
+              <LineDraw
+                className="trust-divider"
+                orientation="vertical"
+                delay={0.25 + i * 0.08}
+                duration={0.6}
+                style={{ position: 'absolute', top: 0, right: 0, bottom: 0 }}
+              />
+            )}
             <span style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300,
               fontSize: '9.3px', letterSpacing: '0.22em', textTransform: 'uppercase',
@@ -77,7 +87,7 @@ export default function EarlyTrustStrip() {
       <style>{`
         @media (max-width: 768px) {
           .trust-strip-grid { grid-template-columns: repeat(2, 1fr) !important; row-gap: 24px !important; }
-          .trust-strip-grid > div:nth-child(2) { border-right: none !important; }
+          .trust-strip-grid > div:nth-child(2) .trust-divider { display: none !important; }
           .trust-strip-grid > div:nth-child(odd) { padding-left: 0 !important; }
         }
       `}</style>

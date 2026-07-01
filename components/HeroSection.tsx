@@ -18,6 +18,8 @@ export default function HeroSection() {
   const imageScale = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [1, 1] : [1.04, 1]);
   const copyY = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, -34]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.78], [1, 0.72]);
+  // Hero-to-trust handoff — the image quietly darkens as the next section approaches.
+  const scrollDarken = useTransform(scrollYProgress, [0, 1], shouldReduceMotion ? [0, 0] : [0, 0.4]);
 
   return (
     <section
@@ -55,6 +57,11 @@ export default function HeroSection() {
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, transparent 20%)',
         }} />
+        {/* Scroll-driven darken — hero quietly resolves toward the next section */}
+        <motion.div
+          aria-hidden="true"
+          style={{ position: 'absolute', inset: 0, backgroundColor: '#000000', opacity: scrollDarken }}
+        />
       </motion.div>
 
       {!shouldReduceMotion && (
@@ -123,11 +130,8 @@ export default function HeroSection() {
           </span>
         </motion.div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.0, delay: 0.28, ease }}
+        {/* Headline — each line resolves from a quiet blur, staggered */}
+        <h1
           style={{
             fontFamily: 'var(--font-cormorant)', fontWeight: 300,
             fontSize: 'clamp(51px,6.6vw,120.6px)',
@@ -137,12 +141,23 @@ export default function HeroSection() {
             marginBottom: 'clamp(14px,1.8vw,22px)',
           }}
         >
-          Private Chauffeur Service
-          <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.68)', paddingLeft: '0.12em' }}>
+          <motion.span
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 26, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 1.0, delay: 0.28, ease }}
+            style={{ display: 'block' }}
+          >
+            Private Chauffeur Service
+          </motion.span>
+          <motion.em
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 26, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 1.0, delay: 0.4, ease }}
+            style={{ display: 'block', fontStyle: 'italic', color: 'rgba(246, 242, 233,0.68)', paddingLeft: '0.12em' }}
+          >
             in Zürich.
-          </em>
-        </motion.h1>
+          </motion.em>
+        </h1>
 
         {/* Poetic line */}
         <motion.p

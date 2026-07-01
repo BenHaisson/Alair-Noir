@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
+import ImageReveal from './motion/ImageReveal';
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -124,26 +125,31 @@ export default function FleetShowcase() {
             }}
           >
             <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', backgroundColor: 'var(--black)' }}>
-              <Image
-                src={v.image}
-                alt={v.imageAlt}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover object-center"
-                style={{ filter: 'saturate(0.82) contrast(1.08)' }}
-              />
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(17,17,17,0.74) 0%, rgba(17,17,17,0.12) 52%, transparent 100%)',
-                }}
-              />
+              <ImageReveal delay={0.1 + i * 0.12} duration={1.3}>
+                <Image
+                  src={v.image}
+                  alt={v.imageAlt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover object-center"
+                  style={{ filter: 'saturate(0.82) contrast(1.08)' }}
+                />
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(17,17,17,0.74) 0%, rgba(17,17,17,0.12) 52%, transparent 100%)',
+                  }}
+                />
+              </ImageReveal>
             </div>
 
             <div style={{ padding: 'clamp(28px,4vw,48px)', flex: 1 }}>
-              <p
+              <motion.p
+                initial={{ opacity: 0, y: 14 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.42 + i * 0.12, ease }}
                 style={{
                   fontFamily: 'var(--font-inter)',
                   fontWeight: 300,
@@ -155,9 +161,14 @@ export default function FleetShowcase() {
                 }}
               >
                 {v.badge}
-              </p>
+              </motion.p>
 
-              <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.52 + i * 0.12, ease }}
+                style={{ marginBottom: '20px', display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}
+              >
                 <h3
                   style={{
                     fontFamily: 'var(--font-cormorant)',
@@ -180,34 +191,50 @@ export default function FleetShowcase() {
                 >
                   {v.sub}
                 </span>
-              </div>
+              </motion.div>
 
-              <p style={{
-                fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '15.1px', lineHeight: 1.8, color: 'var(--text-muted)',
-                marginBottom: '28px',
-              }}>
+              <motion.p
+                initial={{ opacity: 0, y: 14 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.62 + i * 0.12, ease }}
+                style={{
+                  fontFamily: 'var(--font-inter)', fontWeight: 300,
+                  fontSize: '15.1px', lineHeight: 1.8, color: 'var(--text-muted)',
+                  marginBottom: '28px',
+                }}
+              >
                 {v.copy}
-              </p>
+              </motion.p>
 
               {/* Best for */}
-              <p style={{
-                fontFamily: 'var(--font-inter)', fontWeight: 300,
-                fontSize: '9.3px', letterSpacing: '0.24em', textTransform: 'uppercase',
-                color: 'var(--text-subtle)', marginBottom: '8px',
-              }}>
-                Best for
-              </p>
-              <p style={{
-                fontFamily: 'var(--font-cormorant)', fontWeight: 300,
-                fontSize: '18.6px', lineHeight: 1.5, color: 'var(--text-muted)',
-                marginBottom: '28px',
-              }}>
-                {v.bestFor}
-              </p>
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.72 + i * 0.12, ease }}
+              >
+                <p style={{
+                  fontFamily: 'var(--font-inter)', fontWeight: 300,
+                  fontSize: '9.3px', letterSpacing: '0.24em', textTransform: 'uppercase',
+                  color: 'var(--text-subtle)', marginBottom: '8px',
+                }}>
+                  Best for
+                </p>
+                <p style={{
+                  fontFamily: 'var(--font-cormorant)', fontWeight: 300,
+                  fontSize: '18.6px', lineHeight: 1.5, color: 'var(--text-muted)',
+                  marginBottom: '28px',
+                }}>
+                  {v.bestFor}
+                </p>
+              </motion.div>
 
               {/* Details */}
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column' }}>
+              <motion.ul
+                initial={{ opacity: 0, y: 14 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.82 + i * 0.12, ease }}
+                style={{ listStyle: 'none', display: 'flex', flexDirection: 'column' }}
+              >
                 {v.details.map((detail) => (
                   <li
                     key={detail}
@@ -231,7 +258,7 @@ export default function FleetShowcase() {
                     {detail}
                   </li>
                 ))}
-              </ul>
+              </motion.ul>
             </div>
           </motion.article>
         ))}

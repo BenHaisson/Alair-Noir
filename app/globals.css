@@ -218,11 +218,60 @@ img { display: block; }
 }
 .an-button-secondary:hover { color: var(--ivory); border-color: var(--cream); }
 
+/* ─────────────────────────────────────────────────────────────
+   Apple-grade transition primitives — used by SectionReveal /
+   ImageReveal / LineDraw and applied directly where inline motion
+   is more suitable. One easing everywhere.
+   ───────────────────────────────────────────────────────────── */
+.an-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(10px);
+}
+
+.an-motion-ease {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.an-mask-reveal {
+  clip-path: inset(0 0 100% 0);
+}
+
+.an-image-cinematic {
+  transform: scale(1.06);
+  filter: brightness(0.72) saturate(0.88);
+}
+
+.an-transition-soft {
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    clip-path 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.an-line-draw {
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.an-gold-5 {
+  color: var(--cream);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .an-reveal,
+  .an-mask-reveal,
+  .an-image-cinematic {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
   }
 }

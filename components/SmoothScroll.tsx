@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MotionConfig } from 'framer-motion';
+import { cinematicEase } from '@/lib/motion';
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -37,5 +39,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <MotionConfig transition={{ duration: 0.9, ease: cinematicEase }} reducedMotion="user">
+      {children}
+    </MotionConfig>
+  );
 }

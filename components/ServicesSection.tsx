@@ -94,7 +94,7 @@ export default function ServicesSection() {
               overflow: 'hidden',
               transition: 'background 0.35s',
             }}
-            whileHover={{ backgroundColor: '#141414' } as Parameters<typeof motion.article>[0]['whileHover']}
+            whileHover={{ backgroundColor: '#141414', y: -2 } as Parameters<typeof motion.article>[0]['whileHover']}
           >
             {/* Gold top accent line on hover */}
             <motion.span

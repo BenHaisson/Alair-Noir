@@ -291,8 +291,8 @@ function MobileCard({
   const zIndex = useTransform(r, (v) => Math.round(60 - Math.abs(v) * 5));
   const boxShadow = useTransform(r, (v) =>
     Math.abs(v) < 0.5
-      ? '0 40px 90px -30px rgba(0,0,0,0.92), inset 0 1px 0 rgba(255,255,255,0.08)'
-      : '0 0 28px rgba(214, 199, 176,0.14), 0 20px 44px -24px rgba(0,0,0,0.72)',
+      ? '0 0 0 1px rgba(246,242,233,0.07), 0 36px 90px -60px rgba(0,0,0,0.95)'
+      : '0 24px 80px -70px rgba(0,0,0,0.85)',
   );
 
   return (
@@ -304,7 +304,10 @@ function MobileCard({
         position: 'absolute', left: 0, right: 0, marginInline: 'auto',
         top: '50%', marginTop: -(cardH / 2),
         width: cardW, height: cardH, y, scale, opacity, zIndex, boxShadow,
-        borderRadius: '16px', overflow: 'hidden', background: '#1a1a1a', willChange: 'transform',
+        borderRadius: '12px', overflow: 'hidden',
+        background: 'rgba(246, 242, 233, 0.025)',
+        border: '1px solid var(--soft-hairline)',
+        willChange: 'transform',
       }}
     >
       {isActive ? (
@@ -313,7 +316,7 @@ function MobileCard({
         <>
           <Image src={card.image} alt="" fill sizes={`${cardW}px`} className="object-cover" style={{ filter: 'brightness(0.92)' }} />
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.62), rgba(0,0,0,0.18) 34%, transparent 64%)' }} />
-          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '16px', boxShadow: 'inset 0 0 0 1px rgba(214, 199, 176,0.16), inset 0 1px 0 rgba(255,255,255,0.06)' }} />
+          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '12px', boxShadow: 'inset 0 0 0 1px rgba(246,242,233,0.06)' }} />
           <div style={{ position: 'absolute', top: '18px', left: '20px', right: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
             <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 400, fontSize: '13.9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#F6F2E9' }}>{card.label}</span>
             <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '11px', letterSpacing: '0.14em', color: 'rgba(214, 199, 176,0.85)' }}>{card.num}</span>
@@ -474,14 +477,14 @@ function DesktopCard({
     [-3, -2, -1, 0, 1, 2, 3],
     [spacing * 2.2, spacing * 1.7, spacing, 0, -spacing, -spacing * 1.7, -spacing * 2.2],
   );
-  const scale = useTransform(r, [-2, -1, 0, 1, 2], [0.8, 0.86, 1, 0.86, 0.8]);
-  const rotateY = useTransform(r, [-2, -1, 0, 1, 2], [-34, -18, 0, 18, 34]);
-  const opacity = useTransform(r, [-2.6, -2, -1, 0, 1, 2, 2.6], [0, 0.4, 0.78, 1, 0.78, 0.4, 0]);
+  const scale = useTransform(r, [-2, -1, 0, 1, 2], [0.86, 0.9, 1, 0.9, 0.86]);
+  const rotateY = useTransform(r, [-2, -1, 0, 1, 2], [-24, -13, 0, 13, 24]);
+  const opacity = useTransform(r, [-2.6, -2, -1, 0, 1, 2, 2.6], [0, 0.32, 0.62, 1, 0.62, 0.32, 0]);
   const zIndex = useTransform(r, (v) => Math.round(100 - Math.abs(v) * 10));
   const boxShadow = useTransform(r, (v) =>
     Math.abs(v) < 0.5
-      ? '0 0 0 1px rgba(246,242,233,0.07), 0 0 60px -24px rgba(214, 199, 176,0.22)'
-      : '0 0 34px -8px rgba(214, 199, 176,0.12)',
+      ? '0 0 0 1px rgba(246,242,233,0.07), 0 36px 90px -60px rgba(0,0,0,0.95)'
+      : '0 24px 80px -70px rgba(0,0,0,0.85)',
   );
 
   return (
@@ -495,8 +498,10 @@ function DesktopCard({
         top: '50%', marginTop: -(cardH / 2),
         width: cardW, height: cardH,
         x, scale, rotateY, opacity, zIndex, boxShadow,
-        transformStyle: 'preserve-3d', borderRadius: '18px', overflow: 'hidden',
-        background: '#1a1a1a', willChange: 'transform',
+        transformStyle: 'preserve-3d', borderRadius: '12px', overflow: 'hidden',
+        background: 'rgba(246, 242, 233, 0.025)',
+        border: '1px solid var(--soft-hairline)',
+        willChange: 'transform',
       }}
     >
       {isActive ? (
@@ -505,7 +510,7 @@ function DesktopCard({
         <>
           <Image src={card.image} alt="" fill sizes={`${cardW}px`} className="object-cover" style={{ filter: 'brightness(0.9)' }} />
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.12) 36%, transparent 62%)' }} />
-          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '18px', boxShadow: 'inset 0 0 0 1px rgba(214, 199, 176,0.16), inset 0 1px 0 rgba(255,255,255,0.06)' }} />
+          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, borderRadius: '12px', boxShadow: 'inset 0 0 0 1px rgba(246,242,233,0.06)' }} />
           <div style={{ position: 'absolute', top: '26px', left: '30px', right: '30px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
             <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 400, fontSize: '16px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#F6F2E9' }}>{card.label}</span>
             <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: '13px', letterSpacing: '0.14em', color: 'rgba(214, 199, 176,0.85)' }}>{card.num}</span>
@@ -521,13 +526,14 @@ function DesktopCard({
    ════════════════════════════════════════════════════════════ */
 function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; large: boolean }) {
   if (large) {
-    /* Desktop — full-bleed cinematic image with a smoked-glass content panel */
+    /* Desktop — full-bleed cinematic image with a smoked-glass content panel.
+       Content layers reveal in sequence: image, then heading, then body, then footer. */
     return (
-      <div style={{ position: 'absolute', inset: 0, borderRadius: '18px', overflow: 'hidden', background: '#1a1a1a' }}>
+      <div style={{ position: 'absolute', inset: 0, borderRadius: '12px', overflow: 'hidden', background: 'rgba(246, 242, 233, 0.025)' }}>
         <motion.div
           initial={{ scale: 1.06, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           style={{ position: 'absolute', inset: 0 }}
         >
           <Image src={card.image} alt={card.imageAlt} fill sizes={`${activeW}px`}
@@ -540,20 +546,25 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, transparent 24%, transparent 52%, rgba(0,0,0,0.18) 100%)',
         }} />
 
-        {/* subtle gold edge glow */}
+        {/* hairline edge — no glow */}
         <div aria-hidden="true" style={{
-          position: 'absolute', inset: 0, borderRadius: '18px', pointerEvents: 'none',
-          boxShadow: 'inset 0 0 0 1px rgba(246,242,233,0.08), inset 0 1px 0 rgba(255,255,255,0.07)',
+          position: 'absolute', inset: 0, borderRadius: '12px', pointerEvents: 'none',
+          boxShadow: 'inset 0 0 0 1px rgba(246,242,233,0.07)',
         }} />
 
         {/* counter badge */}
-        <div style={{ position: 'absolute', top: '24px', left: '28px', zIndex: 3 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position: 'absolute', top: '24px', left: '28px', zIndex: 3 }}
+        >
           <span style={{
             fontFamily: 'var(--font-inter)', fontSize: '11px', letterSpacing: '0.16em',
             color: 'rgba(246,242,233,0.85)', background: 'rgba(12,12,12,0.42)', backdropFilter: 'blur(18px)',
             border: '1px solid rgba(246,242,233,0.12)', borderRadius: '999px', padding: '6px 14px',
           }}>{card.num}&ensp;/&ensp;08</span>
-        </div>
+        </motion.div>
 
         {/* smoked-glass content panel */}
         <div style={{
@@ -564,7 +575,12 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
           borderTop: '1px solid rgba(246,242,233,0.08)',
           display: 'flex', flexDirection: 'column', gap: '14px',
         }}>
-          <div style={{ maxWidth: '760px' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{ maxWidth: '760px' }}
+          >
             <p style={{
               fontFamily: 'var(--font-inter)', fontWeight: 400, fontSize: '11.5px',
               letterSpacing: '0.26em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '12px',
@@ -576,16 +592,24 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
               {card.heading}{' '}
               <em style={{ fontStyle: 'italic', color: 'rgba(246, 242, 233,0.66)' }}>{card.italic}</em>
             </h3>
-            <p style={{
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.44, ease: [0.16, 1, 0.3, 1] }}
+            style={{
               fontFamily: 'var(--font-inter)', fontWeight: 300, fontSize: 'clamp(14px,1vw,16px)',
               lineHeight: 1.75, color: 'rgba(246,242,233,0.82)', maxWidth: '640px',
-            }}>{card.body}</p>
-          </div>
+            }}>{card.body}</motion.p>
 
-          <div style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px',
-            paddingTop: '16px', marginTop: '4px', borderTop: '1px solid rgba(246,242,233,0.08)',
-          }}>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.58, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px',
+              paddingTop: '16px', marginTop: '4px', borderTop: '1px solid rgba(246,242,233,0.08)',
+            }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
               <span style={{
                 width: '18px', height: '18px', borderRadius: '3px', flexShrink: 0,
@@ -602,28 +626,27 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
               fontFamily: 'var(--font-inter)', fontSize: '9px', letterSpacing: '0.16em',
               textTransform: 'uppercase', color: 'rgba(214, 199, 176,0.6)', flexShrink: 0,
             }}>{card.label}</span>
-          </div>
+          </motion.div>
         </div>
       </div>
     );
   }
 
-  /* Mobile — image-top / content-bottom (unchanged) */
+  /* Mobile — image-top / content-bottom */
   return (
     <div style={{
       position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
-      overflow: 'hidden', borderRadius: '14px', background: '#1c1c1c',
+      overflow: 'hidden', borderRadius: '10px', background: 'var(--deep-forest)',
     }}>
       <div aria-hidden="true" style={{
-        position: 'absolute', inset: 0, zIndex: 7, pointerEvents: 'none', borderRadius: '14px',
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.09), transparent 18%)',
-        boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.3)',
+        position: 'absolute', inset: 0, zIndex: 7, pointerEvents: 'none', borderRadius: '10px',
+        boxShadow: 'inset 0 0 0 1px rgba(246,242,233,0.06)',
       }} />
       <div style={{ position: 'relative', flex: '0 0 56%', overflow: 'hidden' }}>
         <motion.div
           initial={{ scale: 1.07, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           style={{ position: 'absolute', inset: 0 }}
         >
           <Image src={card.image} alt={card.imageAlt} fill sizes={`${activeW}px`}
@@ -644,7 +667,7 @@ function CardFace({ card, activeW, large }: { card: FanCard; activeW: number; la
 
       <div style={{
         flex: '1 1 auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-        padding: '18px 20px 16px', background: '#1c1c1c', position: 'relative', overflow: 'hidden',
+        padding: '18px 20px 16px', background: 'var(--deep-forest)', position: 'relative', overflow: 'hidden',
       }}>
         <div aria-hidden="true" style={{
           position: 'absolute', right: '-6px', bottom: '-18px',

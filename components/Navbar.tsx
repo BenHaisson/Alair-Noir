@@ -47,9 +47,15 @@ export default function Navbar() {
           height: 'clamp(60px,6vw,72px)',
           padding: '0 clamp(20px,5vw,80px)',
         }}>
-          {/* Logo */}
+          {/* Logo — compresses slightly on scroll, a quiet sign of precision */}
           <Link href="/" aria-label="Alair Noir — home" style={{ lineHeight: 0 }}>
-            <Logo variant="nav" animate color="#F6F2E9" accentColor="#D6C7B0" />
+            <motion.span
+              animate={{ scale: scrolled ? 0.94 : 1 }}
+              transition={{ duration: 0.5, ease }}
+              style={{ display: 'block', transformOrigin: 'left center' }}
+            >
+              <Logo variant="nav" animate color="#F6F2E9" accentColor="#D6C7B0" />
+            </motion.span>
           </Link>
 
           {/* Desktop nav */}
